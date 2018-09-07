@@ -5,6 +5,7 @@
   "rules": {
     "interface-name": false,
     "jsx-no-lambda": false,
+    "member-access": false,
     "member-ordering": false,
     "no-implicit-dependencies": false,
     "no-namespace": false,
