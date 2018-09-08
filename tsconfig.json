@@ -21,8 +21,8 @@
     ".next",
     ".jest-cache",
     "coverage",
-    "src/components/layout/__common__",
-    "src/components/layout/__fixture__",
-    "src/components/layout/__test__"
+    "src/components/common/layout/__common__",
+    "src/components/common/layout/__fixture__",
+    "src/components/common/layout/__test__"
   ]
 }

@@ -2,20 +2,21 @@
 const compression = require("compression");
 const express = require("express");
 const next = require("next");
-const { join } = require("path");
-const { parse } = require("url");
-// @ts-ignore
-const routes = require("./routes");
+import { Application } from "express";
+import { Server } from "next";
+import { join } from "path";
+import { parse } from "url";
+import routes from "./routes";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev });
+const app: Server = next({ dev });
 const handler = routes.getRequestHandler(app);
 
 app
   .prepare()
   .then(() => {
-    const server = express();
+    const server: Application = express();
 
     server.use(compression());
 
@@ -27,7 +28,7 @@ app
         const filePath = join(__dirname, ".next", pathname);
         app.serveStatic(req, res, filePath);
       } else {
-        handler(req, res, parsedUrl);
+        handler(req, res);
       }
     });
 

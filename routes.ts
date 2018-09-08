@@ -1,5 +1,7 @@
+import Routes from "next-routes";
 // tslint:disable:no-var-requires
 // @ts-ignore
-const routes = require("next-routes");
+const nextRoutes = require("next-routes");
 
-module.exports = routes().add({ page: "index", pattern: "/" });
+const routes: Routes = nextRoutes();
+export default routes.add({ page: "index", pattern: "/", name: "main" });
