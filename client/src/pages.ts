@@ -1,5 +1,5 @@
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import Page from "./@types/page";
+import Page from "pangwarta-shared/dist/lib/@types/page";
 
 const pages: Page[] = [
   {

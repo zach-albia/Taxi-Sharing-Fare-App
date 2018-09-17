@@ -1,18 +1,18 @@
 import withReduxSaga from "next-redux-saga";
 import withRedux from "next-redux-wrapper";
+import Routes from "next-routes";
 import App, { AppComponentProps, Container } from "next/app";
+import LayoutContext from "pangwarta-shared/dist/lib/layout/LayoutContext";
 import React from "react";
 import { Provider } from "react-redux";
 import compose from "recompose/compose";
-
 import { Store } from "redux";
+import AppRoutes from "../routes";
 import configureStore from "../src/redux/configureStore";
+import strings from "../src/strings";
 import getPageContext from "../src/styles/getPageContext";
 
-// if (process.env.NODE_ENV !== 'production') {
-//   const {whyDidYouUpdate} = require('why-did-you-update');
-//   whyDidYouUpdate(React)
-// }
+const { Link } = AppRoutes as Routes;
 
 type Props = Readonly<
   {
@@ -44,7 +44,14 @@ class MyApp extends App {
     return (
       <Container>
         <Provider store={store}>
-          <Component pageContext={this.pageContext} {...pageProps} />
+          <LayoutContext.Provider
+            value={{
+              Link,
+              title: strings.organization
+            }}
+          >
+            <Component pageContext={this.pageContext} {...pageProps} />
+          </LayoutContext.Provider>
         </Provider>
       </Container>
     );

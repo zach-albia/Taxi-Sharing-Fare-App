@@ -26,6 +26,7 @@
     "next-redux-saga": "^3.0.0-beta.1",
     "next-redux-wrapper": "^2.0.0",
     "next-routes": "^1.4.2",
+    "pangwarta-shared": "../../pangwarta-web/packages/pangwarta-shared",
     "prop-types": "^15.6.2",
     "react": "^16.5.0",
     "react-apollo": "^2.1.11",
@@ -87,8 +88,8 @@
     "prettier": "pretty-quick",
     "prettier:watch": "watch 'pretty-quick' ./src ./pages ./cosmos",
     "start": "NODE_ENV=production ts-node $NODE_DEBUG_OPTION -O '{\"module\": \"commonjs\"}' --ignore false server.ts",
-    "typecheck": "tsc --noEmit",
-    "typecheck:watch": "tsc --noEmit --watch"
+    "typecheck": "tsc --noEmit --skipLibCheck",
+    "typecheck:watch": "tsc --noEmit --skipLibCheck --watch"
   },
   "license": "UNLICENSED"
 }
