@@ -16,7 +16,7 @@
     "fontfaceobserver": "^2.0.13",
     "graphql": "^14.0.2",
     "immutable": "^3.8.2",
-    "isomorphic-unfetch": "^2.1.1",
+    "isomorphic-unfetch": "^3.0.0",
     "jss": "^9.8.7",
     "keycode": "^2.2.0",
     "lodash": "^4.17.10",
@@ -58,7 +58,7 @@
     "@types/styled-jsx": "^2.2.3",
     "@zeit/next-typescript": "^1.1.0",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-loader": "^7.1.5",
+    "babel-loader": "^8.0.2",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
@@ -68,7 +68,7 @@
     "husky": "^0.14.3",
     "prettier": "1.14.2",
     "pretty-quick": "^1.6.0",
-    "style-loader": "^0.22.1",
+    "style-loader": "^0.23.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
@@ -76,7 +76,7 @@
     "typescript": "^3.0.3",
     "watch": "^1.0.2",
     "webpack": "^4.17.2",
-    "webpack-bundle-analyzer": "^2.11.1"
+    "webpack-bundle-analyzer": "^3.0.2"
   },
   "scripts": {
     "analyze": "cross-env ANALYZE=1 next build",
@@ -89,7 +89,8 @@
     "prettier:watch": "watch 'pretty-quick' ./src ./pages ./cosmos",
     "start": "NODE_ENV=production ts-node $NODE_DEBUG_OPTION -O '{\"module\": \"commonjs\"}' --ignore false server.ts",
     "typecheck": "tsc --noEmit --skipLibCheck",
-    "typecheck:watch": "tsc --noEmit --skipLibCheck --watch"
+    "typecheck:watch": "tsc --noEmit --skipLibCheck --watch",
+    "upgradeDeps": "yarn upgrade --latest"
   },
   "license": "UNLICENSED"
 }
