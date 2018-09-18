@@ -72,7 +72,7 @@ class MyDocument extends Document {
     return (
       <html lang="en" dir="ltr">
         <Head>
-          <title>Pangwarta</title>
+          <title>RAD Admin Template</title>
           {/* Use minimum-scale=1 to enable GPU rasterization */}
           <meta charSet="utf-8" />
           <meta
