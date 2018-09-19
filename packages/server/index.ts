@@ -1,3 +1,4 @@
+const cors = require("cors");
 import { GraphQLServer } from "graphql-yoga";
 import { IResolverObject, IResolvers } from "graphql-yoga/dist/types";
 import { Prisma, prisma } from "./prisma-client";
@@ -108,5 +109,6 @@ const server = new GraphQLServer({
 
 // tslint:disable:no-console
 server
+  .use(cors())
   .start(() => console.log("Server is running on http://localhost:4000"))
   .catch(console.error);
