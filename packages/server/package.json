@@ -18,10 +18,10 @@
     "graphql-yoga": "^1.16.2"
   },
   "scripts": {
-    "dev": "ts-node $NODE_DEBUG_OPTION -O '{\"module\": \"commonjs\"}' --ignore false index.ts",
     "lint": "tslint -p .",
     "lint:watch": "watch 'yarn lint'",
     "precommit": "yarn lint && yarn typecheck",
+    "run": "ts-node $NODE_DEBUG_OPTION -O '{\"module\": \"commonjs\"}' --ignore false index.ts",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "typecheck:watch": "tsc --noEmit --skipLibCheck --watch"
   }

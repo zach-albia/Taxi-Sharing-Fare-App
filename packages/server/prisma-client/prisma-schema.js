@@ -73,7 +73,7 @@ module.exports = {
     type Todo {
       id: ID!
       title: String!
-      completed: Boolean
+      completed: Boolean!
     }
 
     type TodoConnection {
@@ -84,7 +84,7 @@ module.exports = {
 
     input TodoCreateInput {
       title: String!
-      completed: Boolean
+      completed: Boolean!
     }
 
     type TodoEdge {
@@ -108,7 +108,7 @@ module.exports = {
     type TodoPreviousValues {
       id: ID!
       title: String!
-      completed: Boolean
+      completed: Boolean!
     }
 
     type TodoSubscriptionPayload {

@@ -41,6 +41,13 @@ const Mutation: IResolverObject = {
     return context.prisma.deleteTodo({
       id: args.todoID
     });
+  },
+  clearTodos(root, args, context: Context) {
+    return context.prisma
+      .deleteManyTodoes({
+        completed: false
+      })
+      .count();
   }
 };
 
@@ -50,18 +57,38 @@ const Query: IResolverObject = {
       id: args.todoID
     });
   },
-  searchTodo(root, args: { needle: string }, context: Context) {
+  searchTodo(
+    root,
+    args: { needle: string; page?: number; length?: number },
+    context: Context
+  ) {
     return context.prisma.todoes({
       where: {
         title_contains: args.needle
       }
     });
   },
-  completedTodos(root, args, context: Context) {
+  completedTodos(
+    root,
+    args: { page?: number; length?: number },
+    context: Context
+  ) {
+    const page = args.page || 0;
+    const length = args.length || 20;
     return context.prisma.todoes({
+      first: length,
+      skip: page * length,
       where: {
         completed: true
       }
+    });
+  },
+  todos(root, args: { page?: number; length?: number }, context: Context) {
+    const page = args.page || 0;
+    const length = args.length || 20;
+    return context.prisma.todoes({
+      first: length,
+      skip: page * length
     });
   }
 };

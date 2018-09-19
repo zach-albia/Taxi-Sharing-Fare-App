@@ -1,7 +1,8 @@
 type Query {
   todo(todoID: ID!): Todo
-  searchTodo(needle: String!): [Todo!]!
-  completedTodos: [Todo!]!
+  todos(page: Int, length: Int): [Todo!]!
+  searchTodo(needle: String!, page: Int, length: Int): [Todo!]!
+  completedTodos(page: Int, length: Int): [Todo!]!
 }
 
 type Mutation {
@@ -9,6 +10,7 @@ type Mutation {
   markTodoCompleted(todoID: ID!): Todo
   changeTodoTitle(todoID: ID!, title: String!): Todo
   deleteTodo(todoID: ID!): Todo
+  clearTodos: Int!
 }
 
 type Todo {
