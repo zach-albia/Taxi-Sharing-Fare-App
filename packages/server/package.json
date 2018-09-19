@@ -17,6 +17,11 @@
     "graphql-tools": "^3.1.1"
   },
   "scripts": {
-    "dev": "ts-node $NODE_DEBUG_OPTION -O '{\"module\": \"commonjs\"}' --ignore false index.ts"
+    "dev": "ts-node $NODE_DEBUG_OPTION -O '{\"module\": \"commonjs\"}' --ignore false index.ts",
+    "lint": "tslint -p .",
+    "lint:watch": "watch 'yarn lint'",
+    "precommit": "yarn lint && yarn typecheck",
+    "typecheck": "tsc --noEmit --skipLibCheck",
+    "typecheck:watch": "tsc --noEmit --skipLibCheck --watch"
   }
 }
