@@ -1,0 +1,22 @@
+{
+  "name": "pangwarta-rad-server",
+  "version": "0.0.0",
+  "description": "GraphQL server for Pangwarta the RAD admin template",
+  "main": "index.ts",
+  "repository": "https://bitbucket.org/pangwarta/pangwarta-rad",
+  "author": "Pangwarta",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "graphql": "^14.0.2",
+    "prisma-client-lib": "^0.2.58",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "graphql-tools": "^3.1.1"
+  },
+  "scripts": {
+    "dev": "ts-node $NODE_DEBUG_OPTION -O '{\"module\": \"commonjs\"}' --ignore false index.ts"
+  }
+}
