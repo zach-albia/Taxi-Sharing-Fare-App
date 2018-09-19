@@ -1,4 +1,5 @@
 .idea
+graphql.config.json
 node_modules
 packages/*/.next
 packages/*/node_modules

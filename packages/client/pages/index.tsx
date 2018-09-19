@@ -1,8 +1,19 @@
-import Typography from "@material-ui/core/Typography";
-import withRoot from "pangwarta-shared/dist/lib/layout/withRoot";
+import Head from "next/head";
+import AppContent from "pangwarta-shared/dist/lib/layout/AppContent";
 import * as React from "react";
-import pages from "../src/pages";
+import TodoPage from "../src/components/pages/todos-graphql/TodoPage";
+import withPages from "../src/withPages";
 
-const Index = () => <Typography>Index</Typography>;
+const Index = () => (
+  <>
+    <Head>
+      <title>Todos (GraphQL) - RAD Template</title>
+      <meta name="description" content="Todos template" />
+    </Head>
+    <AppContent>
+      <TodoPage />
+    </AppContent>
+  </>
+);
 
-export default withRoot(pages)(Index);
+export default withPages(Index);
