@@ -8,12 +8,12 @@
   "license": "UNLICENSED",
   "private": true,
   "devDependencies": {
-    "graphql": "^14.0.2",
     "prisma-client-lib": "^0.2.58",
     "ts-node": "^7.0.1",
     "typescript": "^3.0.3"
   },
   "dependencies": {
+    "graphql": "^0.13",
     "graphql-tools": "^3.1.1",
     "graphql-yoga": "^1.16.2"
   },

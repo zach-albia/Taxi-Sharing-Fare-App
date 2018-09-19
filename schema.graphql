@@ -1,14 +1,14 @@
 type Query {
   todo(todoID: ID!): Todo
-  todoByTitle(title: String!): [Todo!]!
+  searchTodo(needle: String!): [Todo!]!
   completedTodos: [Todo!]!
 }
 
 type Mutation {
   createTodo(title: String!): Todo
   markTodoCompleted(todoID: ID!): Todo
-  editTodo(todoID: ID!, title: String!): Todo
-  deleteTodo(todoID: ID!): Int!
+  changeTodoTitle(todoID: ID!, title: String!): Todo
+  deleteTodo(todoID: ID!): Todo
 }
 
 type Todo {
