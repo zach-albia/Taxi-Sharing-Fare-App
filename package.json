@@ -13,6 +13,6 @@
   },
   "scripts": {
     "precommit": "yarn bootstrap && lerna run precommit",
-    "bootstrap": "lerna bootstrap && lerna run linklocal"
+    "bootstrap": "yarn install && lerna bootstrap && lerna run linklocal"
   }
 }
