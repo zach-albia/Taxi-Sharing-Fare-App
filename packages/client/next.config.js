@@ -5,6 +5,7 @@ const withTypescript = require("@zeit/next-typescript");
 
 module.exports = withTypescript(
   withOffline({
+    publicRuntimeConfig: require("./app.config"),
     useFileSystemPublicRoutes: false,
     webpack: function(config, { isServer }) {
       config.resolve.symlinks = false;

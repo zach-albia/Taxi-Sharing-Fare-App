@@ -1,6 +1,7 @@
 import Head from "next/head";
 import AppContent from "pangwarta-shared/dist/lib/layout/AppContent";
 import * as React from "react";
+import withApollo from "../src/apollo/withApollo";
 import TodoPage from "../src/components/pages/todos-graphql/TodoPage";
 import withPages from "../src/withPages";
 
@@ -16,4 +17,4 @@ const Index = () => (
   </>
 );
 
-export default withPages(Index);
+export default withPages(withApollo(Index));
