@@ -1,8 +1,8 @@
 type Query {
   todo(todoID: ID!): Todo
-  todos(page: Int, length: Int): [Todo!]!
-  searchTodo(needle: String!, page: Int, length: Int): [Todo!]!
-  completedTodos(page: Int, length: Int): [Todo!]!
+  todos(page: Int, length: Int): Todos
+  searchTodo(needle: String!, page: Int, length: Int): Todos
+  completedTodos(page: Int, length: Int): Todos
 }
 
 type Mutation {
@@ -13,8 +13,28 @@ type Mutation {
   clearTodos: Int!
 }
 
+interface WithPage {
+  pageInfo: PageInfo!
+  nodes: [Node!]!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  index: Int!
+  maxLength: Int!
+  pageCount: Int!
+  totalCount: Int!
+}
+
+type Todos implements WithPage {
+  pageInfo: PageInfo!
+  nodes: [Todo!]!
+}
+
 type Todo {
   id: ID!
   title: String!
   completed: Boolean
 }
+
+union Node = Todo

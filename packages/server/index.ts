@@ -1,7 +1,7 @@
 const cors = require("cors");
 import { GraphQLServer } from "graphql-yoga";
 import { IResolverObject, IResolvers } from "graphql-yoga/dist/types";
-import { Prisma, prisma } from "./prisma-client";
+import { Prisma, prisma, TodoNode, TodoWhereInput } from "./prisma-client";
 
 interface Context {
   prisma: Prisma;
@@ -52,21 +52,67 @@ const Mutation: IResolverObject = {
   }
 };
 
+interface PageInfo {
+  hasNextPage: boolean;
+  index: number;
+  maxLength: number;
+  pageCount: number;
+  totalCount: number;
+}
+
+interface WithPage<Node> {
+  nodes: Node[];
+  pageInfo: PageInfo;
+}
+
+type Todos = WithPage<TodoNode>;
+
+async function fetchTodos(
+  client: Prisma,
+  length: number,
+  page: number,
+  where?: TodoWhereInput
+): Promise<Todos> {
+  const args: { first: number; skip: number; where: TodoWhereInput } = {
+    first: length,
+    skip: page * length,
+    where
+  };
+  const count = await client
+    .todoesConnection(args)
+    .aggregate()
+    .count();
+  const hasNextPage = await client
+    .todoesConnection(args)
+    .pageInfo()
+    .hasNextPage();
+  const todoNodes = await client.todoes(args);
+  const maxLength = length || 20;
+  return {
+    nodes: todoNodes,
+    pageInfo: {
+      hasNextPage,
+      index: page || 0,
+      maxLength,
+      pageCount: Math.ceil(count / maxLength),
+      totalCount: count
+    }
+  };
+}
+
 const Query: IResolverObject = {
   todo(root, args: { todoID: string }, context: Context) {
     return context.prisma.todo({
       id: args.todoID
     });
   },
-  searchTodo(
+  async searchTodo(
     root,
     args: { needle: string; page?: number; length?: number },
     context: Context
-  ) {
-    return context.prisma.todoes({
-      where: {
-        title_contains: args.needle
-      }
+  ): Promise<Todos> {
+    return fetchTodos(context.prisma, args.length, args.page, {
+      title_contains: args.needle
     });
   },
   completedTodos(
@@ -74,23 +120,14 @@ const Query: IResolverObject = {
     args: { page?: number; length?: number },
     context: Context
   ) {
-    const page = args.page || 0;
-    const length = args.length || 20;
-    return context.prisma.todoes({
-      first: length,
-      skip: page * length,
-      where: {
-        completed: true
-      }
+    return fetchTodos(context.prisma, args.length, args.page, {
+      completed: true
     });
   },
   todos(root, args: { page?: number; length?: number }, context: Context) {
     const page = args.page || 0;
     const length = args.length || 20;
-    return context.prisma.todoes({
-      first: length,
-      skip: page * length
-    });
+    return fetchTodos(context.prisma, args.length, args.page);
   }
 };
 
@@ -100,9 +137,7 @@ const resolvers: IResolvers = {
 };
 
 const server = new GraphQLServer({
-  context: {
-    prisma
-  },
+  context: { prisma },
   resolvers,
   typeDefs: "../../schema.graphql"
 });
