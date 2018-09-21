@@ -13,9 +13,18 @@ const Todo = gql`
 const Todos = gql`
   query Todos($page: Int, $length: Int) {
     todos(page: $page, length: $length) {
-      id
-      title
-      completed
+      pageInfo {
+        hasNextPage
+        index
+        maxLength
+        pageCount
+        totalCount
+      }
+      nodes {
+        id
+        title
+        completed
+      }
     }
   }
 `;
@@ -23,9 +32,18 @@ const Todos = gql`
 const SearchTodo = gql`
   query SearchTodo($needle: String!, $page: Int, $length: Int) {
     searchTodo(needle: $needle, page: $page, length: $length) {
-      id
-      title
-      completed
+      pageInfo {
+        hasNextPage
+        index
+        maxLength
+        pageCount
+        totalCount
+      }
+      nodes {
+        id
+        title
+        completed
+      }
     }
   }
 `;
@@ -33,9 +51,18 @@ const SearchTodo = gql`
 const CompletedTodos = gql`
   query CompletedTodos($page: Int, $length: Int) {
     completedTodos(page: $page, length: $length) {
-      id
-      title
-      completed
+      pageInfo {
+        hasNextPage
+        index
+        maxLength
+        pageCount
+        totalCount
+      }
+      nodes {
+        id
+        title
+        completed
+      }
     }
   }
 `;
