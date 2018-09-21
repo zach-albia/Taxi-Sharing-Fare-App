@@ -2,7 +2,7 @@ import Head from "next/head";
 import AppContent from "pangwarta-shared/dist/lib/layout/AppContent";
 import * as React from "react";
 import withApollo from "../src/apollo/withApollo";
-import TodoPage from "../src/components/pages/todos-graphql/TodoPage";
+import TodosPage from "../src/components/pages/todos-graphql/TodosPage";
 import withPages from "../src/withPages";
 
 const Index = () => (
@@ -12,7 +12,7 @@ const Index = () => (
       <meta name="description" content="Todos template" />
     </Head>
     <AppContent>
-      <TodoPage />
+      <TodosPage />
     </AppContent>
   </>
 );
