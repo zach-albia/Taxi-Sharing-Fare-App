@@ -79,6 +79,7 @@
     "analyze": "cross-env ANALYZE=1 next build",
     "build": "next build",
     "dev": "ts-node $NODE_DEBUG_OPTION -O '{\"module\": \"commonjs\"}' --ignore false server.ts",
+    "generate:apollo": "apollo codegen:generate --schema=\"../../schema.graphql\" --target=typescript @types",
     "linklocal": "linklocal",
     "lint": "tslint 'src/**/*.ts*' 'cosmos/**/*.ts*' 'pages/**/*.ts*'",
     "lint:watch": "watch 'yarn lint' ./src ./pages ./cosmos",
