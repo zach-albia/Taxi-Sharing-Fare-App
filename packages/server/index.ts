@@ -72,10 +72,12 @@ type Todos = WithPage<TodoNode>;
 
 async function fetchTodos(
   client: Prisma,
-  length: number,
-  page: number,
+  length?: number,
+  page?: number,
   where?: TodoWhereInput
 ): Promise<Todos> {
+  length = length || 20;
+  page = page || 0;
   const args: { first: number; skip: number; where: TodoWhereInput } = {
     first: length,
     skip: page * length,
@@ -95,7 +97,7 @@ async function fetchTodos(
     nodes: todoNodes,
     pageInfo: {
       hasNextPage,
-      index: page || 0,
+      index: page,
       maxLength,
       pageCount: Math.ceil(count / maxLength),
       totalCount: count
@@ -128,8 +130,6 @@ const Query: IResolverObject = {
     });
   },
   todos(root, args: { page?: number; length?: number }, context: Context) {
-    const page = args.page || 0;
-    const length = args.length || 20;
     return fetchTodos(context.prisma, args.length, args.page);
   }
 };
