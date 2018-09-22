@@ -67,9 +67,9 @@ const CompletedTodos = gql`
   }
 `;
 
-const CreateTodo = gql`
-  mutation CreateTodo($title: String!) {
-    createTodo(title: $title) {
+const SaveTodo = gql`
+  mutation SaveTodo($id: ID, $title: String!, $completed: Boolean) {
+    saveTodo(id: $id, title: $title, completed: $completed) {
       id
       title
       completed
@@ -80,16 +80,6 @@ const CreateTodo = gql`
 const ToggleTodoCompleted = gql`
   mutation ToggleTodoCompleted($id: ID!) {
     toggleTodoCompleted(todoID: $id) {
-      id
-      title
-      completed
-    }
-  }
-`;
-
-const ChangeTodoTitle = gql`
-  mutation ChangeTodoTitle($id: ID!, $title: String!) {
-    changeTodoTitle(todoID: $id, title: $title) {
       id
       title
       completed
@@ -112,11 +102,10 @@ const ClearTodos = gql`
 `;
 
 export default {
-  ChangeTodoTitle,
   ClearTodos,
   CompletedTodos,
-  CreateTodo,
   DeleteTodo,
+  SaveTodo,
   SearchTodo,
   Todo,
   Todos,

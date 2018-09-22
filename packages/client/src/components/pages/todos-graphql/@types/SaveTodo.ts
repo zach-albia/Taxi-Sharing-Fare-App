@@ -2,19 +2,21 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: CreateTodo
+// GraphQL mutation operation: SaveTodo
 // ====================================================
 
-export interface CreateTodo_createTodo {
+export interface SaveTodo_saveTodo {
   id: string;
   title: string;
   completed: boolean | null;
 }
 
-export interface CreateTodo {
-  createTodo: CreateTodo_createTodo | null;
+export interface SaveTodo {
+  saveTodo: SaveTodo_saveTodo | null;
 }
 
-export interface CreateTodoVariables {
+export interface SaveTodoVariables {
+  id?: string | null;
   title: string;
+  completed?: boolean | null;
 }
