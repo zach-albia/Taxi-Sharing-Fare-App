@@ -8,11 +8,21 @@ interface Context {
 }
 
 const Mutation: IResolverObject = {
-  createTodo(root, args: { title: string }, context: Context) {
-    return context.prisma.createTodo({
-      completed: false,
-      title: args.title
-    });
+  saveTodo(
+    root,
+    args: { id?: string; title: string; completed?: boolean },
+    context: Context
+  ) {
+    const completed = args.completed || false;
+    return args.id
+      ? context.prisma.updateTodo({
+          data: { completed, title: args.title },
+          where: { id: args.id }
+        })
+      : context.prisma.createTodo({
+          completed,
+          title: args.title
+        });
   },
   async toggleTodoCompleted(root, args: { todoID: string }, context: Context) {
     const completed = await context.prisma
@@ -21,20 +31,6 @@ const Mutation: IResolverObject = {
     return context.prisma.updateTodo({
       data: {
         completed: !completed
-      },
-      where: {
-        id: args.todoID
-      }
-    });
-  },
-  changeTodoTitle(
-    root,
-    args: { todoID: string; title: string },
-    context: Context
-  ) {
-    return context.prisma.updateTodo({
-      data: {
-        title: args.title
       },
       where: {
         id: args.todoID
