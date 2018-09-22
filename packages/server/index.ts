@@ -14,10 +14,13 @@ const Mutation: IResolverObject = {
       title: args.title
     });
   },
-  markTodoCompleted(root, args: { todoID: string }, context: Context) {
+  async toggleTodoCompleted(root, args: { todoID: string }, context: Context) {
+    const completed = await context.prisma
+      .todo({ id: args.todoID })
+      .completed();
     return context.prisma.updateTodo({
       data: {
-        completed: true
+        completed: !completed
       },
       where: {
         id: args.todoID

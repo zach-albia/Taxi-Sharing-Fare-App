@@ -77,9 +77,9 @@ const CreateTodo = gql`
   }
 `;
 
-const MarkTodoCompleted = gql`
-  mutation MarkTodoCompleted($id: ID!) {
-    markTodoCompleted(todoID: $id) {
+const ToggleTodoCompleted = gql`
+  mutation ToggleTodoCompleted($id: ID!) {
+    toggleTodoCompleted(todoID: $id) {
       id
       title
       completed
@@ -117,8 +117,8 @@ export default {
   CompletedTodos,
   CreateTodo,
   DeleteTodo,
-  MarkTodoCompleted,
   SearchTodo,
   Todo,
-  Todos
+  Todos,
+  ToggleTodoCompleted
 };
