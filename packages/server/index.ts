@@ -1,3 +1,4 @@
+import { CorsOptions } from "cors";
 const cors = require("cors");
 import { GraphQLServer } from "graphql-yoga";
 import { IResolverObject, IResolvers } from "graphql-yoga/dist/types";
@@ -141,8 +142,13 @@ const server = new GraphQLServer({
   typeDefs: "../../schema.graphql"
 });
 
+const corsOptions: CorsOptions = {
+  credentials: true,
+  origin: "*"
+};
+
 // tslint:disable:no-console
 server
-  .use(cors())
+  .use(cors(corsOptions))
   .start(() => console.log("Server is running on http://localhost:4000"))
   .catch(console.error);
