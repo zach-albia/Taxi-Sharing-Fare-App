@@ -56,7 +56,12 @@ export default class TodoRowView extends React.Component<
             )}
           </ApolloConsumer>
         </TableCell>
-        <TableCell className={classes.secondColumn}>{todo.title}</TableCell>
+        <TableCell
+          className={classes.secondColumn}
+          style={completed ? { textDecoration: "line-through" } : undefined}
+        >
+          {todo.title}
+        </TableCell>
         <TableCell>
           <div style={{ display: "inline-flex" }}>
             <IconButton onClick={onEditClick}>
