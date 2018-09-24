@@ -18,23 +18,39 @@ interface TodoRowViewProps {
   elem: Todos_todos_nodes;
 }
 
-export default class TodoRowView extends React.Component<TodoRowViewProps> {
-  private handleToggleCompleted = (client: ApolloClient<any>) => () =>
-    client.query({
-      query: queries.ToggleTodoCompleted,
-      variables: { id: this.props.elem.id }
-    });
+interface TodoRowViewState {
+  completed: boolean;
+}
+
+export default class TodoRowView extends React.Component<
+  TodoRowViewProps,
+  TodoRowViewState
+> {
+  state: TodoRowViewState = {
+    completed: this.props.elem.completed
+  };
+
+  private handleToggleCompleted = (client: ApolloClient<any>) => () => {
+    client
+      .mutate({
+        mutation: queries.ToggleTodoCompleted,
+        variables: { id: this.props.elem.id }
+      })
+      .then(() => {
+        this.setState({ completed: this.props.elem.completed });
+      });
+  };
 
   public render() {
     const { classes, onDeleteClick, onEditClick, elem: todo } = this.props;
-
+    const { completed } = this.state;
     return (
       <TableRow>
         <TableCell className={classes.firstColumn}>
           <ApolloConsumer>
             {client => (
               <Checkbox
-                checked={todo.completed}
+                checked={completed}
                 onClick={this.handleToggleCompleted(client)}
               />
             )}
