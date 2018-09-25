@@ -28,7 +28,7 @@ export default class TodoRowEditor extends React.Component<
   TodoRowEditorState
 > {
   state: TodoRowEditorState = {
-    completed: this.props.elem.completed
+    completed: this.props.elem ? this.props.elem.completed : false
   };
 
   private toggleCompleted = async (client: ApolloClient<any>) => {
