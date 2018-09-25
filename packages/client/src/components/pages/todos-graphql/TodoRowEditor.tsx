@@ -1,6 +1,11 @@
+import CircularProgress from "@material-ui/core/CircularProgress";
+import IconButton from "@material-ui/core/IconButton";
 import TableCell from "@material-ui/core/TableCell";
+import CancelIcon from "@material-ui/icons/Cancel";
+import SaveIcon from "@material-ui/icons/Save";
 import ApolloClient from "apollo-client/ApolloClient";
 import { RowEditorProps } from "pangwarta-shared/dist/lib";
+import FinalTextField from "pangwarta-shared/dist/lib/final-form/FinalTextField";
 import * as React from "react";
 import { ApolloConsumer } from "react-apollo";
 import { Field } from "react-final-form";
@@ -51,13 +56,16 @@ export default class TodoRowEditor extends React.Component<
       >
         {renderProps => {
           const {
-            formRenderProps: { submitting, validating }
+            canSubmit,
+            formRenderProps: { submitting, validating },
+            onCancelClick,
+            onSaveClick
           } = renderProps;
           return (
             <ApolloConsumer>
               {client => (
                 <>
-                  <TableCell className={classes.secondColumn}>
+                  <TableCell className={classes.firstColumn}>
                     <Field
                       allowNull={false}
                       component={FinalCheckbox}
@@ -66,6 +74,36 @@ export default class TodoRowEditor extends React.Component<
                       onClick={this.toggleCompleted(client)}
                       required={true}
                     />
+                  </TableCell>
+                  <TableCell className={classes.secondColumn}>
+                    <Field
+                      allowNull={false}
+                      component={FinalTextField}
+                      debounce={0}
+                      disabled={submitting}
+                      initialValue={todo ? todo.title : undefined}
+                      name="title"
+                      required={true}
+                      type="text"
+                    />
+                  </TableCell>
+                  <TableCell className={classes.firstColumn}>
+                    <div style={{ display: "inline-flex" }}>
+                      <IconButton
+                        disabled={!canSubmit}
+                        onClick={onSaveClick}
+                        type="submit"
+                      >
+                        {submitting ? (
+                          <CircularProgress thickness={5} size={26} />
+                        ) : (
+                          <SaveIcon />
+                        )}
+                      </IconButton>
+                      <IconButton disabled={submitting} onClick={onCancelClick}>
+                        <CancelIcon />
+                      </IconButton>
+                    </div>
                   </TableCell>
                 </>
               )}
