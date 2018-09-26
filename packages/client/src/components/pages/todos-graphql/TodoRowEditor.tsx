@@ -69,7 +69,7 @@ export default class TodoRowEditor extends React.Component<
                     <Field
                       allowNull={false}
                       component={FinalCheckbox}
-                      disabled={submitting || validating}
+                      disabled={submitting || validating || !todo}
                       name="completed"
                       onClick={this.toggleCompleted(client)}
                       required={true}
