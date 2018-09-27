@@ -6,7 +6,7 @@ import Document, {
   NextScript,
   PageProps
 } from "next/document";
-import { PageContext } from "pangwarta-shared/dist/lib/@types/pageContext";
+import { PageContext } from "pangwarta-shared/@types/pageContext";
 import React from "react";
 import flush from "styled-jsx/server";
 import theme from "../src/theme";

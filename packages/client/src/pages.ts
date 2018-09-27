@@ -1,6 +1,6 @@
 import FlashCircle from "mdi-material-ui/FlashCircle";
 import GraphqlIcon from "mdi-material-ui/Graphql";
-import Page from "pangwarta-shared/dist/lib/@types/page";
+import Page from "pangwarta-shared/@types/page";
 
 const pages: Page[] = [
   {

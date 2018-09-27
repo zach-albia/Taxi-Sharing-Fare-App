@@ -1,8 +1,8 @@
 import { NormalizedCacheObject } from "apollo-cache-inmemory";
 import { ApolloClient } from "apollo-client";
 import Head from "next/head";
-import { PageContext } from "pangwarta-shared/dist/lib/@types/pageContext";
-import { ComponentWithInitialProps } from "pangwarta-shared/dist/lib/@types/types";
+import { PageContext } from "pangwarta-shared/@types/pageContext";
+import { ComponentWithInitialProps } from "pangwarta-shared/@types/types";
 import React from "react";
 import { ApolloProvider, getDataFromTree } from "react-apollo";
 import initApollo from "./initApollo";

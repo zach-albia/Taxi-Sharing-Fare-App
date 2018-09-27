@@ -1,6 +1,6 @@
 import { createGenerateClassName } from "@material-ui/core/styles";
 import { SheetsRegistry } from "jss";
-import { StylesContext } from "pangwarta-shared/dist/lib/@types/pageContext";
+import { StylesContext } from "pangwarta-shared/@types/pageContext";
 import theme from "../theme";
 
 function createPageContext(): StylesContext {
