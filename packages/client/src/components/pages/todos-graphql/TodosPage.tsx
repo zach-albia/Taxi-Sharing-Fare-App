@@ -48,15 +48,16 @@ const TodosPage: React.SFC<TodosPageProps> = ({ classes }) => (
     PageQuery={TodosQuery as any}
     classes={classes}
     colSpan={3}
+    dataToPageInfo={(data: Todos) => data.todos.pageInfo}
     deleteMessage="Todo deleted"
     deleteMutation={queries.DeleteTodo}
     elemToDeleteVars={elem => ({ variables: { id: elem.id } })}
     headers={["Title", "Actions"]}
+    initialPageVars={allTodos}
     pageQuery={queries.Todos}
     saveMessage="Todo saved"
     ssr={true}
     title="Todos"
-    variables={allTodos}
   />
 );
 
