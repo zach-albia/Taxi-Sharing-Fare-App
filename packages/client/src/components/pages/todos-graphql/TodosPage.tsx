@@ -10,20 +10,14 @@ import * as React from "react";
 import { TodoNode } from "../../../../../server/prisma-client";
 import { DeleteTodo, DeleteTodoVariables } from "./@types/DeleteTodo";
 import DeleteTodoMutation from "./@types/DeleteTodoMutation";
-import { Todos, Todos_todos_nodes, TodosVariables } from "./@types/Todos";
+import { Todos, Todos_todos_nodes } from "./@types/Todos";
 import queries from "./queries";
 import { allTodos } from "./TodoRowEditor";
 import TodosQuery from "./TodosQuery";
 import TodosTableBody from "./TodosTableBody";
 
 const TodosCrudTable: React.SFC<
-  ApolloCrudTableProps<
-    Todos,
-    TodosVariables,
-    DeleteTodo,
-    DeleteTodoVariables,
-    TodoNode
-  >
+  ApolloCrudTableProps<Todos, DeleteTodo, DeleteTodoVariables, TodoNode>
 > = props => ApolloCrudTable(props);
 
 interface TodosPageProps {
@@ -46,6 +40,10 @@ const TodosPage: React.SFC<TodosPageProps> = ({ classes }) => (
     DeleteCaption={TodoDeleteCaption}
     DeleteMutation={DeleteTodoMutation as any}
     PageQuery={TodosQuery as any}
+    PaginationProps={{
+      rowsPerPage: 5,
+      rowsPerPageOptions: [10, 20, 50]
+    }}
     classes={classes}
     colSpan={3}
     dataToPageInfo={(data: Todos) => data.todos.pageInfo}
