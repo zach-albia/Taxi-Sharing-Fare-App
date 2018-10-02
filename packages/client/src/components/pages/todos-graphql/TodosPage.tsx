@@ -42,7 +42,7 @@ const TodosPage: React.SFC<TodosPageProps> = ({ classes }) => (
     PageQuery={TodosQuery as any}
     PaginationProps={{
       rowsPerPage: 5,
-      rowsPerPageOptions: [10, 20, 50]
+      rowsPerPageOptions: [5, 10, 20]
     }}
     classes={classes}
     colSpan={3}

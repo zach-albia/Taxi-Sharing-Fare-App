@@ -81,7 +81,7 @@ async function fetchTodos(
     where
   };
   const count = await client
-    .todoesConnection(args)
+    .todoesConnection({ where })
     .aggregate()
     .count();
   const hasNextPage = await client

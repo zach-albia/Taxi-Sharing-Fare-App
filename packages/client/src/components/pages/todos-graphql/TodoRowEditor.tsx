@@ -21,7 +21,7 @@ interface TodoRowEditorState {
   completed: boolean;
 }
 
-export const allTodos: TodosVariables = { length: 10, page: 0 };
+export const allTodos: TodosVariables = { length: 5, page: 0 };
 
 export default class TodoRowEditor extends React.Component<
   TodoRowEditorProps,
