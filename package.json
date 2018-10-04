@@ -15,5 +15,10 @@
   "scripts": {
     "precommit": "yarn bootstrap && lerna run precommit",
     "bootstrap": "yarn install && lerna bootstrap && lerna run linklocal"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn precommit"
+    }
   }
 }
