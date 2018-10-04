@@ -1,5 +1,4 @@
 import Document, {
-  DocumentProps,
   Head,
   Main,
   NextDocumentContext,
@@ -17,7 +16,7 @@ interface WrappedComponentProps extends PageProps {
 
 class MyDocument extends Document {
   // noinspection JSUnusedGlobalSymbols
-  public static getInitialProps(ctx: NextDocumentContext): DocumentProps {
+  public static getInitialProps(ctx: NextDocumentContext) {
     // Resolution order
     //
     // On the server:
@@ -67,12 +66,11 @@ class MyDocument extends Document {
   }
 
   public render() {
-    const { canonical } = this.props;
+    const { canonical }: any = this.props;
 
     return (
       <html lang="en" dir="ltr">
         <Head>
-          <title>RAD Admin Template</title>
           {/* Use minimum-scale=1 to enable GPU rasterization */}
           <meta charSet="utf-8" />
           <meta

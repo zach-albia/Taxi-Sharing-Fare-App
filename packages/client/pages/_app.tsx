@@ -1,25 +1,17 @@
 import withReduxSaga from "next-redux-saga";
 import withRedux from "next-redux-wrapper";
 import Routes from "next-routes";
-import App, { AppComponentProps, Container } from "next/app";
+import App, { Container } from "next/app";
 import LayoutContext from "pangwarta-shared/dist/lib/layout/LayoutContext";
 import React from "react";
 import { Provider } from "react-redux";
 import compose from "recompose/compose";
-import { Store } from "redux";
 import AppRoutes from "../routes";
 import configureStore from "../src/redux/configureStore";
 import strings from "../src/strings";
 import getPageContext from "../src/styles/getPageContext";
 
 const { Link } = AppRoutes as Routes;
-
-type Props = Readonly<
-  {
-    children?: React.ReactNode;
-    store: Store<{}>;
-  } & AppComponentProps
->;
 
 class MyApp extends App {
   // noinspection JSUnusedGlobalSymbols
@@ -40,7 +32,7 @@ class MyApp extends App {
   }
 
   public render() {
-    const { Component, pageProps, store } = this.props as Props;
+    const { Component, pageProps, store }: any = this.props;
     return (
       <Container>
         <Provider store={store}>

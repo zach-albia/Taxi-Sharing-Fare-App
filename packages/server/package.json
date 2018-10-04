@@ -8,14 +8,14 @@
   "license": "UNLICENSED",
   "private": true,
   "devDependencies": {
-    "prisma-client-lib": "^0.2.58",
+    "prisma-client-lib": "^1.17.1",
     "ts-node": "^7.0.1",
-    "typescript": "^3.0.3"
+    "typescript": "^3.1.1"
   },
   "dependencies": {
     "cors": "^2.8.4",
     "graphql": "^0.13",
-    "graphql-tools": "^3.1.1",
+    "graphql-tools": "^4.0.0",
     "graphql-yoga": "^1.16.2"
   },
   "scripts": {
