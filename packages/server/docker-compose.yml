@@ -7,6 +7,7 @@ services:
       - "4466:4466"
     environment:
       PRISMA_CONFIG: |
+        managementApiSecret: show-me-the-money
         port: 4466
         databases:
           default:
