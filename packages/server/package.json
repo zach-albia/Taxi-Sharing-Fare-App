@@ -2,7 +2,7 @@
   "name": "pangwarta-rad-server",
   "version": "0.0.0",
   "description": "GraphQL server for Pangwarta the RAD admin template",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "repository": "https://bitbucket.org/pangwarta/pangwarta-rad",
   "author": "Pangwarta",
   "license": "UNLICENSED",
@@ -19,11 +19,11 @@
     "graphql-yoga": "^1.16.2"
   },
   "scripts": {
-    "dev": "ts-node $NODE_DEBUG_OPTION -O '{\"module\": \"commonjs\"}' --watch --ignore false index.ts",
+    "dev": "ts-node $NODE_DEBUG_OPTION -O '{\"module\": \"commonjs\"}' --watch --ignore false src/index.ts",
     "lint": "tslint -p .",
     "lint:watch": "watch 'yarn lint'",
     "precommit": "yarn lint && yarn typecheck",
-    "start": "ts-node $NODE_DEBUG_OPTION -O '{\"module\": \"commonjs\"}' --ignore false index.ts",
+    "start": "ts-node $NODE_DEBUG_OPTION -O '{\"module\": \"commonjs\"}' --ignore false src/index.ts",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "typecheck:watch": "tsc --noEmit --skipLibCheck --watch"
   }

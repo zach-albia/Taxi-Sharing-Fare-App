@@ -7,7 +7,7 @@ import {
 } from "pangwarta-shared/dist/lib";
 import { ApolloCrudTableProps } from "pangwarta-shared/dist/lib/apollo/ApolloCrudTable";
 import * as React from "react";
-import { TodoNode } from "../../../../../server/prisma-client";
+import { TodoNode } from "../../../../../server/src/generated/prisma-client";
 import { DeleteTodo, DeleteTodoVariables } from "./@types/DeleteTodo";
 import DeleteTodoMutation from "./@types/DeleteTodoMutation";
 import { Todos, Todos_todos_nodes } from "./@types/Todos";

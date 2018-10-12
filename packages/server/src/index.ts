@@ -2,7 +2,12 @@ import { CorsOptions } from "cors";
 const cors = require("cors");
 import { GraphQLServer } from "graphql-yoga";
 import { IResolverObject, IResolvers } from "graphql-yoga/dist/types";
-import { Prisma, prisma, TodoNode, TodoWhereInput } from "./prisma-client";
+import {
+  Prisma,
+  prisma,
+  TodoNode,
+  TodoWhereInput
+} from "./generated/prisma-client/index";
 
 interface Context {
   prisma: Prisma;

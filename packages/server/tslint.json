@@ -13,6 +13,6 @@
   },
   "rulesDirectory": [],
   "linterOptions": {
-    "exclude": ["prisma-client/**"]
+    "exclude": ["src/generated/**"]
   }
 }

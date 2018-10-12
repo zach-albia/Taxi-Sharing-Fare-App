@@ -4,4 +4,4 @@ secret: show-me-the-money
 
 generate:
   - generator: javascript-client
-    output: ./prisma-client/
+    output: ../src/generated/prisma-client/
