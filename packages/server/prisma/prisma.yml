@@ -3,5 +3,5 @@ datamodel: datamodel.prisma
 secret: show-me-the-money
 
 generate:
-  - generator: javascript-client
+  - generator: typescript-client
     output: ../src/generated/prisma-client/
