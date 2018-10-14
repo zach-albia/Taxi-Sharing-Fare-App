@@ -1,4 +1,5 @@
 type Query {
+  me: User
   todo(todoID: ID!): Todo
   todos(page: Int, length: Int): Todos
   searchTodo(needle: String!, page: Int, length: Int): Todos
@@ -6,6 +7,8 @@ type Query {
 }
 
 type Mutation {
+  signup(email: String!, password: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
   saveTodo(id: ID, title: String!, completed: Boolean): Todo
   toggleTodoCompleted(todoID: ID!): Todo
   deleteTodo(todoID: ID!): Todo
@@ -37,3 +40,17 @@ type Todo {
 }
 
 union Node = Todo
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  createdAt: DateTime!
+}
+
+scalar DateTime
