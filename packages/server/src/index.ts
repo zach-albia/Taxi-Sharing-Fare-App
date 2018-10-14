@@ -1,13 +1,13 @@
 import { CorsOptions } from "cors";
 import { GraphQLServer } from "graphql-yoga";
-import { prisma } from "./generated/prisma-client/index";
+import { prisma } from "./generated/prisma-client";
 import { resolvers } from "./resolvers";
 
 const cors = require("cors");
 
 const server = new GraphQLServer({
   context: req => ({ ...req, db: prisma }),
-  resolvers,
+  resolvers: resolvers as any,
   typeDefs: "../../schema.graphql"
 });
 
