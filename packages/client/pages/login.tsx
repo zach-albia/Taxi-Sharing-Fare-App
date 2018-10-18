@@ -12,8 +12,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography/Typography";
 import LockIcon from "@material-ui/icons/Lock";
 import { PageContext } from "pangwarta-shared/@types/pageContext";
+import withMUI from "pangwarta-shared/dist/lib/layout/withMUI";
 import * as React from "react";
-import withMUI from "../src/components/layout/withMUI";
 
 export type LoginClassKey = "avatar" | "form" | "layout" | "paper" | "submit";
 
