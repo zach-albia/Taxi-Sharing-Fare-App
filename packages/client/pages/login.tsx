@@ -1,0 +1,107 @@
+import { Theme } from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar/Avatar";
+import Button from "@material-ui/core/Button/Button";
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import FormControl from "@material-ui/core/FormControl/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import Input from "@material-ui/core/Input/Input";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import Paper from "@material-ui/core/Paper/Paper";
+import { StyleRules } from "@material-ui/core/styles";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Typography from "@material-ui/core/Typography/Typography";
+import LockIcon from "@material-ui/icons/Lock";
+import { PageContext } from "pangwarta-shared/@types/pageContext";
+import * as React from "react";
+import withMUI from "../src/components/layout/withMUI";
+
+export type LoginClassKey = "avatar" | "form" | "layout" | "paper" | "submit";
+
+function styles(theme: Theme): StyleRules<LoginClassKey> {
+  return {
+    avatar: {
+      backgroundColor: theme.palette.secondary.main,
+      margin: theme.spacing.unit
+    },
+    form: {
+      marginTop: theme.spacing.unit,
+      width: "100%" // Fix IE11 issue.LProps
+    },
+    layout: {
+      display: "block", // Fix IE11 issue.
+      marginLeft: theme.spacing.unit * 3,
+      marginRight: theme.spacing.unit * 3,
+      width: "auto",
+      [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+        marginLeft: "auto",
+        marginRight: "auto",
+        width: 400
+      }
+    },
+    paper: {
+      alignItems: "center",
+      display: "flex",
+      flexDirection: "column",
+      marginTop: theme.spacing.unit * 8,
+      padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+        .spacing.unit * 3}px`
+    },
+    submit: {
+      marginTop: theme.spacing.unit * 3
+    }
+  };
+}
+
+export interface LoginProps {
+  classes: Record<LoginClassKey, string>;
+  pageContext: PageContext;
+}
+
+const Login: React.SFC<LoginProps> = props => {
+  const { classes } = props;
+  return (
+    <main className={classes.layout}>
+      <Paper className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockIcon />
+        </Avatar>
+        <Typography component="h1">Sign in</Typography>
+        <form className={classes.form}>
+          <FormControl margin="normal" required={true} fullWidth={true}>
+            <InputLabel htmlFor="email">Email Address</InputLabel>
+            <Input
+              id="email"
+              name="email"
+              autoComplete="email"
+              autoFocus={true}
+            />
+          </FormControl>
+          <FormControl margin="normal" required={true} fullWidth={true}>
+            <InputLabel htmlFor="password">Password</InputLabel>
+            <Input
+              name="password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+          </FormControl>
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          />
+          <Button
+            type="submit"
+            fullWidth={true}
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Sign in
+          </Button>
+        </form>
+      </Paper>
+    </main>
+  );
+};
+
+export default withMUI()(withStyles(styles)(Login));
