@@ -1,5 +1,4 @@
 import { Theme } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar/Avatar";
 import Button from "@material-ui/core/Button/Button";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import FormControl from "@material-ui/core/FormControl/FormControl";
@@ -9,13 +8,19 @@ import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import Paper from "@material-ui/core/Paper/Paper";
 import { StyleRules } from "@material-ui/core/styles";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography/Typography";
-import LockIcon from "@material-ui/icons/Lock";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
 import { PageContext } from "pangwarta-shared/@types/pageContext";
 import withMUI from "pangwarta-shared/dist/lib/layout/withMUI";
 import * as React from "react";
 
-export type LoginClassKey = "avatar" | "form" | "layout" | "paper" | "submit";
+export type LoginClassKey =
+  | "avatar"
+  | "form"
+  | "layout"
+  | "paper"
+  | "tabContent"
+  | "submit";
 
 function styles(theme: Theme): StyleRules<LoginClassKey> {
   return {
@@ -39,15 +44,18 @@ function styles(theme: Theme): StyleRules<LoginClassKey> {
       }
     },
     paper: {
-      alignItems: "center",
-      display: "flex",
-      flexDirection: "column",
-      marginTop: theme.spacing.unit * 8,
-      padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
-        .spacing.unit * 3}px`
+      marginTop: theme.spacing.unit * 8
     },
     submit: {
       marginTop: theme.spacing.unit * 3
+    },
+    tabContent: {
+      alignItems: "center",
+      display: "flex",
+      flexDirection: "column",
+      padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+        .spacing.unit * 3}px`,
+      paddingTop: 0
     }
   };
 }
@@ -62,43 +70,45 @@ const Login: React.SFC<LoginProps> = props => {
   return (
     <main className={classes.layout}>
       <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockIcon />
-        </Avatar>
-        <Typography component="h1">Sign in</Typography>
-        <form className={classes.form}>
-          <FormControl margin="normal" required={true} fullWidth={true}>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
-            <Input
-              id="email"
-              name="email"
-              autoComplete="email"
-              autoFocus={true}
+        <Tabs fullWidth={true} value={0}>
+          <Tab label="Sign In" />
+          <Tab label="Sign Up" />
+        </Tabs>
+        <div className={classes.tabContent}>
+          <form className={classes.form}>
+            <FormControl margin="normal" required={true} fullWidth={true}>
+              <InputLabel htmlFor="email">Email Address</InputLabel>
+              <Input
+                id="email"
+                name="email"
+                autoComplete="email"
+                autoFocus={true}
+              />
+            </FormControl>
+            <FormControl margin="normal" required={true} fullWidth={true}>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input
+                name="password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+            </FormControl>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
             />
-          </FormControl>
-          <FormControl margin="normal" required={true} fullWidth={true}>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input
-              name="password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-          </FormControl>
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth={true}
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign in
-          </Button>
-        </form>
+            <Button
+              type="submit"
+              fullWidth={true}
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign in
+            </Button>
+          </form>
+        </div>
       </Paper>
     </main>
   );
