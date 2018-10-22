@@ -14,7 +14,7 @@ import { PageContext } from "pangwarta-shared/@types/pageContext";
 import withMUI from "pangwarta-shared/dist/lib/layout/withMUI";
 import * as React from "react";
 
-export type LoginClassKey =
+export type LogoutClassKey =
   | "avatar"
   | "form"
   | "layout"
@@ -22,7 +22,7 @@ export type LoginClassKey =
   | "tabContent"
   | "submit";
 
-function styles(theme: Theme): StyleRules<LoginClassKey> {
+function styles(theme: Theme): StyleRules<LogoutClassKey> {
   return {
     avatar: {
       backgroundColor: theme.palette.secondary.main,
@@ -60,12 +60,12 @@ function styles(theme: Theme): StyleRules<LoginClassKey> {
   };
 }
 
-export interface LoginProps {
-  classes: Record<LoginClassKey, string>;
+export interface LogoutProps {
+  classes: Record<LogoutClassKey, string>;
   pageContext: PageContext;
 }
 
-const Login: React.SFC<LoginProps> = props => {
+const Logout: React.SFC<LogoutProps> = props => {
   const { classes } = props;
   return (
     <main className={classes.layout}>
@@ -114,4 +114,4 @@ const Login: React.SFC<LoginProps> = props => {
   );
 };
 
-export default withMUI()(withStyles(styles)(Login));
+export default withMUI()(withStyles(styles)(Logout));
