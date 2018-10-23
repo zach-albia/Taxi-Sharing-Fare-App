@@ -1,11 +1,5 @@
 import { Theme } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
 import Paper from "@material-ui/core/Paper";
 import { StyleRules } from "@material-ui/core/styles";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -14,6 +8,8 @@ import Tabs from "@material-ui/core/Tabs";
 import { PageContext } from "pangwarta-shared/@types/pageContext";
 import withMUI from "pangwarta-shared/dist/lib/layout/withMUI";
 import * as React from "react";
+import { LoginForm } from "../src/components/pages/logout/LoginForm";
+import { RegistrationForm } from "../src/components/pages/logout/RegistrationForm";
 
 export type LogoutClassKey =
   | "avatar"
@@ -59,71 +55,6 @@ function styles(theme: Theme): StyleRules<LogoutClassKey> {
       paddingTop: 0
     }
   };
-}
-
-interface FormProps {
-  classes: Record<LogoutClassKey, string>;
-}
-
-function LoginForm(props: FormProps) {
-  return (
-    <form className={props.classes.form}>
-      <FormControl margin="normal" required={true} fullWidth={true}>
-        <InputLabel htmlFor="email">Email Address</InputLabel>
-        <Input id="email" name="email" autoComplete="email" autoFocus={true} />
-      </FormControl>
-      <FormControl margin="normal" required={true} fullWidth={true}>
-        <InputLabel htmlFor="password">Password</InputLabel>
-        <Input
-          name="password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-        />
-      </FormControl>
-      <FormControlLabel
-        control={<Checkbox value="remember" color="primary" />}
-        label="Remember me"
-      />
-      <Button
-        type="submit"
-        fullWidth={true}
-        variant="contained"
-        color="primary"
-        className={props.classes.submit}
-      >
-        Sign in
-      </Button>
-    </form>
-  );
-}
-
-function RegistrationForm(props: FormProps) {
-  return (
-    <form className={props.classes.form}>
-      <FormControl margin="normal" required={true} fullWidth={true}>
-        <InputLabel htmlFor="email">Email Address</InputLabel>
-        <Input id="email" name="email" autoComplete="email" autoFocus={true} />
-      </FormControl>
-      <FormControl margin="normal" required={true} fullWidth={true}>
-        <InputLabel htmlFor="password">Password</InputLabel>
-        <Input name="password" type="password" id="password" />
-      </FormControl>
-      <FormControl margin="normal" required={true} fullWidth={true}>
-        <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
-        <Input name="confirmPassword" type="password" id="confirmPassword" />
-      </FormControl>
-      <Button
-        type="submit"
-        fullWidth={true}
-        variant="contained"
-        color="primary"
-        className={props.classes.submit}
-      >
-        Sign in
-      </Button>
-    </form>
-  );
 }
 
 export interface LogoutProps {
