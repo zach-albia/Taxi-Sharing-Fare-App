@@ -1,11 +1,12 @@
 import { Theme } from "@material-ui/core";
-import Button from "@material-ui/core/Button/Button";
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import Input from "@material-ui/core/Input/Input";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import Paper from "@material-ui/core/Paper/Paper";
+import AppBar from "@material-ui/core/AppBar";
+import Button from "@material-ui/core/Button";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import Paper from "@material-ui/core/Paper";
 import { StyleRules } from "@material-ui/core/styles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Tab from "@material-ui/core/Tab";
@@ -149,10 +150,12 @@ class Logout extends React.Component<LogoutProps> {
     return (
       <main className={classes.layout}>
         <Paper className={classes.paper}>
-          <Tabs fullWidth={true} value={value} onChange={this.handleChange}>
-            <Tab label="Sign In" />
-            <Tab label="Sign Up" />
-          </Tabs>
+          <AppBar position="relative" elevation={1}>
+            <Tabs fullWidth={true} value={value} onChange={this.handleChange}>
+              <Tab label="Sign In" />
+              <Tab label="Sign Up" />
+            </Tabs>
+          </AppBar>
           <div className={classes.tabContent}>
             {value === 0 && <LoginForm classes={classes} />}
             {value === 1 && <RegistrationForm classes={classes} />}
