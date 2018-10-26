@@ -17,7 +17,6 @@ export class LoginForm extends React.Component<FormProps> {
   render() {
     return (
       <Form
-        initialValues={{ email: "", password: "" }}
         onSubmit={onSubmit}
         subscription={{
           submitting: true,
