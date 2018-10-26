@@ -13,6 +13,7 @@ const onSubmit = async values => {
 
 export class RegistrationForm extends React.Component<FormProps> {
   render() {
+    const { classes } = this.props;
     return (
       <Form
         onSubmit={onSubmit}
@@ -22,7 +23,7 @@ export class RegistrationForm extends React.Component<FormProps> {
         }}
       >
         {({ handleSubmit, submitting, values }: FormRenderProps) => (
-          <form className={this.props.classes.form} onSubmit={handleSubmit}>
+          <form className={classes.form} onSubmit={handleSubmit}>
             <FormControl margin="normal" required={true} fullWidth={true}>
               <Field
                 component={FinalTextField}
@@ -70,7 +71,7 @@ export class RegistrationForm extends React.Component<FormProps> {
               fullWidth={true}
               variant="contained"
               color="primary"
-              className={this.props.classes.submit}
+              className={classes.submit}
               disabled={submitting}
             >
               Sign in
