@@ -1,5 +1,7 @@
 .idea
 graphql.config.json
 node_modules
+packages/*/.jest-cache
 packages/*/.next
+packages/*/coverage
 packages/*/node_modules
