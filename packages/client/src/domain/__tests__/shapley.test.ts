@@ -1,15 +1,24 @@
 import { Set } from "immutable";
+import jsc from "jsverify";
 import { formCoalitions } from "../shapley";
 
+const neSet = (arb: jsc.Arbitrary<any>) =>
+  jsc
+    .nearray(arb)
+    .smap((arr: any[]) => Set.of(...arr), (set: Set<{}>) => set.toArray());
+
 describe("formCoalitions", () => {
-  test("generates 2^n sets", () => {
-    const S = formCoalitions(Set.of("A", "B", "C"));
-    let n = 0;
-    for (const s of S) {
-      // tslint:disable-next-line
-      console.log(s);
-      n++;
+  jsc.property(
+    "yields 2^n elements",
+    neSet(jsc.nestring),
+    jsc.bool,
+    (s: Set<any>) => {
+      let count = 0;
+      for (const _ of formCoalitions(s)) {
+        count++;
+      }
+      // tslint:disable:no-bitwise
+      return 1 << s.size === count;
     }
-    expect(n).toStrictEqual(8);
-  });
+  );
 });
