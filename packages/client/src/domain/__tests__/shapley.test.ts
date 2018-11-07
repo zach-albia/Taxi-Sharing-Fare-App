@@ -11,14 +11,25 @@ describe("formCoalitions", () => {
   jsc.property(
     "yields 2^n elements",
     neSet(jsc.nestring),
-    jsc.bool,
-    (s: Set<any>) => {
+    (players: Set<any>) => {
       let count = 0;
-      for (const _ of formCoalitions(s)) {
+      for (const _ of formCoalitions(players)) {
         count++;
       }
       // tslint:disable:no-bitwise
-      return 1 << s.size === count;
+      return 1 << players.size === count;
+    }
+  );
+
+  jsc.property(
+    "all coalitions' elements are subsets of the sets of players",
+    neSet(jsc.nestring),
+    (players: Set<any>) => {
+      let areAllSubsets = true;
+      for (const coalition of formCoalitions(players)) {
+        areAllSubsets = areAllSubsets && coalition.isSubset(players);
+      }
+      return areAllSubsets;
     }
   );
 });
