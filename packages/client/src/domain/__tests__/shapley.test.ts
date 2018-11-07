@@ -1,6 +1,6 @@
 import { Set } from "immutable";
 import jsc from "jsverify";
-import { formCoalitions } from "../shapley";
+import { Game } from "../shapley";
 
 const neSet = (arb: jsc.Arbitrary<any>) =>
   jsc
@@ -12,8 +12,9 @@ describe("formCoalitions", () => {
     "yields 2^n elements",
     neSet(jsc.nestring),
     (players: Set<any>) => {
+      const game = new Game(players);
       let count = 0;
-      for (const _ of formCoalitions(players)) {
+      for (const _ of game.formCoalitions()) {
         count++;
       }
       // tslint:disable:no-bitwise
@@ -25,8 +26,9 @@ describe("formCoalitions", () => {
     "all coalitions' elements are subsets of the sets of players",
     neSet(jsc.nestring),
     (players: Set<any>) => {
+      const game = new Game(players);
       let areAllSubsets = true;
-      for (const coalition of formCoalitions(players)) {
+      for (const coalition of game.formCoalitions()) {
         areAllSubsets = areAllSubsets && coalition.isSubset(players);
       }
       return areAllSubsets;
