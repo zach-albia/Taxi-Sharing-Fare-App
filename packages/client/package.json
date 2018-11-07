@@ -89,7 +89,7 @@
     "linklocal": "linklocal",
     "lint": "tslint 'src/**/*.ts*' 'cosmos/**/*.ts*' 'pages/**/*.ts*'",
     "lint:watch": "watch 'yarn lint' ./src ./pages ./cosmos",
-    "precommit": "pretty-quick --staged && yarn typecheck && yarn lint",
+    "precommit": "pretty-quick --staged && yarn typecheck && yarn lint && yarn test",
     "prettier": "pretty-quick",
     "prettier:watch": "watch 'pretty-quick' ./src ./pages ./cosmos",
     "start": "NODE_ENV=production ts-node $NODE_DEBUG_OPTION -O '{\"module\": \"commonjs\"}' --ignore false server.ts",
