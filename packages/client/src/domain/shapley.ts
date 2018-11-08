@@ -11,25 +11,7 @@ export class Game<P> {
     this.players = players;
     this.gainFunc = gainFunc;
   }
-  public shapley = (p: P) =>
-    math.divide(
-      Seq.Indexed([...this.formCoalitions()])
-        .filterNot(coalition => coalition.contains(p))
-        .map(S =>
-          math.multiply(
-            math.multiply(
-              math.factorial(S.size),
-              math.factorial(math.subtract(
-                math.subtract(this.players.size, S.size),
-                1
-              ) as number)
-            ),
-            math.subtract(this.gainFunc(S.union(Set.of(p))), this.gainFunc(S))
-          )
-        )
-        .reduce((a: number, b) => math.add(a, b), 0),
-      math.factorial(this.players.size)
-    );
+  public shapley = (p: P) => shapley(this.players, this.gainFunc)(p);
 
   // tslint:disable:no-bitwise
   public *formCoalitions(): IterableIterator<Set<P>> {
@@ -55,3 +37,25 @@ export function formCoalitions<P>(players: Set<P>) {
   };
 }
 // tslint:enable:no-bitwise
+
+export function shapley<P>(N: Set<P>, v: (S: Set<P>) => RealNumber) {
+  return (p: P) =>
+    math.divide(
+      Seq.Indexed([...formCoalitions(N)()])
+        .filterNot(coalition => coalition.contains(p))
+        .map(S =>
+          math.multiply(
+            math.multiply(
+              math.factorial(S.size),
+              math.factorial(math.subtract(
+                math.subtract(N.size, S.size),
+                1
+              ) as number)
+            ),
+            math.subtract(v(S.union(Set.of(p))), v(S))
+          )
+        )
+        .reduce((a: number, b) => math.add(a, b), 0),
+      math.factorial(N.size)
+    );
+}
