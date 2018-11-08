@@ -33,7 +33,15 @@ export class Game<P> {
 
   // tslint:disable:no-bitwise
   public *formCoalitions(): IterableIterator<Set<P>> {
-    const playersArr = this.players.toArray();
+    yield* formCoalitions(this.players)();
+  }
+  // tslint:enable:no-bitwise
+}
+
+// tslint:disable:no-bitwise
+export function formCoalitions<P>(players: Set<P>) {
+  return function*() {
+    const playersArr = players.toArray();
     const numPlayers = playersArr.length;
     for (let i = 0; i < 1 << numPlayers; i++) {
       let combination = Set<P>();
@@ -44,6 +52,6 @@ export class Game<P> {
       }
       yield combination;
     }
-  }
-  // tslint:enable:no-bitwise
+  };
 }
+// tslint:enable:no-bitwise
