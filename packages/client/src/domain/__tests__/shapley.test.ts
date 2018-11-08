@@ -7,12 +7,14 @@ const neSet = (arb: jsc.Arbitrary<any>) =>
     .nearray(arb)
     .smap((arr: any[]) => Set.of(...arr), (set: Set<{}>) => set.toArray());
 
+const noop = _ => undefined;
+
 describe("formCoalitions", () => {
   jsc.property(
     "yields 2^n elements",
     neSet(jsc.nestring),
-    (players: Set<any>) => {
-      const game = new Game(players);
+    (players: Set<string>) => {
+      const game = new Game(players, noop);
       let count = 0;
       for (const _ of game.formCoalitions()) {
         count++;
@@ -25,8 +27,8 @@ describe("formCoalitions", () => {
   jsc.property(
     "all coalitions' elements are subsets of the sets of players",
     neSet(jsc.nestring),
-    (players: Set<any>) => {
-      const game = new Game(players);
+    (players: Set<string>) => {
+      const game = new Game(players, noop);
       let areAllSubsets = true;
       for (const coalition of game.formCoalitions()) {
         areAllSubsets = areAllSubsets && coalition.isSubset(players);
