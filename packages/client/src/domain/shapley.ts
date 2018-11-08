@@ -15,7 +15,7 @@ export class Game<P> {
     math.multiply(
       math.divide(1, math.factorial(this.players.size)),
       Seq.Indexed([...this.formCoalitions()])
-        .filter(coalition => !coalition.contains(p))
+        .filterNot(coalition => coalition.contains(p))
         .map(S =>
           math.multiply(
             math.multiply(
