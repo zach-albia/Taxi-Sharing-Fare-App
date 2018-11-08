@@ -13,11 +13,9 @@ export class Game<P> {
   }
   public shapley = (p: P) => shapley(this.players, this.gainFunc)(p);
 
-  // tslint:disable:no-bitwise
   public *formCoalitions(): IterableIterator<Set<P>> {
     yield* formCoalitions(this.players)();
   }
-  // tslint:enable:no-bitwise
 }
 
 // tslint:disable:no-bitwise
