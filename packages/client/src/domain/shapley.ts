@@ -12,8 +12,7 @@ export class Game<P> {
     this.gainFunc = gainFunc;
   }
   public shapley = (p: P) =>
-    math.multiply(
-      math.divide(1, math.factorial(this.players.size)),
+    math.divide(
       Seq.Indexed([...this.formCoalitions()])
         .filterNot(coalition => coalition.contains(p))
         .map(S =>
@@ -25,10 +24,11 @@ export class Game<P> {
                 1
               ) as number)
             ),
-            math.subtract(this.gainFunc(S.union(Set(p))), this.gainFunc(S))
+            math.subtract(this.gainFunc(S.union(Set.of(p))), this.gainFunc(S))
           )
         )
-        .reduce(math.add)
+        .reduce((a: number, b) => math.add(a, b), 0),
+      math.factorial(this.players.size)
     );
 
   // tslint:disable:no-bitwise
