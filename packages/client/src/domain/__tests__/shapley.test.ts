@@ -45,6 +45,15 @@ describe("formCoalitions", () => {
       );
     }
   );
+
+  jsc.property(
+    "all coalitions are unique",
+    neSet(smallLetterStrings),
+    (players: Set<string>) => {
+      const game = new Game(players, noop);
+      return Set(game.formCoalitions()).size === 1 << players.size;
+    }
+  );
 });
 
 function charCodeTotal(s: string): number {
