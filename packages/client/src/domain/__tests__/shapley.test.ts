@@ -1,5 +1,6 @@
 import { Seq, Set } from "immutable";
 import jsc from "jsverify";
+import identity from "lodash/identity";
 import * as math from "mathjs";
 import { Game } from "../shapley";
 
@@ -36,7 +37,7 @@ describe("formCoalitions", () => {
   );
 
   jsc.property(
-    "all coalitions' elements are subsets of the sets of players",
+    "all coalitions are subsets of the set of players",
     neSet(smallLetterStrings),
     (players: Set<string>) => {
       const game = new Game(players, noop);
@@ -64,17 +65,19 @@ function charCodeTotal(s: string): number {
   return total;
 }
 
-function gainFunc(coalition: Set<string>): number {
-  return coalition
-    .toIndexedSeq()
-    .reduce((total, s) => charCodeTotal(s) + total, 0);
+function charCodeGainFunc(coalition: Set<string>): number {
+  return coalition.reduce((total, s) => charCodeTotal(s) + total, 0);
+}
+
+function lengthGainFunc(coalition: Set<string>): number {
+  return coalition.reduce((total, s) => s.length + total, 0);
 }
 
 describe("shapley", () => {
   jsc.property(
     "efficiency: the total gain is distributed",
     neSet(smallLetterStrings),
-    jsc.constant(gainFunc),
+    jsc.constant(charCodeGainFunc),
     (N: Set<string>, v: (_: Set<string>) => number) => {
       const game = new Game(N, v);
       const sumOfGains = N.toIndexedSeq()
@@ -82,6 +85,38 @@ describe("shapley", () => {
         .reduce((x: number, y) => math.add(x, y), 0);
       const gainOfAll = v(N);
       return sumOfGains === gainOfAll;
+    }
+  );
+
+  jsc.property(
+    "symmetry: v(S U {i}) = v(S U {j}) -> ϕ(i, v) = ϕ(j, v)",
+    jsc.suchthat(neSet(smallLetterStrings), s => s.size >= 2),
+    jsc.constant(lengthGainFunc),
+    (N: Set<string>, v: (_: Set<string>) => number) => {
+      const game = new Game(N, v);
+      const pairs = N.flatMap(i => N.map(j => Set.of(i, j)))
+        .toSetSeq()
+        .filter(p => p.size === 2);
+      return pairs
+        .map(pair => {
+          const [i, j] = pair.toArray();
+          const subsets = Seq(game.formCoalitions()).filter(
+            s => !(s.contains(i) || s.contains(j))
+          );
+          return subsets
+            .map(S => {
+              const shapleyI = game.shapley(i);
+              const shapleyJ = game.shapley(j);
+              const vSUnionI = v(S.union(Set.of(i)));
+              const vSUnionJ = v(S.union(Set.of(j)));
+              return (
+                (vSUnionI === vSUnionJ && shapleyI === shapleyJ) ||
+                (vSUnionI !== vSUnionJ && shapleyI !== shapleyJ)
+              );
+            })
+            .every(identity);
+        })
+        .every(identity);
     }
   );
 });
