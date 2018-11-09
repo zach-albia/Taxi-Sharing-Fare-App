@@ -2,22 +2,22 @@ import { Seq, Set } from "immutable";
 import jsc from "jsverify";
 import identity from "lodash/identity";
 import * as math from "mathjs";
-import { Game } from "../shapley";
+import { Game, shapley } from "../shapley";
 
 const neSet = (arb: jsc.Arbitrary<any>) =>
   jsc
     .nearray(arb)
-    .smap((arr: any[]) => Set.of(...arr), (set: Set<{}>) => set.toArray());
+    .smap((arr: any[]) => Set(arr), (set: Set<{}>) => set.toArray());
 
-const a = "a".charCodeAt(0);
-const z = "z".charCodeAt(0);
+const aCharCode = "a".charCodeAt(0);
+const zCharCode = "z".charCodeAt(0);
 
 const smallLetter: jsc.Arbitrary<string> = jsc.suchthat(jsc.asciichar, ch => {
   const charCode = ch.charCodeAt(0);
-  return a <= charCode && charCode <= z;
+  return aCharCode <= charCode && charCode <= zCharCode;
 });
 
-const smallLetterStrings: jsc.Arbitrary<string> = jsc
+const neSmallLetterStrings: jsc.Arbitrary<string> = jsc
   .nearray(smallLetter)
   .smap(arr => arr.join(""), s => s.split(""));
 
@@ -26,11 +26,11 @@ const noop = () => undefined;
 describe("formCoalitions", () => {
   jsc.property(
     "yields 2^n elements",
-    neSet(smallLetterStrings),
+    neSet(neSmallLetterStrings),
     (players: Set<string>) => {
       const game = new Game(players, noop);
       const coalitions = Seq.Indexed(game.formCoalitions());
-      const size = coalitions.reduce((r, _) => r + 1, 0);
+      const size = coalitions.reduce((count, _) => count + 1, 0);
       // tslint:disable:no-bitwise
       return size === 1 << players.size; // bitwise 2^n
     }
@@ -38,7 +38,7 @@ describe("formCoalitions", () => {
 
   jsc.property(
     "all coalitions are subsets of the set of players",
-    neSet(smallLetterStrings),
+    neSet(neSmallLetterStrings),
     (players: Set<string>) => {
       const game = new Game(players, noop);
       return Seq.Indexed(game.formCoalitions()).every(coalition =>
@@ -49,7 +49,7 @@ describe("formCoalitions", () => {
 
   jsc.property(
     "all coalitions are unique",
-    neSet(smallLetterStrings),
+    neSet(neSmallLetterStrings),
     (players: Set<string>) => {
       const game = new Game(players, noop);
       return Set(game.formCoalitions()).size === 1 << players.size;
@@ -73,12 +73,17 @@ function lengthGainFunc(coalition: Set<string>): number {
   return coalition.reduce((total, s) => s.length + total, 0);
 }
 
+function addFuncs<T>(f: GainFunc<T>, g: GainFunc<T>): GainFunc<T> {
+  return (s: Set<T>) => f(s) + g(s);
+}
+
+type GainFunc<T> = (_: Set<T>) => number;
 describe("shapley", () => {
   jsc.property(
     "efficiency: the total gain is distributed",
-    neSet(smallLetterStrings),
+    neSet(neSmallLetterStrings),
     jsc.constant(charCodeGainFunc),
-    (N: Set<string>, v: (_: Set<string>) => number) => {
+    (N: Set<string>, v: GainFunc<string>) => {
       const game = new Game(N, v);
       const sumOfGains = N.toIndexedSeq()
         .map(game.shapley)
@@ -90,9 +95,9 @@ describe("shapley", () => {
 
   jsc.property(
     "symmetry: v(S U {i}) = v(S U {j}) -> ϕ(i, v) = ϕ(j, v)",
-    jsc.suchthat(neSet(smallLetterStrings), s => s.size >= 2),
+    jsc.suchthat(neSet(neSmallLetterStrings), s => s.size >= 2),
     jsc.constant(lengthGainFunc),
-    (N: Set<string>, v: (_: Set<string>) => number) => {
+    (N: Set<string>, v: GainFunc<string>) => {
       const game = new Game(N, v);
       const pairs = N.flatMap(i => N.map(j => Set.of(i, j)))
         .toSetSeq()
@@ -118,5 +123,18 @@ describe("shapley", () => {
         })
         .every(identity);
     }
+  );
+
+  jsc.property(
+    "linearity: ϕi(v + w) = ϕi(v) + ϕi(w)",
+    neSet(neSmallLetterStrings),
+    jsc.constant(charCodeGainFunc),
+    jsc.constant(lengthGainFunc),
+    (N: Set<string>, v: GainFunc<string>, w: GainFunc<string>) =>
+      N.every(
+        i =>
+          shapley(N, addFuncs(v, w))(i) ===
+          math.add(shapley(N, v)(i), shapley(N, w)(i))
+      )
   );
 });
