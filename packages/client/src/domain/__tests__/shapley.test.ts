@@ -1,4 +1,4 @@
-import { Set } from "immutable";
+import { Seq, Set } from "immutable";
 import jsc from "jsverify";
 import * as math from "mathjs";
 import { Game } from "../shapley";
@@ -20,7 +20,7 @@ const smallLetterStrings: jsc.Arbitrary<string> = jsc
   .nearray(smallLetter)
   .smap(arr => arr.join(""), s => s.split(""));
 
-const noop = _ => undefined;
+const noop = () => undefined;
 
 describe("formCoalitions", () => {
   jsc.property(
@@ -28,12 +28,10 @@ describe("formCoalitions", () => {
     neSet(smallLetterStrings),
     (players: Set<string>) => {
       const game = new Game(players, noop);
-      let count = 0;
-      for (const _ of game.formCoalitions()) {
-        count++;
-      }
+      const coalitions = Seq.Indexed(game.formCoalitions());
+      const size = coalitions.reduce((r, _) => r + 1, 0);
       // tslint:disable:no-bitwise
-      return 1 << players.size === count;
+      return size === 1 << players.size; // bitwise 2^n
     }
   );
 
@@ -42,11 +40,9 @@ describe("formCoalitions", () => {
     neSet(smallLetterStrings),
     (players: Set<string>) => {
       const game = new Game(players, noop);
-      let areAllSubsets = true;
-      for (const coalition of game.formCoalitions()) {
-        areAllSubsets = areAllSubsets && coalition.isSubset(players);
-      }
-      return areAllSubsets;
+      return Seq.Indexed(game.formCoalitions()).every(coalition =>
+        coalition.isSubset(players)
+      );
     }
   );
 });

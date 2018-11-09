@@ -4,8 +4,8 @@ import * as math from "mathjs";
 type RealNumber = number | math.BigNumber | math.Fraction;
 
 export class Game<P> {
-  private players: Set<P>;
-  private gainFunc: (S: Set<P>) => RealNumber;
+  private readonly players: Set<P>;
+  private readonly gainFunc: (S: Set<P>) => RealNumber;
 
   constructor(players: Set<P>, gainFunc: (S: Set<P>) => RealNumber) {
     this.players = players;
@@ -39,7 +39,7 @@ export function formCoalitions<P>(players: Set<P>) {
 export function shapley<P>(N: Set<P>, v: (S: Set<P>) => RealNumber) {
   return (p: P) =>
     math.divide(
-      Seq.Indexed([...formCoalitions(N)()])
+      Seq.Indexed(formCoalitions(N)())
         .filterNot(coalition => coalition.contains(p))
         .map(S =>
           math.multiply(
