@@ -138,4 +138,28 @@ describe("shapley", () => {
           math.add(shapley(N, v)(i), shapley(N, w)(i))
       )
   );
+
+  jsc.property(
+    "zero player (null player): v(S U {i}) = v(S) -> ϕi(v) = 0",
+    neSet(jsc.oneof([neSmallLetterStrings, jsc.constant("")])),
+    jsc.constant(lengthGainFunc),
+    (N: Set<string>, v: GainFunc<string>) => {
+      const game = new Game(N, v);
+      return N.map(i => {
+        const subsets = Seq(game.formCoalitions()).filterNot(s =>
+          s.contains(i)
+        );
+        return subsets
+          .map(S => {
+            const vSUnionI = v(S.union(Set.of(i)));
+            const shapleyI = game.shapley(i);
+            return (
+              (vSUnionI === v(S) && shapleyI === 0) ||
+              (vSUnionI !== v(S) && shapleyI !== 0)
+            );
+          })
+          .every(identity);
+      }).every(identity);
+    }
+  );
 });
