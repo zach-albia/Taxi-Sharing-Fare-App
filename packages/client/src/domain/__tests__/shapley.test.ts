@@ -78,6 +78,7 @@ function addFuncs<T>(f: GainFunc<T>, g: GainFunc<T>): GainFunc<T> {
 }
 
 type GainFunc<T> = (_: Set<T>) => number;
+
 describe("shapley", () => {
   jsc.property(
     "efficiency: the total gain is distributed",
@@ -105,8 +106,8 @@ describe("shapley", () => {
       return pairs
         .map(pair => {
           const [i, j] = pair.toArray();
-          const subsets = Seq(game.formCoalitions()).filter(
-            s => !(s.contains(i) || s.contains(j))
+          const subsets = Seq(game.formCoalitions()).filterNot(
+            s => s.contains(i) || s.contains(j)
           );
           return subsets
             .map(S => {
