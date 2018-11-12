@@ -152,10 +152,11 @@ describe("shapley", () => {
         return subsets
           .map(S => {
             const vSUnionI = v(S.union(Set.of(i)));
+            const vS = v(S);
             const shapleyI = game.shapley(i);
             return (
-              (vSUnionI === v(S) && shapleyI === 0) ||
-              (vSUnionI !== v(S) && shapleyI !== 0)
+              (vSUnionI === vS && shapleyI === 0) ||
+              (vSUnionI !== vS && shapleyI !== 0)
             );
           })
           .every(identity);
