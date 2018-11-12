@@ -100,8 +100,8 @@ describe("shapley", () => {
     jsc.constant(lengthGainFunc),
     (N: Set<string>, v: GainFunc<string>) => {
       const game = new Game(N, v);
-      const pairs = N.flatMap(i => N.map(j => Set.of(i, j)))
-        .toSetSeq()
+      const pairs = N.toSetSeq()
+        .flatMap(i => N.map(j => Set.of(i, j)))
         .filter(p => p.size === 2);
       return pairs
         .map(pair => {
