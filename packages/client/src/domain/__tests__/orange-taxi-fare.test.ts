@@ -1,0 +1,27 @@
+import orangeTaxiFare from "../orange-taxi-fare";
+
+/**
+ * Cases:
+ *
+ * Day, not booked, d < 1 km or t < 10 min
+ * Day, not booked, 1 <= d < 25
+ * Day, not booked, d >= 25
+ * Day, booked, d < 1 km or t < 10 min
+ * Day, booked, 1 <= d < 25
+ * Day, booked, d >= 25
+ * Night, d < 1 km or t < 10 min
+ * Night, 1 <= d < 25
+ * Night, d >= 25
+ */
+describe("taxi fare distance formula", () => {
+  test("Day, not booked, d = 500 m, t = 5 min => BD 1.5", () => {
+    expect(
+      orangeTaxiFare({
+        isBooked: false,
+        isDayPeriod: true,
+        meters: 500,
+        minutes: 5
+      })
+    ).toBe(1500);
+  });
+});
