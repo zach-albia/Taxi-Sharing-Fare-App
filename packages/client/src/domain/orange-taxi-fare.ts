@@ -20,7 +20,12 @@ const fares = {
       starting: 1000
     }
   },
-  excess25km: 2000
+  excess25km: 2000,
+  night: {
+    firstExcess: 2500,
+    rate: { fils: 500, meters: 500 },
+    starting: 1250
+  }
 };
 
 /**
@@ -44,7 +49,11 @@ export interface TaxiRide {
  * @return The fare in Bahraini fils.
  */
 export default function orangeTaxiFare(ride: TaxiRide): number {
-  const fare: Fare = ride.isBooked ? fares.day.booked : fares.day.hailed;
+  const fare: Fare = ride.isDay
+    ? ride.isBooked
+      ? fares.day.booked
+      : fares.day.hailed
+    : fares.night;
   return (
     fare.starting +
     Math.floor(ride.meters / fare.rate.meters) * fare.rate.fils +
