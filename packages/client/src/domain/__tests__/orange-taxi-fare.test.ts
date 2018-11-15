@@ -14,36 +14,22 @@ import orangeTaxiFare from "../orange-taxi-fare";
  * Night, d >= 25
  */
 describe("taxi fare distance formula", () => {
-  test("Day, not booked, d = 500 m, t = 5 min => BD 1.5", () => {
-    expect(
-      orangeTaxiFare({
-        isBooked: false,
-        isDayPeriod: true,
-        meters: 500,
-        minutes: 5
-      })
-    ).toBe(1500);
-  });
-
-  test("Day, not booked, d = 200 m, t = 3 min => BD 1", () => {
-    expect(
-      orangeTaxiFare({
-        isBooked: false,
-        isDayPeriod: true,
-        meters: 200,
-        minutes: 3
-      })
-    ).toBe(1000);
-  });
-
-  test("Day, not booked, d = 100m, t = 8 min => BD 1", () => {
-    expect(
-      orangeTaxiFare({
-        isBooked: false,
-        isDayPeriod: true,
-        meters: 100,
-        minutes: 8
-      })
-    ).toBe(1000);
-  });
+  test.each`
+    isBooked | isDay   | meters | minutes | fare
+    ${false} | ${true} | ${500} | ${5}    | ${1500}
+    ${false} | ${true} | ${200} | ${3}    | ${1000}
+    ${false} | ${true} | ${100} | ${8}    | ${1000}
+  `(
+    "booked=$isBooked, day=$isDay, meters=$meters, minutes=$minutes -> fare=$fare",
+    ({ isBooked, isDay, meters, minutes, fare }) => {
+      expect(
+        orangeTaxiFare({
+          isBooked,
+          isDay,
+          meters,
+          minutes
+        })
+      ).toEqual(fare);
+    }
+  );
 });

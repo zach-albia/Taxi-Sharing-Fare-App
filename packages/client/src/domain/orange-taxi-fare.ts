@@ -6,7 +6,7 @@ interface TaxiRide {
    * Whether a taxi ride is book
    */
   isBooked: boolean;
-  isDayPeriod: boolean;
+  isDay: boolean;
   meters: number;
   minutes: number;
 }
