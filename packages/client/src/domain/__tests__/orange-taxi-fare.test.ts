@@ -24,4 +24,15 @@ describe("taxi fare distance formula", () => {
       })
     ).toBe(1500);
   });
+
+  test("Day, not booked, d = 200 m, t = 3 min => BD 1", () => {
+    expect(
+      orangeTaxiFare({
+        isBooked: false,
+        isDayPeriod: true,
+        meters: 200,
+        minutes: 3
+      })
+    ).toBe(1000);
+  });
 });
