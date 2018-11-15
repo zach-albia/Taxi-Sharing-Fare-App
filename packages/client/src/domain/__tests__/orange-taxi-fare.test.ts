@@ -33,7 +33,8 @@ describe("taxi fare distance formula", () => {
     ${true}  | ${true} | ${1999}  | ${20}   | ${3700}
     ${true}  | ${true} | ${25000} | ${50}   | ${15000}
   `(
-    "booked=$isBooked, day=$isDay, meters=$meters, minutes=$minutes -> fare=$fare",
+    "booked=$isBooked, day=$isDay, meters=$meters, minutes=$minutes -> " +
+      "fare in fils=$fare",
     ({ isBooked, isDay, meters, minutes, fare }) => {
       expect(
         orangeTaxiFare({
