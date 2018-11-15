@@ -12,6 +12,15 @@ interface TaxiRide {
 }
 
 /**
+ * Rates in Bahraini fils
+ */
+const rates = {
+  day: {
+    starting: 1000
+  }
+};
+
+/**
  * Calculates the fare for a Bahrain Orange Taxi Group taxi ride
  *
  * @param ride The details of the taxi ride
@@ -19,5 +28,5 @@ interface TaxiRide {
  * @return The fare in Bahraini fils.
  */
 export default function orangeTaxiFare(ride: TaxiRide): number {
-  return ride.meters >= 500 ? 1500 : 1000;
+  return rates.day.starting + Math.floor(ride.meters / 500) * 500;
 }
