@@ -16,6 +16,7 @@ interface TaxiRide {
  */
 const rates = {
   day: {
+    perDistance: { fils: 500, meters: 500 },
     starting: 1000
   }
 };
@@ -28,5 +29,14 @@ const rates = {
  * @return The fare in Bahraini fils.
  */
 export default function orangeTaxiFare(ride: TaxiRide): number {
-  return rates.day.starting + Math.floor(ride.meters / 500) * 500;
+  return (
+    rates.day.starting +
+    Math.floor(ride.meters / rates.day.perDistance.meters) *
+      rates.day.perDistance.fils +
+    firstExcessCharge(ride)
+  );
+}
+
+function firstExcessCharge(ride: TaxiRide) {
+  return ride.meters >= 1000 || ride.minutes >= 10 ? 2000 : 0;
 }
