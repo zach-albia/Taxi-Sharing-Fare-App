@@ -15,13 +15,23 @@ import orangeTaxiFare from "../orange-taxi-fare";
  */
 describe("taxi fare distance formula", () => {
   test.each`
-    isBooked | isDay   | meters  | minutes | fare
-    ${false} | ${true} | ${500}  | ${5}    | ${1500}
-    ${false} | ${true} | ${200}  | ${3}    | ${1000}
-    ${false} | ${true} | ${100}  | ${8}    | ${1000}
-    ${false} | ${true} | ${1000} | ${10}   | ${4000}
-    ${false} | ${true} | ${300}  | ${11}   | ${3000}
-    ${false} | ${true} | ${1500} | ${10}   | ${4500}
+    isBooked | isDay   | meters   | minutes | fare
+    ${false} | ${true} | ${500}   | ${5}    | ${1500}
+    ${false} | ${true} | ${250}   | ${3}    | ${1000}
+    ${false} | ${true} | ${100}   | ${8}    | ${1000}
+    ${false} | ${true} | ${1000}  | ${10}   | ${4000}
+    ${false} | ${true} | ${300}   | ${11}   | ${3000}
+    ${false} | ${true} | ${1500}  | ${10}   | ${4500}
+    ${false} | ${true} | ${1999}  | ${20}   | ${4500}
+    ${false} | ${true} | ${25000} | ${50}   | ${30000}
+    ${true}  | ${true} | ${500}   | ${5}    | ${1200}
+    ${true}  | ${true} | ${250}   | ${3}    | ${1100}
+    ${true}  | ${true} | ${100}   | ${8}    | ${1000}
+    ${true}  | ${true} | ${1000}  | ${10}   | ${3400}
+    ${true}  | ${true} | ${300}   | ${11}   | ${3100}
+    ${true}  | ${true} | ${1500}  | ${10}   | ${3600}
+    ${true}  | ${true} | ${1999}  | ${20}   | ${3700}
+    ${true}  | ${true} | ${25000} | ${50}   | ${15000}
   `(
     "booked=$isBooked, day=$isDay, meters=$meters, minutes=$minutes -> fare=$fare",
     ({ isBooked, isDay, meters, minutes, fare }) => {
