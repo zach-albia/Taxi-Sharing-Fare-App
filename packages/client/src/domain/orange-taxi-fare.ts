@@ -5,7 +5,7 @@ interface Fare {
 }
 
 /**
- * Taxi fare fares in Bahraini fils
+ * Taxi fares in Bahraini fils
  */
 const fares = {
   day: {
@@ -32,9 +32,6 @@ const fares = {
  * Details of a taxi ride used for the calculation in orangeTaxiFare.
  */
 export interface TaxiRide {
-  /**
-   * Whether a taxi ride is book
-   */
   isBooked: boolean;
   isDay: boolean;
   meters: number;
