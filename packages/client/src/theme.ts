@@ -1,17 +1,17 @@
-import blue from "@material-ui/core/colors/blue";
 import common from "@material-ui/core/colors/common";
+import deepOrange from "@material-ui/core/colors/deepOrange";
 import { createMuiTheme } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
   palette: {
     primary: {
       contrastText: common.white,
-      dark: blue[600],
-      light: blue[100],
-      main: "#6699FF"
+      dark: deepOrange[900],
+      light: deepOrange[100],
+      main: deepOrange[600]
     },
     secondary: {
-      main: "#FF3366"
+      main: common.black
     }
   }
 });
