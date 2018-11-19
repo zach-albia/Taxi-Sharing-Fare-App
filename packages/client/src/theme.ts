@@ -1,5 +1,6 @@
 import common from "@material-ui/core/colors/common";
 import deepOrange from "@material-ui/core/colors/deepOrange";
+import grey from "@material-ui/core/colors/grey";
 import { createMuiTheme } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
@@ -11,7 +12,7 @@ const theme = createMuiTheme({
       main: deepOrange[600]
     },
     secondary: {
-      main: common.black
+      main: grey[900]
     }
   }
 });

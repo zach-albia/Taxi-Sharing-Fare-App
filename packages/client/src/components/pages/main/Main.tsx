@@ -2,7 +2,6 @@ import { Theme } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button/Button";
 import ButtonBase from "@material-ui/core/ButtonBase";
-import deepOrange from "@material-ui/core/colors/deepOrange";
 import red from "@material-ui/core/colors/red";
 import { StandardProps } from "@material-ui/core/es";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
@@ -13,6 +12,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { StyleRules } from "@material-ui/core/styles";
 import withStyles from "@material-ui/core/styles/withStyles";
+import TextField from "@material-ui/core/TextField";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
@@ -36,10 +36,6 @@ function styles(theme: Theme): StyleRules<MainClassKey> {
       marginRight: theme.spacing.unit * 2
     },
     button: {
-      "&:hover": {
-        backgroundColor: deepOrange[500]
-      },
-      backgroundColor: deepOrange[500],
       marginTop: theme.spacing.unit
     },
     fab: {
@@ -127,6 +123,12 @@ function Main(props: MainProps) {
           </List>
         </ExpansionPanelDetails>
       </ExpansionPanel>
+      <TextField
+        variant="outlined"
+        fullWidth={true}
+        placeholder="Add a passenger"
+        margin="dense"
+      />
       <Button
         fullWidth={true}
         variant="contained"
