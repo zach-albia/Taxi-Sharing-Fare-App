@@ -1,5 +1,6 @@
 .idea
 graphql.config.json
+graphql.schema.json
 node_modules
 packages/*/.jest-cache
 packages/*/.next
