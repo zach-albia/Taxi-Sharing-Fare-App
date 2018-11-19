@@ -2,18 +2,18 @@ import Head from "next/head";
 import AppContent from "pangwarta-shared/dist/lib/layout/AppContent";
 import withMUI from "pangwarta-shared/dist/lib/layout/withMUI";
 import * as React from "react";
-import Main from "../src/components/pages/main/Main";
+import RideHistory from "../src/components/pages/history/RideHistory";
 
-const Index = () => (
+const History = () => (
   <>
     <Head>
-      <title>Taxi Sharing</title>
-      <meta name="description" content="Fair shares for taxi fares" />
+      <title>Taxi Sharing | History</title>
+      <meta name="description" content="Taxi Sharing history" />
     </Head>
     <AppContent>
-      <Main />
+      <RideHistory />
     </AppContent>
   </>
 );
 
-export default withMUI()(Index);
+export default withMUI()(History);
