@@ -7,9 +7,11 @@ import { StandardProps } from "@material-ui/core/es";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+import MenuItem from "@material-ui/core/MenuItem";
 import { StyleRules } from "@material-ui/core/styles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "@material-ui/core/TextField";
@@ -26,7 +28,8 @@ type MainClassKey =
   | "button"
   | "fab"
   | "listItem"
-  | "markerIcon";
+  | "markerIcon"
+  | "title";
 
 function styles(theme: Theme): StyleRules<MainClassKey> {
   return {
@@ -40,7 +43,7 @@ function styles(theme: Theme): StyleRules<MainClassKey> {
     },
     fab: {
       bottom: theme.spacing.unit * 2,
-      position: "absolute",
+      position: "fixed",
       right: theme.spacing.unit * 2
     },
     listItem: {
@@ -48,6 +51,9 @@ function styles(theme: Theme): StyleRules<MainClassKey> {
     },
     markerIcon: {
       color: red["500"]
+    },
+    title: {
+      flexGrow: 1
     }
   };
 }
@@ -63,13 +69,18 @@ function Main(props: MainProps) {
     <>
       <AppBar>
         <Toolbar>
-          <Typography variant="subheading" color="inherit">
+          <Typography
+            variant="subheading"
+            color="inherit"
+            className={classes.title}
+          >
             Taxi-sharing
           </Typography>
+          <Button color="inherit">Ride History</Button>
         </Toolbar>
       </AppBar>
       <Typography variant="subheading" gutterBottom={true}>
-        Passengers
+        Ride Details
       </Typography>
       <ExpansionPanel>
         <ExpansionPanelSummary>
@@ -85,14 +96,18 @@ function Main(props: MainProps) {
               <ListItemIcon>
                 <MapMarkerIcon className={classes.markerIcon} />
               </ListItemIcon>
-              <Typography>Origin: University of Bahrain</Typography>
+              <Typography>
+                <Typography variant="caption">Origin:</Typography>
+                University of Bahrain
+              </Typography>
             </ListItem>
             <ListItem className={classes.listItem} component={ButtonBase}>
               <ListItemIcon>
                 <MapMarkerIcon className={classes.markerIcon} />
               </ListItemIcon>
               <Typography>
-                Destination: Al Kindi Specialized Hospital
+                <Typography variant="caption">Destination:</Typography>
+                Al Kindi Specialized Hospital
               </Typography>
             </ListItem>
           </List>
@@ -112,13 +127,19 @@ function Main(props: MainProps) {
               <ListItemIcon>
                 <MapMarkerIcon className={classes.markerIcon} />
               </ListItemIcon>
-              <Typography>Origin: Arabian Gulf University</Typography>
+              <Typography>
+                <Typography variant="caption">Origin:</Typography>
+                Arabian Gulf University
+              </Typography>
             </ListItem>
             <ListItem className={classes.listItem} component={ButtonBase}>
               <ListItemIcon>
                 <MapMarkerIcon className={classes.markerIcon} />
               </ListItemIcon>
-              <Typography>Destination: Al Abraaj</Typography>
+              <Typography>
+                <Typography variant="caption">Destination:</Typography>
+                Al Abraaj
+              </Typography>
             </ListItem>
           </List>
         </ExpansionPanelDetails>
@@ -126,9 +147,45 @@ function Main(props: MainProps) {
       <TextField
         variant="outlined"
         fullWidth={true}
-        placeholder="Add a passenger"
-        margin="dense"
+        placeholder="Add a passenger..."
+        margin="normal"
       />
+      <TextField
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <MapMarkerIcon />
+            </InputAdornment>
+          )
+        }}
+        label="Ride Origin"
+        select={true}
+        variant="outlined"
+        fullWidth={true}
+        value={0}
+        margin="normal"
+      >
+        <MenuItem value={0}>University of Bahrain</MenuItem>
+        <MenuItem value={1}>Arabian Gulf University</MenuItem>
+      </TextField>
+      <TextField
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <MapMarkerIcon />
+            </InputAdornment>
+          )
+        }}
+        label="Ride Destination"
+        select={true}
+        variant="outlined"
+        fullWidth={true}
+        value={1}
+        margin="normal"
+      >
+        <MenuItem value={0}>Al Kindi Specialized Hospital</MenuItem>
+        <MenuItem value={1}>Al Abraaj</MenuItem>
+      </TextField>
       <Button
         fullWidth={true}
         variant="contained"
