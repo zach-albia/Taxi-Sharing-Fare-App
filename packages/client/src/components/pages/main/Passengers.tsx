@@ -28,6 +28,9 @@ export default class Passengers extends React.Component<PassengersProps> {
   render() {
     return (
       <>
+        <Typography variant="caption" gutterBottom={true}>
+          Passengers
+        </Typography>
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <PersonIcon

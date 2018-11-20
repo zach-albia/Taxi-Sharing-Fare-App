@@ -105,9 +105,6 @@ class Main extends React.Component<MainProps, MainState> {
         <Typography variant="subheading" gutterBottom={true}>
           Ride Details
         </Typography>
-        <Typography variant="caption" gutterBottom={true}>
-          Passengers
-        </Typography>
         <Passengers classes={classes} onClick={this.openDialog} />
         <TextField
           InputProps={{
