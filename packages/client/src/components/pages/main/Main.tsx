@@ -26,9 +26,19 @@ import CloseIcon from "@material-ui/icons/Close";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PersonIcon from "@material-ui/icons/PersonPin";
 import classNames from "classnames";
+import GoogleMap from "google-map-react";
 import MapMarkerIcon from "mdi-material-ui/MapMarker";
+import getConfig from "next/config";
 import Link from "next/link";
 import * as React from "react";
+
+const {
+  publicRuntimeConfig: {
+    google: {
+      api: { key }
+    }
+  }
+} = getConfig();
 
 type MainClassKey =
   | "aPersonIcon"
@@ -279,7 +289,19 @@ class Main extends React.Component<MainProps, MainState> {
               </Typography>
             </Toolbar>
           </AppBar>
-          <Typography variant="display4">Map Goes Here</Typography>
+          <div style={{ height: "100vh", position: "absolute", width: "100%" }}>
+            <GoogleMap
+              bootstrapURLKeys={{
+                key,
+                region: "bh"
+              }}
+              defaultCenter={{
+                lat: 26.1065941,
+                lng: 50.5093452
+              }}
+              defaultZoom={10}
+            />
+          </div>
         </Dialog>
       </>
     );
