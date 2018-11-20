@@ -29,8 +29,8 @@ import classNames from "classnames";
 import GoogleMap from "google-map-react";
 import MapMarkerIcon from "mdi-material-ui/MapMarker";
 import getConfig from "next/config";
-import Link from "next/link";
 import * as React from "react";
+import TaxiSharingAppBar from "../TaxiSharingAppBar";
 
 const {
   publicRuntimeConfig: {
@@ -112,22 +112,7 @@ class Main extends React.Component<MainProps, MainState> {
     const { dialogOpen } = this.state;
     return (
       <>
-        <AppBar>
-          <Toolbar>
-            <Link href="/">
-              <Typography
-                variant="subheading"
-                color="inherit"
-                className={classes.grow}
-              >
-                Taxi Sharing
-              </Typography>
-            </Link>
-            <Link href="/history">
-              <Button color="inherit">Ride History</Button>
-            </Link>
-          </Toolbar>
-        </AppBar>
+        <TaxiSharingAppBar />
         <Typography variant="subheading" gutterBottom={true}>
           Ride Details
         </Typography>
