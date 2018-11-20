@@ -1,19 +1,11 @@
 import { Theme } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button/Button";
-import ButtonBase from "@material-ui/core/ButtonBase";
 import red from "@material-ui/core/colors/red";
 import Dialog from "@material-ui/core/Dialog";
 import { StandardProps } from "@material-ui/core/es";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import MenuItem from "@material-ui/core/MenuItem";
 import Slide from "@material-ui/core/Slide";
 import { StyleRules } from "@material-ui/core/styles";
@@ -21,16 +13,13 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "@material-ui/core/TextField";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import PersonIcon from "@material-ui/icons/PersonPin";
-import classNames from "classnames";
 import GoogleMap from "google-map-react";
 import MapMarkerIcon from "mdi-material-ui/MapMarker";
 import getConfig from "next/config";
 import * as React from "react";
 import TaxiSharingAppBar from "../TaxiSharingAppBar";
+import Passengers from "./Passengers";
 
 const {
   publicRuntimeConfig: {
@@ -46,7 +35,7 @@ function createMapOptions(_) {
   };
 }
 
-type MainClassKey =
+export type MainClassKey =
   | "aPersonIcon"
   | "button"
   | "fab"
@@ -119,99 +108,7 @@ class Main extends React.Component<MainProps, MainState> {
         <Typography variant="caption" gutterBottom={true}>
           Passengers
         </Typography>
-        <ExpansionPanel>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <PersonIcon
-              color="inherit"
-              className={classNames(classes.markerIcon, classes.aPersonIcon)}
-            />
-            <Typography className={classes.grow}>Fulan AlFulani</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <List>
-              <ListItem
-                className={classes.listItem}
-                component={ButtonBase}
-                onClick={this.openDialog}
-              >
-                <ListItemIcon>
-                  <MapMarkerIcon className={classes.markerIcon} />
-                </ListItemIcon>
-                <Typography>
-                  <Typography variant="caption">Pick-up Location:</Typography>
-                  University of Bahrain
-                </Typography>
-              </ListItem>
-              <ListItem className={classes.listItem} component={ButtonBase}>
-                <ListItemIcon>
-                  <MapMarkerIcon className={classes.markerIcon} />
-                </ListItemIcon>
-                <Typography>
-                  <Typography variant="caption">Drop-off Location:</Typography>
-                  Al Kindi Specialized Hospital
-                </Typography>
-              </ListItem>
-            </List>
-          </ExpansionPanelDetails>
-          <ExpansionPanelActions>
-            <Button size="small">Edit Name</Button>
-            <Button size="small" color="primary">
-              Delete
-            </Button>
-          </ExpansionPanelActions>
-        </ExpansionPanel>
-        <ExpansionPanel>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <PersonIcon
-              color="inherit"
-              className={classNames(classes.markerIcon, classes.aPersonIcon)}
-            />
-            <Typography className={classes.grow}>'Illan Al'illanah</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <List>
-              <ListItem className={classes.listItem} component={ButtonBase}>
-                <ListItemIcon>
-                  <MapMarkerIcon className={classes.markerIcon} />
-                </ListItemIcon>
-                <Typography>
-                  <Typography variant="caption">Pick-up Location:</Typography>
-                  Arabian Gulf University
-                </Typography>
-              </ListItem>
-              <ListItem className={classes.listItem} component={ButtonBase}>
-                <ListItemIcon>
-                  <MapMarkerIcon className={classes.markerIcon} />
-                </ListItemIcon>
-                <Typography>
-                  <Typography variant="caption">Drop-off Location:</Typography>
-                  Al Abraaj
-                </Typography>
-              </ListItem>
-            </List>
-          </ExpansionPanelDetails>
-          <ExpansionPanelActions>
-            <Button size="small">Edit Name</Button>
-            <Button size="small" color="primary">
-              Delete
-            </Button>
-          </ExpansionPanelActions>
-        </ExpansionPanel>
-        <TextField
-          variant="outlined"
-          fullWidth={true}
-          placeholder="Add a passenger..."
-          margin="normal"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="start">
-                <IconButton>
-                  <AddIcon />
-                </IconButton>
-              </InputAdornment>
-            )
-          }}
-        />
+        <Passengers classes={classes} onClick={this.openDialog} />
         <TextField
           InputProps={{
             startAdornment: (
