@@ -24,6 +24,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PersonIcon from "@material-ui/icons/PersonPin";
 import classNames from "classnames";
 import MapMarkerIcon from "mdi-material-ui/MapMarker";
+import Link from "next/link";
 import * as React from "react";
 
 type MainClassKey =
@@ -72,14 +73,18 @@ function Main(props: MainProps) {
     <>
       <AppBar>
         <Toolbar>
-          <Typography
-            variant="subheading"
-            color="inherit"
-            className={classes.grow}
-          >
-            Taxi-sharing
-          </Typography>
-          <Button color="inherit">Ride History</Button>
+          <Link href="/">
+            <Typography
+              variant="subheading"
+              color="inherit"
+              className={classes.grow}
+            >
+              Taxi Sharing
+            </Typography>
+          </Link>
+          <Link href="/history">
+            <Button color="inherit">Ride History</Button>
+          </Link>
         </Toolbar>
       </AppBar>
       <Typography variant="subheading" gutterBottom={true}>
