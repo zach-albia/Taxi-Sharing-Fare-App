@@ -40,6 +40,12 @@ const {
   }
 } = getConfig();
 
+function createMapOptions(_) {
+  return {
+    gestureHandling: "greedy" // Will capture all touch events on the map towards map panning
+  };
+}
+
 type MainClassKey =
   | "aPersonIcon"
   | "button"
@@ -300,6 +306,7 @@ class Main extends React.Component<MainProps, MainState> {
                 lng: 50.5093452
               }}
               defaultZoom={10}
+              options={createMapOptions}
             />
           </div>
         </Dialog>
