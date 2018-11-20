@@ -5,6 +5,7 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import red from "@material-ui/core/colors/red";
 import { StandardProps } from "@material-ui/core/es";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
@@ -18,6 +19,7 @@ import TextField from "@material-ui/core/TextField";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PersonIcon from "@material-ui/icons/PersonPin";
 import classNames from "classnames";
 import MapMarkerIcon from "mdi-material-ui/MapMarker";
@@ -27,9 +29,9 @@ type MainClassKey =
   | "aPersonIcon"
   | "button"
   | "fab"
+  | "grow"
   | "listItem"
-  | "markerIcon"
-  | "title";
+  | "markerIcon";
 
 function styles(theme: Theme): StyleRules<MainClassKey> {
   return {
@@ -46,14 +48,14 @@ function styles(theme: Theme): StyleRules<MainClassKey> {
       position: "fixed",
       right: theme.spacing.unit * 2
     },
+    grow: {
+      flexGrow: 1
+    },
     listItem: {
       paddingLeft: 0
     },
     markerIcon: {
       color: red["500"]
-    },
-    title: {
-      flexGrow: 1
     }
   };
 }
@@ -72,7 +74,7 @@ function Main(props: MainProps) {
           <Typography
             variant="subheading"
             color="inherit"
-            className={classes.title}
+            className={classes.grow}
           >
             Taxi-sharing
           </Typography>
@@ -82,13 +84,16 @@ function Main(props: MainProps) {
       <Typography variant="subheading" gutterBottom={true}>
         Ride Details
       </Typography>
+      <Typography variant="caption" gutterBottom={true}>
+        Passengers
+      </Typography>
       <ExpansionPanel>
-        <ExpansionPanelSummary>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <PersonIcon
             color="inherit"
             className={classNames(classes.markerIcon, classes.aPersonIcon)}
           />
-          <Typography>Fulan AlFulani</Typography>
+          <Typography className={classes.grow}>Fulan AlFulani</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <List>
@@ -112,14 +117,20 @@ function Main(props: MainProps) {
             </ListItem>
           </List>
         </ExpansionPanelDetails>
+        <ExpansionPanelActions>
+          <Button size="small">Edit Name</Button>
+          <Button size="small" color="primary">
+            Delete
+          </Button>
+        </ExpansionPanelActions>
       </ExpansionPanel>
       <ExpansionPanel>
-        <ExpansionPanelSummary>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <PersonIcon
             color="inherit"
             className={classNames(classes.markerIcon, classes.aPersonIcon)}
           />
-          <Typography>'Illan Al'illanah</Typography>
+          <Typography className={classes.grow}>'Illan Al'illanah</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <List>
@@ -143,6 +154,12 @@ function Main(props: MainProps) {
             </ListItem>
           </List>
         </ExpansionPanelDetails>
+        <ExpansionPanelActions>
+          <Button size="small">Edit Name</Button>
+          <Button size="small" color="primary">
+            Delete
+          </Button>
+        </ExpansionPanelActions>
       </ExpansionPanel>
       <TextField
         variant="outlined"
@@ -153,7 +170,7 @@ function Main(props: MainProps) {
       <TextField
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
+            <InputAdornment position="start" className={classes.markerIcon}>
               <MapMarkerIcon />
             </InputAdornment>
           )
@@ -171,7 +188,7 @@ function Main(props: MainProps) {
       <TextField
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
+            <InputAdornment position="start" className={classes.markerIcon}>
               <MapMarkerIcon />
             </InputAdornment>
           )
