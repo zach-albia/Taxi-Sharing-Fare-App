@@ -1,15 +1,17 @@
-import actionTypes from "./actionTypes";
+import { ActionType, getType } from "typesafe-actions";
+import * as actions from "./actions";
+import State from "./State";
 
-export const exampleInitialState = {
-  appBarTitle: ""
-};
+export type RootAction = ActionType<typeof actions>;
 
-export default function(state = exampleInitialState, action) {
+export const exampleInitialState: State = {};
+
+export default function(state = exampleInitialState, action: RootAction) {
   switch (action.type) {
-    case actionTypes.CHANGE_APPBAR_TITLE:
+    case getType(actions.googleApiLoadedAction):
       return {
         ...state,
-        ...{ appBarTitle: action.payload }
+        google: action.payload
       };
     default:
       return state;

@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import MapMarkerIcon from "mdi-material-ui/MapMarker";
 import * as React from "react";
 import TaxiSharingAppBar from "../TaxiSharingAppBar";
-import { ChooseLocationDialog } from "./ChooseLocationDialog";
+import ChooseLocationDialog from "./ChooseLocationDialog";
 import Passengers from "./Passengers";
 
 export type MainClassKey =
@@ -49,16 +49,18 @@ function styles(theme: Theme): StyleRules<MainClassKey> {
   };
 }
 
-export interface MainProps
-  extends StandardProps<React.HTMLAttributes<HTMLDivElement>, MainClassKey> {
-  classes: Record<MainClassKey, string>;
-}
+export type MainProps = StandardProps<
+  React.HTMLAttributes<HTMLDivElement>,
+  MainClassKey
+>;
+
+type Props = MainProps & { classes: Record<MainClassKey, string> };
 
 interface MainState {
   dialogOpen: boolean;
 }
 
-class Main extends React.Component<MainProps, MainState> {
+class Main extends React.Component<Props, MainState> {
   state: MainState = {
     dialogOpen: false
   };
@@ -125,11 +127,7 @@ class Main extends React.Component<MainProps, MainState> {
         >
           Split the Fare
         </Button>
-        <ChooseLocationDialog
-          open={dialogOpen}
-          onClose={this.closeDialog}
-          classes={classes}
-        />
+        <ChooseLocationDialog open={dialogOpen} onClose={this.closeDialog} />
       </>
     );
   }

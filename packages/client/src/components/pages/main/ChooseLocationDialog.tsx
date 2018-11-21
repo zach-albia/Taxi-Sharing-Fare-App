@@ -1,14 +1,22 @@
-import AppBar from "@material-ui/core/AppBar/AppBar";
-import Dialog from "@material-ui/core/Dialog/Dialog";
-import IconButton from "@material-ui/core/IconButton/IconButton";
+import AppBar from "@material-ui/core/AppBar";
+import Dialog from "@material-ui/core/Dialog";
+import IconButton from "@material-ui/core/IconButton";
+import Paper from "@material-ui/core/Paper";
 import Slide from "@material-ui/core/Slide";
-import Toolbar from "@material-ui/core/Toolbar/Toolbar";
-import Typography from "@material-ui/core/Typography/Typography";
+import { StyleRules, Theme } from "@material-ui/core/styles";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import GoogleMap from "google-map-react";
 import getConfig from "next/config";
 import * as React from "react";
-import { MainClassKey } from "./Main";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import GoogleMapsApi from "../../../@types/GoogleMapsApi";
+import { googleApiLoadedAction } from "../../../redux/actions";
+import State from "../../../redux/State";
+import SearchBox from "./SearchBox";
 
 const {
   publicRuntimeConfig: {
@@ -18,9 +26,14 @@ const {
   }
 } = getConfig();
 
-function createMapOptions(_) {
+type ChooseLocationDialogKey = "searchBox";
+
+function styles(theme: Theme): StyleRules<ChooseLocationDialogKey> {
   return {
-    gestureHandling: "greedy" // Will capture all touch events on the map towards map panning
+    searchBox: {
+      marginTop: theme.spacing.unit * 7,
+      zIndex: 20
+    }
   };
 }
 
@@ -28,56 +41,103 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-interface ChooseLocationDialogProps {
-  open: boolean;
-  onClose: () => void;
-  classes: Record<MainClassKey, string>;
+interface ReduxProps {
+  google: GoogleMapsApi;
+  googleApiLoaded: typeof googleApiLoadedAction;
 }
 
-export class ChooseLocationDialog extends React.Component<
-  ChooseLocationDialogProps
-> {
+type Props = ChooseLocationDialogProps &
+  ReduxProps & {
+    classes: Record<ChooseLocationDialogKey, string>;
+  };
+
+export interface ChooseLocationDialogProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+class ChooseLocationDialog extends React.Component<Props> {
   render() {
+    const { classes, google, googleApiLoaded, onClose, open } = this.props;
     return (
       <Dialog
         fullScreen={true}
-        open={this.props.open}
-        onClose={this.props.onClose}
+        open={open}
+        onClose={onClose}
         TransitionComponent={Transition}
+        style={{ zIndex: 1100 }}
       >
-        <AppBar>
+        <AppBar elevation={0}>
           <Toolbar>
-            <IconButton
-              color="inherit"
-              onClick={this.props.onClose}
-              aria-label="Close"
-            >
+            <IconButton color="inherit" onClick={onClose} aria-label="Close">
               <CloseIcon />
             </IconButton>
             <Typography
               variant="subheading"
               color="inherit"
-              className={this.props.classes.grow}
+              style={{ flexGrow: 1 }}
             >
               Choose pick-up location
             </Typography>
           </Toolbar>
         </AppBar>
-        <div style={{ height: "100vh", position: "absolute", width: "100%" }}>
+        <div
+          style={{
+            height: "100vh",
+            position: "absolute",
+            width: "100%",
+            zIndex: 1
+          }}
+        >
           <GoogleMap
             bootstrapURLKeys={{
-              key,
-              region: "bh"
+              key
             }}
             defaultCenter={{
               lat: 26.1065941,
               lng: 50.5093452
             }}
             defaultZoom={10}
-            options={createMapOptions}
+            onGoogleApiLoaded={(api: GoogleMapsApi) => {
+              googleApiLoaded(api);
+            }}
+            // @ts-ignore
+            placesLibrary={true}
+            yesIWantToUseGoogleMapApiInternals={true}
           />
         </div>
+        {google && (
+          <Paper className={classes.searchBox}>
+            <SearchBox google={google} placeholder="Search Bahrain" />
+          </Paper>
+        )}
       </Dialog>
     );
   }
+
+  componentDidUpdate() {
+    if (!this.props.open) {
+      const pacContainers = document.getElementsByClassName("pac-container");
+      // tslint:disable
+      for (let i = 0; i < pacContainers.length; i++) {
+        pacContainers.item(0).remove();
+      }
+    }
+  }
 }
+
+function mapStateToProps(state: State) {
+  return { google: state.google };
+}
+
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    googleApiLoaded: (api: GoogleMapsApi) =>
+      dispatch(googleApiLoadedAction(api))
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(ChooseLocationDialog));
