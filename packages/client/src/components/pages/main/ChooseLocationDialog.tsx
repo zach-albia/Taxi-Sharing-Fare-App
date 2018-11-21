@@ -1,4 +1,5 @@
 import AppBar from "@material-ui/core/AppBar";
+import Button from "@material-ui/core/Button/Button";
 import Dialog from "@material-ui/core/Dialog";
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
@@ -56,7 +57,13 @@ export interface ChooseLocationDialogProps {
   onClose: () => void;
 }
 
+interface ChooseLocationDialogState {
+  location?: any;
+}
+
 class ChooseLocationDialog extends React.Component<Props> {
+  state: ChooseLocationDialogState = {};
+
   render() {
     const { classes, google, googleApiLoaded, onClose, open } = this.props;
     return (
@@ -107,9 +114,25 @@ class ChooseLocationDialog extends React.Component<Props> {
           />
         </div>
         {google && (
-          <Paper className={classes.searchBox}>
-            <SearchBox google={google} placeholder="Search Bahrain" />
-          </Paper>
+          <>
+            <Paper className={classes.searchBox} square={true}>
+              <SearchBox google={google} placeholder="Search Bahrain" />
+            </Paper>
+            <Button
+              style={{
+                bottom: 24,
+                left: "16%",
+                position: "absolute",
+                right: "16%",
+                width: "66%",
+                zIndex: 1200
+              }}
+              variant="contained"
+              color="primary"
+            >
+              Save Location
+            </Button>
+          </>
         )}
       </Dialog>
     );

@@ -32,11 +32,6 @@ export default class SearchBox extends React.Component<SearchBoxProps> {
   render() {
     return (
       <Input
-        endAdornment={
-          <InputAdornment position="end">
-            <SearchIcon />
-          </InputAdornment>
-        }
         fullWidth={true}
         inputRef={this.inputRef}
         margin="dense"
@@ -44,6 +39,11 @@ export default class SearchBox extends React.Component<SearchBoxProps> {
           setImmediate(setPacContainerZIndex);
         }}
         placeholder={this.props.placeholder}
+        startAdornment={
+          <InputAdornment position="end" style={{ marginRight: 8 }}>
+            <SearchIcon />
+          </InputAdornment>
+        }
         style={{
           padding: 8
         }}
