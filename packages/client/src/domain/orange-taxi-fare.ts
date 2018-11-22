@@ -31,7 +31,7 @@ const fares = {
 /**
  * Details of a taxi ride used for the calculation in orangeTaxiFare.
  */
-export interface TaxiRide {
+export interface FareMetrics {
   isBooked: boolean;
   isDay: boolean;
   meters: number;
@@ -39,32 +39,33 @@ export interface TaxiRide {
 }
 
 /**
- * Calculates the fare for a Bahrain Orange Taxi Group taxi ride
+ * Calculates the fare for a Bahrain Orange Taxi Group taxi fare
  *
- * @param ride The details of the taxi ride
+ * @param fareMetrics The details of the taxi fare
  *
  * @return The fare in Bahraini fils.
  */
-export default function orangeTaxiFare(ride: TaxiRide): number {
-  const fare: Fare = ride.isDay
-    ? ride.isBooked
+export default function orangeTaxiFare(fareMetrics: FareMetrics): number {
+  const fare: Fare = fareMetrics.isDay
+    ? fareMetrics.isBooked
       ? fares.day.booked
       : fares.day.hailed
     : fares.night;
   return (
     fare.starting +
-    Math.floor(ride.meters / fare.rate.meters) * fare.rate.fils +
-    chargeFirstExcess(ride, fare) +
-    chargeSecondExcess(ride)
+    Math.floor(fareMetrics.meters / fare.rate.meters) * fare.rate.fils +
+    chargeFirstExcess(fareMetrics, fare) +
+    chargeSecondExcess(fareMetrics)
   );
 }
 
-function chargeFirstExcess(ride: TaxiRide, fare: Fare) {
-  const reachedFirstExcess = ride.meters >= 1000 || ride.minutes >= 10;
+function chargeFirstExcess(fareMetrics: FareMetrics, fare: Fare) {
+  const reachedFirstExcess =
+    fareMetrics.meters >= 1000 || fareMetrics.minutes >= 10;
   return reachedFirstExcess ? fare.firstExcess : 0;
 }
 
-function chargeSecondExcess(ride: TaxiRide) {
-  const reachedSecondExcess = ride.meters >= 25000;
+function chargeSecondExcess(fareMetrics: FareMetrics) {
+  const reachedSecondExcess = fareMetrics.meters >= 25000;
   return reachedSecondExcess ? fares.excess25km : 0;
 }
