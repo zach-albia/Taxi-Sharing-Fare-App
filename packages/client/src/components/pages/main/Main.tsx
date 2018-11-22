@@ -16,6 +16,7 @@ import TaxiRide from "../../../domain/TaxiRide";
 import State from "../../../redux/State";
 import TaxiSharingAppBar from "../TaxiSharingAppBar";
 import ChooseLocationDialog from "./ChooseLocationDialog";
+import { MainClassKey } from "./Main";
 import Passengers from "./Passengers";
 
 export type MainClassKey =
@@ -54,11 +55,6 @@ function styles(theme: Theme): StyleRules<MainClassKey> {
   };
 }
 
-export type MainProps = StandardProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  MainClassKey
->;
-
 interface ReduxProps {
   destinations: google.maps.Place[];
   origins: google.maps.Place[];
@@ -66,7 +62,10 @@ interface ReduxProps {
   taxiRideIsValid: boolean;
 }
 
-type Props = MainProps & { classes: Record<MainClassKey, string> } & ReduxProps;
+type Props = StandardProps<
+  React.HTMLAttributes<HTMLDivElement>,
+  MainClassKey
+> & { classes: Record<MainClassKey, string> } & ReduxProps;
 
 interface MainState {
   dialogOpen: boolean;

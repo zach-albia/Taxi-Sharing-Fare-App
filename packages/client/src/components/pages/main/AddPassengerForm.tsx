@@ -1,7 +1,7 @@
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import AddIcon from "@material-ui/core/SvgIcon";
 import TextField from "@material-ui/core/TextField";
+import AddIcon from "@material-ui/icons/Add";
 import * as React from "react";
 
 export default class AddPassengerForm extends React.Component {
