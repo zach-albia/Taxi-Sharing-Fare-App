@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import MapMarkerIcon from "mdi-material-ui/MapMarker";
 import * as React from "react";
 import { connect } from "react-redux";
+import { createSelector } from "reselect";
 import TaxiRide from "../../../domain/TaxiRide";
 import State from "../../../redux/State";
 import TaxiSharingAppBar from "../TaxiSharingAppBar";
@@ -59,7 +60,10 @@ export type MainProps = StandardProps<
 >;
 
 interface ReduxProps {
-  currentTaxiRide: TaxiRide;
+  destinations: google.maps.Place[];
+  origins: google.maps.Place[];
+  taxiRide: TaxiRide;
+  taxiRideIsValid: boolean;
 }
 
 type Props = MainProps & { classes: Record<MainClassKey, string> } & ReduxProps;
@@ -82,7 +86,7 @@ class Main extends React.Component<Props, MainState> {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, taxiRideIsValid } = this.props;
     const { dialogOpen } = this.state;
     return (
       <>
@@ -128,6 +132,7 @@ class Main extends React.Component<Props, MainState> {
           <MenuItem value={1}>Al Abraaj</MenuItem>
         </TextField>
         <Button
+          disabled={!taxiRideIsValid}
           fullWidth={true}
           variant="contained"
           className={classes.button}
@@ -141,8 +146,40 @@ class Main extends React.Component<Props, MainState> {
   }
 }
 
-function mapStateToProps(state: State) {
-  return { currentTaxiRide: state.currentTaxiRide };
+function taxiRideSelector(state: State) {
+  return state.currentTaxiRide;
 }
+
+const originsSelector = createSelector(taxiRideSelector, taxiRide =>
+  taxiRide.passengers.filter(p => !!p.pickUpLocation).map(p => p.pickUpLocation)
+);
+
+const destinationsSelector = createSelector(taxiRideSelector, taxiRide =>
+  taxiRide.passengers
+    .filter(p => !!p.dropOffLocation)
+    .map(p => p.dropOffLocation)
+);
+
+const taxiRideIsValidSelector = createSelector(
+  taxiRideSelector,
+  ({ passengers, destination, origin }) =>
+    passengers.length > 0 &&
+    passengers.every(p => !!p.pickUpLocation && !!p.dropOffLocation) &&
+    !!origin &&
+    !!destination
+);
+
+const mapStateToProps = createSelector(
+  taxiRideSelector,
+  originsSelector,
+  destinationsSelector,
+  taxiRideIsValidSelector,
+  (taxiRide, origins, destinations, taxiRideIsValid) => ({
+    destinations,
+    origins,
+    taxiRide,
+    taxiRideIsValid
+  })
+);
 
 export default connect(mapStateToProps)(withStyles(styles)(Main));
