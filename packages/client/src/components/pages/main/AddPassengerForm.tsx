@@ -15,7 +15,7 @@ export default class AddPassengerForm extends React.Component {
         InputProps={{
           endAdornment: (
             <InputAdornment position="start">
-              <IconButton>
+              <IconButton style={{ marginRight: -16 }}>
                 <AddIcon />
               </IconButton>
             </InputAdornment>

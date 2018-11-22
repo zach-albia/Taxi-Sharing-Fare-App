@@ -25,7 +25,8 @@ export type MainClassKey =
   | "fab"
   | "grow"
   | "listItem"
-  | "markerIcon";
+  | "markerIcon"
+  | "selectIcon";
 
 function styles(theme: Theme): StyleRules<MainClassKey> {
   return {
@@ -51,6 +52,9 @@ function styles(theme: Theme): StyleRules<MainClassKey> {
     },
     markerIcon: {
       color: red["500"]
+    },
+    selectIcon: {
+      marginRight: theme.spacing.unit * 2
     }
   };
 }
@@ -102,6 +106,11 @@ class Main extends React.Component<Props, MainState> {
               </InputAdornment>
             )
           }}
+          SelectProps={{
+            classes: {
+              icon: classes.selectIcon
+            }
+          }}
           label="Ride Origin"
           select={true}
           variant="outlined"
@@ -119,6 +128,11 @@ class Main extends React.Component<Props, MainState> {
                 <MapMarkerIcon />
               </InputAdornment>
             )
+          }}
+          SelectProps={{
+            classes: {
+              icon: classes.selectIcon
+            }
           }}
           label="Ride Destination"
           select={true}
