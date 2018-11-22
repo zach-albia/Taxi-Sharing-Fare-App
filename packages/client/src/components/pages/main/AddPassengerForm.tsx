@@ -22,6 +22,7 @@ class AddPassengerForm extends React.Component<Props> {
 
   private addPassenger = () => {
     this.props.addPassenger(this.state.name);
+    this.setState({ name: "" });
   };
 
   private changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,6 +37,7 @@ class AddPassengerForm extends React.Component<Props> {
         margin="normal"
         onChange={this.changeName}
         placeholder="Add a passenger..."
+        value={name}
         variant="outlined"
         InputProps={{
           endAdornment: (
