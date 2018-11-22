@@ -30,6 +30,7 @@ function styles(theme: Theme): StyleRules<MainClassKey> {
       marginRight: theme.spacing.unit * 2
     },
     button: {
+      marginBottom: theme.spacing.unit * 2,
       marginTop: theme.spacing.unit
     },
     fab: {
