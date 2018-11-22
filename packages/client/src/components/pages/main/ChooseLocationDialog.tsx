@@ -105,9 +105,7 @@ class ChooseLocationDialog extends React.Component<Props> {
               lng: 50.5093452
             }}
             defaultZoom={10}
-            onGoogleApiLoaded={(api: GoogleMapsApi) => {
-              googleApiLoaded(api);
-            }}
+            onGoogleApiLoaded={googleApiLoaded}
             // @ts-ignore
             placesLibrary={true}
             yesIWantToUseGoogleMapApiInternals={true}
