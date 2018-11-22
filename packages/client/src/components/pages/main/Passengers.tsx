@@ -13,16 +13,21 @@ import PersonIcon from "@material-ui/icons/PersonPin";
 import classNames from "classnames";
 import MapMarkerIcon from "mdi-material-ui/MapMarker";
 import * as React from "react";
+import { Passenger } from "../../../domain/TaxiRide";
 import AddPassengerForm from "./AddPassengerForm";
 import { MainClassKey } from "./Main";
 
 export interface PassengersProps {
   classes: Record<MainClassKey, string>;
-  onClick: () => void;
+  onClickLocation: () => void;
+  passengers: Passenger[];
 }
+
+const selectLocationMsg = "Tap to select location";
 
 export default class Passengers extends React.Component<PassengersProps> {
   render() {
+    const { classes, onClickLocation, passengers } = this.props;
     return (
       <>
         <Typography variant="caption" gutterBottom={true}>
@@ -32,36 +37,28 @@ export default class Passengers extends React.Component<PassengersProps> {
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <PersonIcon
               color="inherit"
-              className={classNames(
-                this.props.classes.markerIcon,
-                this.props.classes.aPersonIcon
-              )}
+              className={classNames(classes.markerIcon, classes.aPersonIcon)}
             />
-            <Typography className={this.props.classes.grow}>
-              Fulan AlFulani
-            </Typography>
+            <Typography className={classes.grow}>Fulan AlFulani</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <List>
               <ListItem
-                className={this.props.classes.listItem}
+                className={classes.listItem}
                 component={ButtonBase}
-                onClick={this.props.onClick}
+                onClick={onClickLocation}
               >
                 <ListItemIcon>
-                  <MapMarkerIcon className={this.props.classes.markerIcon} />
+                  <MapMarkerIcon className={classes.markerIcon} />
                 </ListItemIcon>
                 <Typography>
                   <Typography variant="caption">Pick-up Location:</Typography>
                   University of Bahrain
                 </Typography>
               </ListItem>
-              <ListItem
-                className={this.props.classes.listItem}
-                component={ButtonBase}
-              >
+              <ListItem className={classes.listItem} component={ButtonBase}>
                 <ListItemIcon>
-                  <MapMarkerIcon className={this.props.classes.markerIcon} />
+                  <MapMarkerIcon className={classes.markerIcon} />
                 </ListItemIcon>
                 <Typography>
                   <Typography variant="caption">Drop-off Location:</Typography>
@@ -81,35 +78,24 @@ export default class Passengers extends React.Component<PassengersProps> {
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <PersonIcon
               color="inherit"
-              className={classNames(
-                this.props.classes.markerIcon,
-                this.props.classes.aPersonIcon
-              )}
+              className={classNames(classes.markerIcon, classes.aPersonIcon)}
             />
-            <Typography className={this.props.classes.grow}>
-              'Illan Al'illanah
-            </Typography>
+            <Typography className={classes.grow}>'Illan Al'illanah</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <List>
-              <ListItem
-                className={this.props.classes.listItem}
-                component={ButtonBase}
-              >
+              <ListItem className={classes.listItem} component={ButtonBase}>
                 <ListItemIcon>
-                  <MapMarkerIcon className={this.props.classes.markerIcon} />
+                  <MapMarkerIcon className={classes.markerIcon} />
                 </ListItemIcon>
                 <Typography>
                   <Typography variant="caption">Pick-up Location:</Typography>
                   Arabian Gulf University
                 </Typography>
               </ListItem>
-              <ListItem
-                className={this.props.classes.listItem}
-                component={ButtonBase}
-              >
+              <ListItem className={classes.listItem} component={ButtonBase}>
                 <ListItemIcon>
-                  <MapMarkerIcon className={this.props.classes.markerIcon} />
+                  <MapMarkerIcon className={classes.markerIcon} />
                 </ListItemIcon>
                 <Typography>
                   <Typography variant="caption">Drop-off Location:</Typography>
@@ -125,6 +111,76 @@ export default class Passengers extends React.Component<PassengersProps> {
             </Button>
           </ExpansionPanelActions>
         </ExpansionPanel>
+        {passengers.length > 0 ? (
+          passengers.map(passenger => (
+            <ExpansionPanel key={passenger.id}>
+              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                <PersonIcon
+                  color="inherit"
+                  className={classNames(
+                    classes.markerIcon,
+                    classes.aPersonIcon
+                  )}
+                />
+                <Typography className={classes.grow}>
+                  {passenger.name}
+                </Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <List>
+                  <ListItem
+                    className={classes.listItem}
+                    component={ButtonBase}
+                    onClick={onClickLocation}
+                  >
+                    <ListItemIcon>
+                      <MapMarkerIcon className={classes.markerIcon} />
+                    </ListItemIcon>
+                    <Typography>
+                      <Typography variant="caption">
+                        Pick-up Location:
+                      </Typography>
+                      {passenger.pickUpLocation ? (
+                        passenger.pickUpLocation.query
+                      ) : (
+                        <i>{selectLocationMsg}</i>
+                      )}
+                    </Typography>
+                  </ListItem>
+                  <ListItem
+                    className={classes.listItem}
+                    component={ButtonBase}
+                    onClick={onClickLocation}
+                  >
+                    <ListItemIcon>
+                      <MapMarkerIcon className={classes.markerIcon} />
+                    </ListItemIcon>
+                    <Typography>
+                      <Typography variant="caption">
+                        Drop-off Location:
+                      </Typography>
+                      {passenger.dropOffLocation ? (
+                        passenger.dropOffLocation.query
+                      ) : (
+                        <i>{selectLocationMsg}</i>
+                      )}
+                    </Typography>
+                  </ListItem>
+                </List>
+              </ExpansionPanelDetails>
+              <ExpansionPanelActions>
+                <Button size="small">Edit Name</Button>
+                <Button size="small" color="primary">
+                  Delete
+                </Button>
+              </ExpansionPanelActions>
+            </ExpansionPanel>
+          ))
+        ) : (
+          <Typography variant="caption">
+            No passengers yet. Add some below
+          </Typography>
+        )}
         <AddPassengerForm />
       </>
     );

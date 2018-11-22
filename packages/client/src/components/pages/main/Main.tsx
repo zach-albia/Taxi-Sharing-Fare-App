@@ -103,7 +103,11 @@ class Main extends React.Component<Props, MainState> {
         <Typography variant="subheading" gutterBottom={true}>
           Ride Details
         </Typography>
-        <Passengers classes={classes} onClick={this.openDialog} />
+        <Passengers
+          classes={classes}
+          onClickLocation={this.openDialog}
+          passengers={taxiRide.passengers}
+        />
         <PlaceSelect
           classes={classes}
           label="Origin"
