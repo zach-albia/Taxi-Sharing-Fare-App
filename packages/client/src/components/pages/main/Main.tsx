@@ -18,6 +18,7 @@ import TaxiSharingAppBar from "../TaxiSharingAppBar";
 import ChooseLocationDialog from "./ChooseLocationDialog";
 import { MainClassKey } from "./Main";
 import Passengers from "./Passengers";
+import PlaceSelect from "./PlaceSelect";
 
 export type MainClassKey =
   | "aPersonIcon"
@@ -66,10 +67,9 @@ interface ReduxProps {
   taxiRideIsValid: boolean;
 }
 
-type Props = StandardProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  MainClassKey
-> & { classes: Record<MainClassKey, string> } & ReduxProps;
+type Props = ReduxProps & {
+  classes: Record<MainClassKey, string>;
+} & StandardProps<React.HTMLAttributes<HTMLDivElement>, MainClassKey>;
 
 interface MainState {
   dialogOpen: boolean;
@@ -89,7 +89,13 @@ class Main extends React.Component<Props, MainState> {
   };
 
   render() {
-    const { classes, taxiRideIsValid } = this.props;
+    const {
+      classes,
+      destinations,
+      origins,
+      taxiRide,
+      taxiRideIsValid
+    } = this.props;
     const { dialogOpen } = this.state;
     return (
       <>
@@ -98,6 +104,18 @@ class Main extends React.Component<Props, MainState> {
           Ride Details
         </Typography>
         <Passengers classes={classes} onClick={this.openDialog} />
+        <PlaceSelect
+          classes={classes}
+          label="Origin"
+          place={taxiRide.origin}
+          places={origins}
+        />
+        <PlaceSelect
+          classes={classes}
+          label="Origin"
+          place={taxiRide.destination}
+          places={destinations}
+        />
         <TextField
           InputProps={{
             startAdornment: (
