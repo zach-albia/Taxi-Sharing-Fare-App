@@ -10,6 +10,9 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import MapMarkerIcon from "mdi-material-ui/MapMarker";
 import * as React from "react";
+import { connect } from "react-redux";
+import TaxiRide from "../../../domain/TaxiRide";
+import State from "../../../redux/State";
 import TaxiSharingAppBar from "../TaxiSharingAppBar";
 import ChooseLocationDialog from "./ChooseLocationDialog";
 import Passengers from "./Passengers";
@@ -55,7 +58,11 @@ export type MainProps = StandardProps<
   MainClassKey
 >;
 
-type Props = MainProps & { classes: Record<MainClassKey, string> };
+interface ReduxProps {
+  currentTaxiRide: TaxiRide;
+}
+
+type Props = MainProps & { classes: Record<MainClassKey, string> } & ReduxProps;
 
 interface MainState {
   dialogOpen: boolean;
@@ -134,4 +141,8 @@ class Main extends React.Component<Props, MainState> {
   }
 }
 
-export default withStyles(styles)(Main);
+function mapStateToProps(state: State) {
+  return { currentTaxiRide: state.currentTaxiRide };
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(Main));

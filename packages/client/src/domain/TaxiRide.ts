@@ -1,11 +1,12 @@
 export interface Passenger {
-  dropOffLocation: google.maps.Place;
+  dropOffLocation?: google.maps.Place;
+  id: string;
   name: string;
-  pickUpLocation: google.maps.Place;
+  pickUpLocation?: google.maps.Place;
 }
 
 export default interface TaxiRide {
-  destination: google.maps.Place;
-  origin: google.maps.Place;
+  destination?: google.maps.Place;
+  origin?: google.maps.Place;
   passengers: Passenger[];
 }
