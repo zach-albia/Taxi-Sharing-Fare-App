@@ -13,7 +13,6 @@ export interface SearchBoxProps {
 
 function setPacContainerZIndex() {
   $(".pac-container").css({
-    color: "blue",
     position: "absolute",
     "z-index": 1200
   });
@@ -35,9 +34,7 @@ export default class SearchBox extends React.Component<SearchBoxProps> {
         fullWidth={true}
         inputRef={this.inputRef}
         margin="dense"
-        onChange={() => {
-          setImmediate(setPacContainerZIndex);
-        }}
+        onChange={setPacContainerZIndex}
         placeholder={this.props.placeholder}
         startAdornment={
           <InputAdornment position="end" style={{ marginRight: 8 }}>
