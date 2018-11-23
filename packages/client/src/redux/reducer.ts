@@ -33,6 +33,20 @@ export default function(state = exampleInitialState, action: RootAction) {
           }
         }
       };
+    case getType(actions.editPassengerNameAction):
+      return {
+        ...state,
+        currentTaxiRide: {
+          ...state.currentTaxiRide,
+          passengers: {
+            ...state.currentTaxiRide.passengers,
+            [action.payload.id]: {
+              ...state.currentTaxiRide.passengers[action.payload.id],
+              name: action.payload.name
+            }
+          }
+        }
+      };
     case getType(actions.googleApiLoadedAction):
       return {
         ...state,

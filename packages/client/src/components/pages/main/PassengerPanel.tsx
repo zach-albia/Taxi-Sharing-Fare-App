@@ -61,6 +61,7 @@ class PassengerPanel extends React.Component<Props, State> {
     const id = this.props.passenger.id;
     const name = this.state.name;
     this.props.editPassengerName(id, name);
+    this.setState({ editMode: false });
   };
 
   render() {
