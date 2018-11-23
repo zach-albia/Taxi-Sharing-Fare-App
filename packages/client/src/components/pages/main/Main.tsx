@@ -116,7 +116,6 @@ class Main extends React.Component<Props, MainState> {
         />
         {origins && (
           <PlaceSelect
-            classes={classes}
             label="Origin"
             onSelect={chooseOrigin}
             place={taxiRide.origin}
@@ -125,7 +124,6 @@ class Main extends React.Component<Props, MainState> {
         )}
         {destinations && (
           <PlaceSelect
-            classes={classes}
             label="Destination"
             onSelect={chooseDestination}
             place={taxiRide.destination}

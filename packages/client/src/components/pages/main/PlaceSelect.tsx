@@ -1,12 +1,8 @@
-import InputAdornment from "@material-ui/core/InputAdornment";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
-import MapMarkerIcon from "mdi-material-ui/MapMarker";
 import * as React from "react";
-import { MainClassKey } from "./Main";
 
 export interface PlaceSelectProps {
-  classes: Record<MainClassKey, string>;
   label: string;
   onSelect: (place: google.maps.Place) => void;
   place: google.maps.Place;
@@ -23,17 +19,10 @@ class PlaceSelect extends React.Component<Props> {
   };
 
   render() {
-    const { classes, label, place, places } = this.props;
+    const { label, place, places } = this.props;
     return (
       places.length > 0 && (
         <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start" className={classes.markerIcon}>
-                <MapMarkerIcon />
-              </InputAdornment>
-            )
-          }}
           fullWidth={true}
           label={label}
           margin="normal"
