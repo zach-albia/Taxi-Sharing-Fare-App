@@ -2,18 +2,16 @@ import { Theme } from "@material-ui/core";
 import Button from "@material-ui/core/Button/Button";
 import red from "@material-ui/core/colors/red";
 import { StandardProps } from "@material-ui/core/es";
-import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
-import MenuItem from "@material-ui/core/MenuItem";
 import { StyleRules } from "@material-ui/core/styles";
 import withStyles from "@material-ui/core/styles/withStyles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import MapMarkerIcon from "mdi-material-ui/MapMarker";
 import * as React from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { createSelector } from "reselect";
 import TaxiRide, { Passenger } from "../../../domain/TaxiRide";
-import State from "../../../redux/State";
+import { setDialogLocationAction } from "../../../redux/actions";
+import State, { PassengerLocation } from "../../../redux/State";
 import TaxiSharingAppBar from "../TaxiSharingAppBar";
 import ChooseLocationDialog from "./ChooseLocationDialog";
 import { MainClassKey } from "./Main";
@@ -26,8 +24,7 @@ export type MainClassKey =
   | "fab"
   | "grow"
   | "listItem"
-  | "markerIcon"
-  | "selectIcon";
+  | "markerIcon";
 
 function styles(theme: Theme): StyleRules<MainClassKey> {
   return {
@@ -53,9 +50,6 @@ function styles(theme: Theme): StyleRules<MainClassKey> {
     },
     markerIcon: {
       color: red["500"]
-    },
-    selectIcon: {
-      marginRight: theme.spacing.unit * 2
     }
   };
 }
@@ -64,6 +58,7 @@ interface ReduxProps {
   destinations: google.maps.Place[];
   origins: google.maps.Place[];
   passengers: Passenger[];
+  setDialogLocation: typeof setDialogLocationAction;
   taxiRide: TaxiRide;
   taxiRideIsValid: boolean;
 }
@@ -81,7 +76,8 @@ class Main extends React.Component<Props, MainState> {
     dialogOpen: false
   };
 
-  private openDialog = () => {
+  private openDialog = (passengerLocation: PassengerLocation) => () => {
+    this.props.setDialogLocation(passengerLocation);
     this.setState({ dialogOpen: true });
   };
 
@@ -107,67 +103,25 @@ class Main extends React.Component<Props, MainState> {
         </Typography>
         <Passengers
           classes={classes}
-          onClickLocation={this.openDialog}
+          onLocationClick={this.openDialog}
           passengers={passengers}
         />
-        <PlaceSelect
-          classes={classes}
-          label="Origin"
-          place={taxiRide.origin}
-          places={origins}
-        />
-        <PlaceSelect
-          classes={classes}
-          label="Origin"
-          place={taxiRide.destination}
-          places={destinations}
-        />
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start" className={classes.markerIcon}>
-                <MapMarkerIcon />
-              </InputAdornment>
-            )
-          }}
-          SelectProps={{
-            classes: {
-              icon: classes.selectIcon
-            }
-          }}
-          label="Ride Origin"
-          select={true}
-          variant="outlined"
-          fullWidth={true}
-          value={0}
-          margin="normal"
-        >
-          <MenuItem value={0}>University of Bahrain</MenuItem>
-          <MenuItem value={1}>Arabian Gulf University</MenuItem>
-        </TextField>
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start" className={classes.markerIcon}>
-                <MapMarkerIcon />
-              </InputAdornment>
-            )
-          }}
-          SelectProps={{
-            classes: {
-              icon: classes.selectIcon
-            }
-          }}
-          label="Ride Destination"
-          select={true}
-          variant="outlined"
-          fullWidth={true}
-          value={1}
-          margin="normal"
-        >
-          <MenuItem value={0}>Al Kindi Specialized Hospital</MenuItem>
-          <MenuItem value={1}>Al Abraaj</MenuItem>
-        </TextField>
+        {origins && (
+          <PlaceSelect
+            classes={classes}
+            label="Origin"
+            place={taxiRide.origin}
+            places={origins}
+          />
+        )}
+        {destinations && (
+          <PlaceSelect
+            classes={classes}
+            label="Destination"
+            place={taxiRide.destination}
+            places={destinations}
+          />
+        )}
         <Button
           disabled={!taxiRideIsValid}
           fullWidth={true}
@@ -188,7 +142,7 @@ function taxiRideSelector(state: State) {
 }
 
 const passengersSelector = createSelector(taxiRideSelector, taxiRide =>
-  taxiRide.passengerIds.map(id => taxiRide.passengers[id])
+  taxiRide.passengerIds.map(id => taxiRide.passengers[id] as Passenger)
 );
 
 const originsSelector = createSelector(passengersSelector, passengers =>
@@ -224,4 +178,14 @@ const mapStateToProps = createSelector(
   })
 );
 
-export default connect(mapStateToProps)(withStyles(styles)(Main));
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    setDialogLocation: (dialogLocation: PassengerLocation) =>
+      dispatch(setDialogLocationAction(dialogLocation))
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Main));

@@ -16,11 +16,12 @@ import MapMarkerIcon from "mdi-material-ui/MapMarker";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Passenger } from "../../../domain/TaxiRide";
+import { LocationType, Passenger } from "../../../domain/TaxiRide";
 import {
   deletePassengerAction,
   editPassengerNameAction
 } from "../../../redux/actions";
+import { PassengerLocation } from "../../../redux/State";
 import { MainClassKey } from "./Main";
 
 const selectLocationMsg = "Tap to select location";
@@ -28,7 +29,7 @@ const selectLocationMsg = "Tap to select location";
 export interface PassengerPanelProps {
   classes: Record<MainClassKey, string>;
   passenger: Passenger;
-  onClick: () => void;
+  onLocationClick: (passengerLocation: PassengerLocation) => () => void;
 }
 
 interface ReduxProps {
@@ -73,7 +74,7 @@ class PassengerPanel extends React.Component<Props, State> {
   };
 
   render() {
-    const { classes, onClick, passenger } = this.props;
+    const { classes, onLocationClick, passenger } = this.props;
     const { editMode, name } = this.state;
     const personIcon = (
       <PersonIcon
@@ -105,7 +106,11 @@ class PassengerPanel extends React.Component<Props, State> {
             <ListItem
               className={classes.listItem}
               component={ButtonBase}
-              onClick={onClick}
+              onClick={onLocationClick({
+                id: passenger.id,
+                place: passenger.pickUpLocation,
+                type: LocationType.Pickup
+              })}
             >
               <ListItemIcon>
                 <MapMarkerIcon className={classes.markerIcon} />
@@ -122,7 +127,11 @@ class PassengerPanel extends React.Component<Props, State> {
             <ListItem
               className={classes.listItem}
               component={ButtonBase}
-              onClick={onClick}
+              onClick={onLocationClick({
+                id: passenger.id,
+                place: passenger.dropOffLocation,
+                type: LocationType.DropOff
+              })}
             >
               <ListItemIcon>
                 <MapMarkerIcon className={classes.markerIcon} />

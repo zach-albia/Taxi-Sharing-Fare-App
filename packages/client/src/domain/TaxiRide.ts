@@ -1,3 +1,8 @@
+export enum LocationType {
+  Pickup,
+  DropOff
+}
+
 export interface Passenger {
   dropOffLocation?: google.maps.Place;
   id: string;

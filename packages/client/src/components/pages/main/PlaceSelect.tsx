@@ -1,7 +1,7 @@
-import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
-import MenuItem from "@material-ui/core/MenuItem/MenuItem";
-import MapMarkerIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import TextField from "@material-ui/core/TextField/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@material-ui/core/TextField";
+import MapMarkerIcon from "mdi-material-ui/MapMarker";
 import * as React from "react";
 import { MainClassKey } from "./Main";
 
@@ -26,11 +26,6 @@ const PlaceSelect = (props: Props) => {
             </InputAdornment>
           )
         }}
-        SelectProps={{
-          classes: {
-            icon: classes.selectIcon
-          }
-        }}
         label={label}
         select={true}
         variant="outlined"
@@ -38,9 +33,9 @@ const PlaceSelect = (props: Props) => {
         value={place.placeId}
         margin="normal"
       >
-        {places.map(origin => (
-          <MenuItem key={origin.placeId} value={origin.placeId}>
-            {origin.query}
+        {places.map(p => (
+          <MenuItem key={p.placeId} value={p.placeId}>
+            {p.query}
           </MenuItem>
         ))}
       </TextField>

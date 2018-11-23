@@ -1,19 +1,20 @@
 import Typography from "@material-ui/core/Typography";
 import * as React from "react";
 import { Passenger } from "../../../domain/TaxiRide";
+import { PassengerLocation } from "../../../redux/State";
 import AddPassengerForm from "./AddPassengerForm";
 import { MainClassKey } from "./Main";
 import PassengerPanel from "./PassengerPanel";
 
 export interface PassengersProps {
   classes: Record<MainClassKey, string>;
-  onClickLocation: () => void;
+  onLocationClick: (passengerLocation: PassengerLocation) => () => void;
   passengers: Passenger[];
 }
 
 export default class Passengers extends React.PureComponent<PassengersProps> {
   render() {
-    const { classes, onClickLocation, passengers } = this.props;
+    const { classes, onLocationClick, passengers } = this.props;
     return (
       <>
         {passengers.length > 0 ? (
@@ -22,7 +23,7 @@ export default class Passengers extends React.PureComponent<PassengersProps> {
               key={passenger.id}
               classes={classes}
               passenger={passenger}
-              onClick={onClickLocation}
+              onLocationClick={onLocationClick}
             />
           ))
         ) : (

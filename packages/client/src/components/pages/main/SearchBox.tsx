@@ -9,6 +9,7 @@ import GoogleMapsApi from "../../../@types/GoogleMapsApi";
 export interface SearchBoxProps {
   google: GoogleMapsApi;
   placeholder: string;
+  query?: string;
 }
 
 function setPacContainerZIndex() {
@@ -29,8 +30,10 @@ export default class SearchBox extends React.Component<SearchBoxProps> {
   }
 
   render() {
+    const { query } = this.props;
     return (
       <Input
+        defaultValue={query}
         fullWidth={true}
         inputRef={this.inputRef}
         margin="dense"

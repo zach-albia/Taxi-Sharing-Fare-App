@@ -1,6 +1,13 @@
-import TaxiRide from "../domain/TaxiRide";
+import TaxiRide, { LocationType } from "../domain/TaxiRide";
+
+export interface PassengerLocation {
+  id: string;
+  place?: google.maps.Place;
+  type: LocationType;
+}
 
 export default interface State {
-  google?: typeof google;
+  dialogLocation?: PassengerLocation;
   currentTaxiRide: TaxiRide;
+  google?: typeof google;
 }

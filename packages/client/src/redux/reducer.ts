@@ -1,8 +1,8 @@
 import { ActionType, getType } from "typesafe-actions";
 import uuid from "uuid/v1";
-import { Passenger } from "../domain/TaxiRide";
+import { LocationType, Passenger } from "../domain/TaxiRide";
 import * as actions from "./actions";
-import State from "./State";
+import State, { PassengerLocation } from "./State";
 
 export type RootAction = ActionType<typeof actions>;
 
@@ -23,6 +23,7 @@ export default function(state = exampleInitialState, action: RootAction) {
       return {
         ...state,
         currentTaxiRide: {
+          ...state.currentTaxiRide,
           passengerIds: [
             ...state.currentTaxiRide.passengerIds,
             newPassenger.id
@@ -66,6 +67,31 @@ export default function(state = exampleInitialState, action: RootAction) {
       return {
         ...state,
         google: action.payload
+      };
+    case getType(actions.setDialogLocationAction):
+      return {
+        ...state,
+        dialogLocation: action.payload
+      };
+    case getType(actions.setPassengerLocationAction):
+      const passengerLocation: PassengerLocation = action.payload;
+      return {
+        ...state,
+        currentTaxiRide: {
+          ...state.currentTaxiRide,
+          passengers: {
+            ...state.currentTaxiRide.passengers,
+            [passengerLocation.id]: {
+              ...state.currentTaxiRide.passengers[passengerLocation.id],
+              [passengerLocation.type === LocationType.DropOff
+                ? "dropOffLocation"
+                : "pickUpLocation"]: passengerLocation.place
+            }
+          },
+          [passengerLocation.type === LocationType.DropOff
+            ? "destination"
+            : "origin"]: passengerLocation.place
+        }
       };
     default:
       return state;

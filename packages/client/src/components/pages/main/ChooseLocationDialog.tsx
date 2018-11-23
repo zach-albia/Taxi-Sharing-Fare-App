@@ -15,8 +15,13 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import GoogleMapsApi from "../../../@types/GoogleMapsApi";
-import { googleApiLoadedAction } from "../../../redux/actions";
-import State from "../../../redux/State";
+import { LocationType } from "../../../domain/TaxiRide";
+import {
+  googleApiLoadedAction,
+  setDialogLocationAction,
+  setPassengerLocationAction
+} from "../../../redux/actions";
+import State, { PassengerLocation } from "../../../redux/State";
 import SearchBox from "./SearchBox";
 
 const {
@@ -43,8 +48,11 @@ function Transition(props) {
 }
 
 interface ReduxProps {
+  dialogLocation?: PassengerLocation;
   google: GoogleMapsApi;
   googleApiLoaded: typeof googleApiLoadedAction;
+  setDialogLocation: typeof setDialogLocationAction;
+  setPassengerLocation: typeof setPassengerLocationAction;
 }
 
 type Props = ChooseLocationDialogProps &
@@ -58,14 +66,66 @@ export interface ChooseLocationDialogProps {
 }
 
 interface ChooseLocationDialogState {
-  location?: any;
+  location?: google.maps.LatLngLiteral;
 }
 
 class ChooseLocationDialog extends React.Component<Props> {
   state: ChooseLocationDialogState = {};
 
+  private geocoder: google.maps.Geocoder;
+  private marker: google.maps.Marker;
+
+  private onSaveLocation = () => {
+    if (!this.geocoder) {
+      this.geocoder = new google.maps.Geocoder();
+    }
+    const { dialogLocation, setPassengerLocation } = this.props;
+    const { location } = this.state;
+    this.geocoder.geocode({ location }, (results, status) => {
+      if (status === google.maps.GeocoderStatus.OK) {
+        const result = results[0];
+        if (result) {
+          const updatedLocation: PassengerLocation = {
+            ...dialogLocation,
+            place: {
+              ...dialogLocation.place,
+              location,
+              placeId: result.place_id,
+              query: result.formatted_address
+            }
+          };
+          setPassengerLocation(updatedLocation);
+          this.props.onClose();
+        }
+      }
+    });
+  };
+
+  private onGoogleMapClick = location => {
+    this.setState({ location });
+    this.setMarker(location);
+  };
+
+  private googleApiLoaded = (api: GoogleMapsApi) => {
+    const { dialogLocation, googleApiLoaded } = this.props;
+    googleApiLoaded(api);
+    if (dialogLocation && dialogLocation.place) {
+      this.setMarker(dialogLocation.place
+        .location as google.maps.LatLngLiteral);
+    }
+  };
+
+  private setMarker(location: google.maps.LatLngLiteral) {
+    if (!this.marker) {
+      this.marker = new google.maps.Marker();
+    }
+    this.marker.setMap(this.props.google.map);
+    this.marker.setPosition(location);
+  }
+
   render() {
-    const { classes, google, googleApiLoaded, onClose, open } = this.props;
+    const { classes, dialogLocation, google, onClose, open } = this.props;
+    const { location } = this.state;
     return (
       <Dialog
         fullScreen={true}
@@ -84,7 +144,12 @@ class ChooseLocationDialog extends React.Component<Props> {
               color="inherit"
               style={{ flexGrow: 1 }}
             >
-              Choose pick-up location
+              {dialogLocation &&
+                `Choose ${
+                  dialogLocation.type === LocationType.Pickup
+                    ? "Pickup"
+                    : "Drop Off"
+                } Location`}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -105,7 +170,8 @@ class ChooseLocationDialog extends React.Component<Props> {
               lng: 50.5093452
             }}
             defaultZoom={10}
-            onGoogleApiLoaded={googleApiLoaded}
+            onClick={this.onGoogleMapClick}
+            onGoogleApiLoaded={this.googleApiLoaded}
             // @ts-ignore
             placesLibrary={true}
             yesIWantToUseGoogleMapApiInternals={true}
@@ -114,9 +180,20 @@ class ChooseLocationDialog extends React.Component<Props> {
         {google && (
           <>
             <Paper className={classes.searchBox} square={true}>
-              <SearchBox google={google} placeholder="Search Bahrain" />
+              <SearchBox
+                google={google}
+                placeholder="Search Bahrain"
+                query={
+                  dialogLocation && dialogLocation.place
+                    ? dialogLocation.place.query
+                    : undefined
+                }
+              />
             </Paper>
             <Button
+              color="primary"
+              disabled={!location}
+              onClick={this.onSaveLocation}
               style={{
                 bottom: 24,
                 left: "16%",
@@ -126,7 +203,6 @@ class ChooseLocationDialog extends React.Component<Props> {
                 zIndex: 1200
               }}
               variant="contained"
-              color="primary"
             >
               Save Location
             </Button>
@@ -135,26 +211,20 @@ class ChooseLocationDialog extends React.Component<Props> {
       </Dialog>
     );
   }
-
-  componentDidUpdate() {
-    if (!this.props.open) {
-      const pacContainers = document.getElementsByClassName("pac-container");
-      // tslint:disable
-      for (let i = 0; i < pacContainers.length; i++) {
-        pacContainers.item(0).remove();
-      }
-    }
-  }
 }
 
-function mapStateToProps(state: State) {
-  return { google: state.google };
+function mapStateToProps({ dialogLocation, google }: State) {
+  return { dialogLocation, google };
 }
 
 function mapDispatchToProps(dispatch: Dispatch) {
   return {
     googleApiLoaded: (api: GoogleMapsApi) =>
-      dispatch(googleApiLoadedAction(api))
+      dispatch(googleApiLoadedAction(api)),
+    setDialogLocation: (dialogLocation: PassengerLocation) =>
+      dispatch(setDialogLocationAction(dialogLocation)),
+    setPassengerLocation: (passengerLocation: PassengerLocation) =>
+      dispatch(setPassengerLocationAction(passengerLocation))
   };
 }
 
