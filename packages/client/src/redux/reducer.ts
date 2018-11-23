@@ -33,6 +33,21 @@ export default function(state = exampleInitialState, action: RootAction) {
           }
         }
       };
+    case getType(actions.deletePassengerAction):
+      const passengers = { ...state.currentTaxiRide.passengers };
+      const id = action.payload;
+      const passengerIds = state.currentTaxiRide.passengerIds.filter(
+        passengerId => passengerId !== id
+      );
+      delete passengers[id];
+      return {
+        ...state,
+        currentTaxiRide: {
+          ...state.currentTaxiRide,
+          passengerIds,
+          passengers
+        }
+      };
     case getType(actions.editPassengerNameAction):
       return {
         ...state,

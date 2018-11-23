@@ -17,7 +17,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Passenger } from "../../../domain/TaxiRide";
-import { editPassengerNameAction } from "../../../redux/actions";
+import {
+  deletePassengerAction,
+  editPassengerNameAction
+} from "../../../redux/actions";
 import { MainClassKey } from "./Main";
 
 const selectLocationMsg = "Tap to select location";
@@ -29,6 +32,7 @@ export interface PassengerPanelProps {
 }
 
 interface ReduxProps {
+  deletePassenger: typeof deletePassengerAction;
   editPassengerName: typeof editPassengerNameAction;
 }
 
@@ -62,6 +66,10 @@ class PassengerPanel extends React.Component<Props, State> {
     const name = this.state.name;
     this.props.editPassengerName(id, name);
     this.setState({ editMode: false });
+  };
+
+  private deletePassenger = () => {
+    this.props.deletePassenger(this.props.passenger.id);
   };
 
   render() {
@@ -140,7 +148,7 @@ class PassengerPanel extends React.Component<Props, State> {
           <Button
             color="primary"
             disabled={!name}
-            onClick={editMode ? this.editPassengerName : undefined}
+            onClick={editMode ? this.editPassengerName : this.deletePassenger}
             size="small"
           >
             {editMode ? "Save" : "Delete"}
@@ -153,12 +161,13 @@ class PassengerPanel extends React.Component<Props, State> {
 
 function mapDispatchToProps(dispatch: Dispatch) {
   return {
+    deletePassenger: (id: string) => dispatch(deletePassengerAction(id)),
     editPassengerName: (id: string, name: string) =>
       dispatch(editPassengerNameAction(id, name))
   };
 }
 
 export default connect(
-  state => state,
+  undefined,
   mapDispatchToProps
 )(PassengerPanel);

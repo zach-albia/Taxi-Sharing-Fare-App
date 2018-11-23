@@ -7,6 +7,11 @@ export const addPassengerAction = createAction(
   resolve => (name: string) => resolve(name)
 );
 
+export const deletePassengerAction = createAction(
+  actionTypes.DELETE_PASSENGER,
+  resolve => (id: string) => resolve(id)
+);
+
 export const editPassengerNameAction = createAction(
   actionTypes.EDIT_PASSENGER_NAME,
   resolve => (id: string, name: string) => resolve({ id, name })
