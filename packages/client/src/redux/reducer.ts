@@ -14,11 +14,6 @@ export const exampleInitialState: State = {
 
 export default function(state = exampleInitialState, action: RootAction) {
   switch (action.type) {
-    case getType(actions.googleApiLoadedAction):
-      return {
-        ...state,
-        google: action.payload
-      };
     case getType(actions.addPassengerAction):
       const newPassenger: Passenger = {
         id: uuid(),
@@ -29,6 +24,11 @@ export default function(state = exampleInitialState, action: RootAction) {
         currentTaxiRide: {
           passengers: [...state.currentTaxiRide.passengers, newPassenger]
         }
+      };
+    case getType(actions.googleApiLoadedAction):
+      return {
+        ...state,
+        google: action.payload
       };
     default:
       return state;

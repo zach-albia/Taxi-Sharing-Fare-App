@@ -7,6 +7,7 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PersonIcon from "@material-ui/icons/PersonPin";
@@ -18,61 +19,96 @@ import { MainClassKey } from "./Main";
 
 const selectLocationMsg = "Tap to select location";
 
-interface PassengerPanelProps {
+export interface PassengerPanelProps {
   classes: Record<MainClassKey, string>;
   passenger: Passenger;
   onClick: () => void;
 }
 
+interface State {
+  editMode: boolean;
+  name: string;
+}
+
 export default class PassengerPanel extends React.Component<
-  PassengerPanelProps
+  PassengerPanelProps,
+  State
 > {
+  state: State = {
+    editMode: false,
+    name: this.props.passenger.name
+  };
+
+  private toEditMode = () => {
+    this.setState({ editMode: true });
+  };
+
+  private toViewMode = () => {
+    this.setState({ editMode: false });
+  };
+  private onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ name: e.target.value });
+  };
+
   render() {
+    const { classes, onClick, passenger } = this.props;
+    const { editMode, name } = this.state;
+    const personIcon = (
+      <PersonIcon
+        color="inherit"
+        className={classNames(classes.markerIcon, classes.aPersonIcon)}
+      />
+    );
     return (
       <ExpansionPanel>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <PersonIcon
-            color="inherit"
-            className={classNames(
-              this.props.classes.markerIcon,
-              this.props.classes.aPersonIcon
-            )}
-          />
-          <Typography className={this.props.classes.grow}>
-            {this.props.passenger.name}
-          </Typography>
+          {editMode ? (
+            <TextField
+              InputProps={{
+                startAdornment: personIcon
+              }}
+              onChange={this.onNameChanged}
+              required={true}
+              value={name}
+            />
+          ) : (
+            <>
+              {personIcon}
+              <Typography className={classes.grow}>{passenger.name}</Typography>
+            </>
+          )}
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <List>
             <ListItem
-              className={this.props.classes.listItem}
+              className={classes.listItem}
               component={ButtonBase}
-              onClick={this.props.onClick}
+              onClick={onClick}
             >
               <ListItemIcon>
-                <MapMarkerIcon className={this.props.classes.markerIcon} />
+                <MapMarkerIcon className={classes.markerIcon} />
               </ListItemIcon>
               <Typography>
                 <Typography variant="caption">Pick-up Location:</Typography>
-                {this.props.passenger.pickUpLocation ? (
-                  this.props.passenger.pickUpLocation.query
+                {passenger.pickUpLocation ? (
+                  passenger.pickUpLocation.query
                 ) : (
                   <i>{selectLocationMsg}</i>
                 )}
               </Typography>
             </ListItem>
             <ListItem
-              className={this.props.classes.listItem}
+              className={classes.listItem}
               component={ButtonBase}
-              onClick={this.props.onClick}
+              onClick={onClick}
             >
               <ListItemIcon>
-                <MapMarkerIcon className={this.props.classes.markerIcon} />
+                <MapMarkerIcon className={classes.markerIcon} />
               </ListItemIcon>
               <Typography>
                 <Typography variant="caption">Drop-off Location:</Typography>
-                {this.props.passenger.dropOffLocation ? (
-                  this.props.passenger.dropOffLocation.query
+                {passenger.dropOffLocation ? (
+                  passenger.dropOffLocation.query
                 ) : (
                   <i>{selectLocationMsg}</i>
                 )}
@@ -81,9 +117,14 @@ export default class PassengerPanel extends React.Component<
           </List>
         </ExpansionPanelDetails>
         <ExpansionPanelActions>
-          <Button size="small">Edit Name</Button>
-          <Button size="small" color="primary">
-            Delete
+          <Button
+            onClick={editMode ? this.toViewMode : this.toEditMode}
+            size="small"
+          >
+            {editMode ? "Cancel" : "Edit Name"}
+          </Button>
+          <Button color="primary" disabled={!name} size="small">
+            {editMode ? "Save" : "Delete"}
           </Button>
         </ExpansionPanelActions>
       </ExpansionPanel>
