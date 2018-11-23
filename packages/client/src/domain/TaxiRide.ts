@@ -8,5 +8,6 @@ export interface Passenger {
 export default interface TaxiRide {
   destination?: google.maps.Place;
   origin?: google.maps.Place;
-  passengers: Passenger[];
+  passengerIds: string[];
+  passengers: object;
 }

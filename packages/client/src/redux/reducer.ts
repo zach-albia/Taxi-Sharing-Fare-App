@@ -8,7 +8,8 @@ export type RootAction = ActionType<typeof actions>;
 
 export const exampleInitialState: State = {
   currentTaxiRide: {
-    passengers: []
+    passengerIds: [],
+    passengers: {}
   }
 };
 
@@ -22,7 +23,14 @@ export default function(state = exampleInitialState, action: RootAction) {
       return {
         ...state,
         currentTaxiRide: {
-          passengers: [...state.currentTaxiRide.passengers, newPassenger]
+          passengerIds: [
+            ...state.currentTaxiRide.passengerIds,
+            newPassenger.id
+          ],
+          passengers: {
+            ...state.currentTaxiRide.passengers,
+            [newPassenger.id]: newPassenger
+          }
         }
       };
     case getType(actions.googleApiLoadedAction):

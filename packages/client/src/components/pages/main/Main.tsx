@@ -12,7 +12,7 @@ import MapMarkerIcon from "mdi-material-ui/MapMarker";
 import * as React from "react";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
-import TaxiRide from "../../../domain/TaxiRide";
+import TaxiRide, { Passenger } from "../../../domain/TaxiRide";
 import State from "../../../redux/State";
 import TaxiSharingAppBar from "../TaxiSharingAppBar";
 import ChooseLocationDialog from "./ChooseLocationDialog";
@@ -63,6 +63,7 @@ function styles(theme: Theme): StyleRules<MainClassKey> {
 interface ReduxProps {
   destinations: google.maps.Place[];
   origins: google.maps.Place[];
+  passengers: Passenger[];
   taxiRide: TaxiRide;
   taxiRideIsValid: boolean;
 }
@@ -93,6 +94,7 @@ class Main extends React.Component<Props, MainState> {
       classes,
       destinations,
       origins,
+      passengers,
       taxiRide,
       taxiRideIsValid
     } = this.props;
@@ -106,7 +108,7 @@ class Main extends React.Component<Props, MainState> {
         <Passengers
           classes={classes}
           onClickLocation={this.openDialog}
-          passengers={taxiRide.passengers}
+          passengers={passengers}
         />
         <PlaceSelect
           classes={classes}
@@ -185,19 +187,22 @@ function taxiRideSelector(state: State) {
   return state.currentTaxiRide;
 }
 
-const originsSelector = createSelector(taxiRideSelector, taxiRide =>
-  taxiRide.passengers.filter(p => !!p.pickUpLocation).map(p => p.pickUpLocation)
+const passengersSelector = createSelector(taxiRideSelector, taxiRide =>
+  taxiRide.passengerIds.map(id => taxiRide.passengers[id])
 );
 
-const destinationsSelector = createSelector(taxiRideSelector, taxiRide =>
-  taxiRide.passengers
-    .filter(p => !!p.dropOffLocation)
-    .map(p => p.dropOffLocation)
+const originsSelector = createSelector(passengersSelector, passengers =>
+  passengers.filter(p => !!p.pickUpLocation).map(p => p.pickUpLocation)
+);
+
+const destinationsSelector = createSelector(passengersSelector, passengers =>
+  passengers.filter(p => !!p.dropOffLocation).map(p => p.dropOffLocation)
 );
 
 const taxiRideIsValidSelector = createSelector(
   taxiRideSelector,
-  ({ passengers, destination, origin }) =>
+  passengersSelector,
+  ({ destination, origin }, passengers) =>
     passengers.length > 0 &&
     passengers.every(p => !!p.pickUpLocation && !!p.dropOffLocation) &&
     !!origin &&
@@ -206,12 +211,14 @@ const taxiRideIsValidSelector = createSelector(
 
 const mapStateToProps = createSelector(
   taxiRideSelector,
+  passengersSelector,
   originsSelector,
   destinationsSelector,
   taxiRideIsValidSelector,
-  (taxiRide, origins, destinations, taxiRideIsValid) => ({
+  (taxiRide, passengers, origins, destinations, taxiRideIsValid) => ({
     destinations,
     origins,
+    passengers,
     taxiRide,
     taxiRideIsValid
   })
