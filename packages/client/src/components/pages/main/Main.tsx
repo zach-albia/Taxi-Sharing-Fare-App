@@ -10,7 +10,11 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { createSelector } from "reselect";
 import TaxiRide, { Passenger } from "../../../domain/TaxiRide";
-import { setDialogLocationAction } from "../../../redux/actions";
+import {
+  chooseDestinationAction,
+  chooseOriginAction,
+  setDialogLocationAction
+} from "../../../redux/actions";
 import State, { PassengerLocation } from "../../../redux/State";
 import TaxiSharingAppBar from "../TaxiSharingAppBar";
 import ChooseLocationDialog from "./ChooseLocationDialog";
@@ -55,6 +59,8 @@ function styles(theme: Theme): StyleRules<MainClassKey> {
 }
 
 interface ReduxProps {
+  chooseDestination: typeof chooseDestinationAction;
+  chooseOrigin: typeof chooseOriginAction;
   destinations: google.maps.Place[];
   origins: google.maps.Place[];
   passengers: Passenger[];
@@ -87,6 +93,8 @@ class Main extends React.Component<Props, MainState> {
 
   render() {
     const {
+      chooseDestination,
+      chooseOrigin,
       classes,
       destinations,
       origins,
@@ -110,6 +118,7 @@ class Main extends React.Component<Props, MainState> {
           <PlaceSelect
             classes={classes}
             label="Origin"
+            onSelect={chooseOrigin}
             place={taxiRide.origin}
             places={origins}
           />
@@ -118,6 +127,7 @@ class Main extends React.Component<Props, MainState> {
           <PlaceSelect
             classes={classes}
             label="Destination"
+            onSelect={chooseDestination}
             place={taxiRide.destination}
             places={destinations}
           />
@@ -180,6 +190,10 @@ const mapStateToProps = createSelector(
 
 function mapDispatchToProps(dispatch: Dispatch) {
   return {
+    chooseDestination: (destination: google.maps.Place) =>
+      dispatch(chooseDestinationAction(destination)),
+    chooseOrigin: (origin: google.maps.Place) =>
+      dispatch(chooseOriginAction(origin)),
     setDialogLocation: (dialogLocation: PassengerLocation) =>
       dispatch(setDialogLocationAction(dialogLocation))
   };

@@ -34,6 +34,22 @@ export default function(state = exampleInitialState, action: RootAction) {
           }
         }
       };
+    case getType(actions.chooseDestinationAction):
+      return {
+        ...state,
+        currentTaxiRide: {
+          ...state.currentTaxiRide,
+          destination: action.payload
+        }
+      };
+    case getType(actions.chooseOriginAction):
+      return {
+        ...state,
+        currentTaxiRide: {
+          ...state.currentTaxiRide,
+          origin: action.payload
+        }
+      };
     case getType(actions.deletePassengerAction):
       const passengers = { ...state.currentTaxiRide.passengers };
       const id = action.payload;

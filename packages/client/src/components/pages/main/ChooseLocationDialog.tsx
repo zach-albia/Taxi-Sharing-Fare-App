@@ -123,6 +123,16 @@ class ChooseLocationDialog extends React.Component<Props> {
     this.marker.setPosition(location);
   }
 
+  componentDidUpdate() {
+    if (!this.props.open) {
+      const pacContainers = document.getElementsByClassName("pac-container");
+      // tslint:disable
+      for (let i = 0; i < pacContainers.length; i++) {
+        pacContainers.item(0).remove();
+      }
+    }
+  }
+
   render() {
     const { classes, dialogLocation, google, onClose, open } = this.props;
     const { location } = this.state;

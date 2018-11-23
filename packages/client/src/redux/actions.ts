@@ -8,6 +8,16 @@ export const addPassengerAction = createAction(
   resolve => (name: string) => resolve(name)
 );
 
+export const chooseDestinationAction = createAction(
+  actionTypes.CHOOSE_DESTINATION,
+  resolve => (destination: google.maps.Place) => resolve(destination)
+);
+
+export const chooseOriginAction = createAction(
+  actionTypes.CHOOSE_ORIGIN,
+  resolve => (origin: google.maps.Place) => resolve(origin)
+);
+
 export const deletePassengerAction = createAction(
   actionTypes.DELETE_PASSENGER,
   resolve => (id: string) => resolve(id)
