@@ -14,7 +14,10 @@ import PersonIcon from "@material-ui/icons/PersonPin";
 import classNames from "classnames";
 import MapMarkerIcon from "mdi-material-ui/MapMarker";
 import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { Passenger } from "../../../domain/TaxiRide";
+import { editPassengerNameAction } from "../../../redux/actions";
 import { MainClassKey } from "./Main";
 
 const selectLocationMsg = "Tap to select location";
@@ -25,15 +28,18 @@ export interface PassengerPanelProps {
   onClick: () => void;
 }
 
+interface ReduxProps {
+  editPassengerName: typeof editPassengerNameAction;
+}
+
 interface State {
   editMode: boolean;
   name: string;
 }
 
-export default class PassengerPanel extends React.Component<
-  PassengerPanelProps,
-  State
-> {
+type Props = PassengerPanelProps & ReduxProps;
+
+class PassengerPanel extends React.Component<Props, State> {
   state: State = {
     editMode: false,
     name: this.props.passenger.name
@@ -46,8 +52,15 @@ export default class PassengerPanel extends React.Component<
   private toViewMode = () => {
     this.setState({ editMode: false });
   };
+
   private onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ name: e.target.value });
+  };
+
+  private editPassengerName = () => {
+    const id = this.props.passenger.id;
+    const name = this.state.name;
+    this.props.editPassengerName(id, name);
   };
 
   render() {
@@ -123,7 +136,12 @@ export default class PassengerPanel extends React.Component<
           >
             {editMode ? "Cancel" : "Edit Name"}
           </Button>
-          <Button color="primary" disabled={!name} size="small">
+          <Button
+            color="primary"
+            disabled={!name}
+            onClick={editMode ? this.editPassengerName : undefined}
+            size="small"
+          >
             {editMode ? "Save" : "Delete"}
           </Button>
         </ExpansionPanelActions>
@@ -131,3 +149,15 @@ export default class PassengerPanel extends React.Component<
     );
   }
 }
+
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    editPassengerName: (id: string, name: string) =>
+      dispatch(editPassengerNameAction(id, name))
+  };
+}
+
+export default connect(
+  state => state,
+  mapDispatchToProps
+)(PassengerPanel);

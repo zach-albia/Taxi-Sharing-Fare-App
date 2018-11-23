@@ -11,7 +11,7 @@ export interface PassengersProps {
   passengers: Passenger[];
 }
 
-export default class Passengers extends React.Component<PassengersProps> {
+export default class Passengers extends React.PureComponent<PassengersProps> {
   render() {
     const { classes, onClickLocation, passengers } = this.props;
     return (
