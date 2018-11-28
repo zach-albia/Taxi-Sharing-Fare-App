@@ -1,4 +1,4 @@
-import TaxiRide, { LocationType } from "../domain/TaxiRide";
+import TaxiRide, { LocationType, Player } from "../domain/TaxiRide";
 
 export interface PassengerLocation {
   id: string;
@@ -6,8 +6,21 @@ export interface PassengerLocation {
   type: LocationType;
 }
 
+export interface Result {
+  id: string;
+  directionsResult: google.maps.DirectionsResult;
+  minutes?: number;
+  result: {
+    tenMinPlayers: Player[];
+    zeroMinPlayers: Player[];
+  };
+  taxiRide: TaxiRide;
+}
+
 export default interface State {
-  dialogLocation?: PassengerLocation;
+  calculating: boolean;
   currentTaxiRide: TaxiRide;
+  dialogLocation?: PassengerLocation;
   google?: typeof google;
+  results: Result[];
 }

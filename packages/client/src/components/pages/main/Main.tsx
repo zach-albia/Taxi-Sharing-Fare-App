@@ -1,8 +1,7 @@
-import { Theme } from "@material-ui/core";
+import { StandardProps, Theme } from "@material-ui/core";
 import Button from "@material-ui/core/Button/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import red from "@material-ui/core/colors/red";
-import { StandardProps } from "@material-ui/core/es";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { StyleRules } from "@material-ui/core/styles";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -16,6 +15,7 @@ import {
   chooseDestinationAction,
   chooseOriginAction,
   setDialogLocationAction,
+  splitFareAction,
   toggleBookedAction,
   toggleDaytimeAction
 } from "../../../redux/actions";
@@ -63,12 +63,14 @@ function styles(theme: Theme): StyleRules<MainClassKey> {
 }
 
 interface ReduxProps {
+  calculating: boolean;
   chooseDestination: typeof chooseDestinationAction;
   chooseOrigin: typeof chooseOriginAction;
   destinations: google.maps.Place[];
   origins: google.maps.Place[];
   passengers: Passenger[];
   setDialogLocation: typeof setDialogLocationAction;
+  splitFare: typeof splitFareAction;
   taxiRide: TaxiRide;
   taxiRideIsValid: boolean;
   toggleBooked: () => void;
@@ -105,6 +107,7 @@ class Main extends React.Component<Props, MainState> {
       destinations,
       origins,
       passengers,
+      splitFare,
       taxiRide,
       taxiRideIsValid,
       toggleBooked,
@@ -140,22 +143,21 @@ class Main extends React.Component<Props, MainState> {
         )}
         <FormControlLabel
           control={
-            <Checkbox onChange={toggleBooked} checked={taxiRide.booked} />
+            <Checkbox onChange={toggleBooked} checked={taxiRide.isBooked} />
           }
           label="Booked via call center"
         />
         <FormControlLabel
           control={
-            <Checkbox onChange={toggleDaytime} checked={taxiRide.daytime} />
+            <Checkbox onChange={toggleDaytime} checked={taxiRide.isDaytime} />
           }
           label="Daytime (06:00-22:00)"
         />
         <Button
           disabled={!taxiRideIsValid}
           fullWidth={true}
+          onClick={splitFare}
           variant="contained"
-          className={classes.button}
-          color="primary"
         >
           Split the Fare
         </Button>
@@ -169,7 +171,7 @@ function taxiRideSelector(state: State) {
   return state.currentTaxiRide;
 }
 
-const passengersSelector = createSelector(taxiRideSelector, taxiRide =>
+export const passengersSelector = createSelector(taxiRideSelector, taxiRide =>
   taxiRide.passengerIds.map(id => taxiRide.passengers[id] as Passenger)
 );
 
@@ -191,13 +193,26 @@ const taxiRideIsValidSelector = createSelector(
     !!destination
 );
 
+function calculatingSelector(state: State) {
+  return state.calculating;
+}
+
 const mapStateToProps = createSelector(
   taxiRideSelector,
   passengersSelector,
   originsSelector,
   destinationsSelector,
   taxiRideIsValidSelector,
-  (taxiRide, passengers, origins, destinations, taxiRideIsValid) => ({
+  calculatingSelector,
+  (
+    taxiRide,
+    passengers,
+    origins,
+    destinations,
+    taxiRideIsValid,
+    calculating
+  ) => ({
+    calculating,
     destinations,
     origins,
     passengers,
@@ -214,6 +229,7 @@ function mapDispatchToProps(dispatch: Dispatch) {
       dispatch(chooseOriginAction(origin)),
     setDialogLocation: (dialogLocation: PassengerLocation) =>
       dispatch(setDialogLocationAction(dialogLocation)),
+    splitFare: () => dispatch(splitFareAction()),
     toggleBooked: () => dispatch(toggleBookedAction()),
     toggleDaytime: () => dispatch(toggleDaytimeAction())
   };

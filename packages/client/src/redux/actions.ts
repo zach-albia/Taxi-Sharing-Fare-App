@@ -1,11 +1,16 @@
 import { createAction } from "typesafe-actions";
 import GoogleMapsApi from "../@types/GoogleMapsApi";
 import actionTypes from "./actionTypes";
-import { PassengerLocation } from "./State";
+import { PassengerLocation, Result } from "./State";
 
 export const addPassengerAction = createAction(
   actionTypes.ADD_PASSENGER,
   resolve => (name: string) => resolve(name)
+);
+
+export const addResultAction = createAction(
+  actionTypes.ADD_RESULT,
+  resolve => (result: Result) => resolve(result)
 );
 
 export const chooseDestinationAction = createAction(
@@ -43,6 +48,8 @@ export const setPassengerLocationAction = createAction(
   resolve => (passengerLocation: PassengerLocation) =>
     resolve(passengerLocation)
 );
+
+export const splitFareAction = createAction(actionTypes.SPLIT_FARE);
 
 export const toggleBookedAction = createAction(actionTypes.TOGGLE_BOOKED);
 

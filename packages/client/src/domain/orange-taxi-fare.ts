@@ -33,8 +33,8 @@ const fares = {
  */
 export interface FareMetrics {
   isBooked: boolean;
-  isDay: boolean;
-  meters: number;
+  isDaytime: boolean;
+  distance: number; // in meters
   minutes: number;
 }
 
@@ -46,14 +46,14 @@ export interface FareMetrics {
  * @return The fare in Bahraini fils.
  */
 export default function orangeTaxiFare(fareMetrics: FareMetrics): number {
-  const fare: Fare = fareMetrics.isDay
+  const fare: Fare = fareMetrics.isDaytime
     ? fareMetrics.isBooked
       ? fares.day.booked
       : fares.day.hailed
     : fares.night;
   return (
     fare.starting +
-    Math.floor(fareMetrics.meters / fare.rate.meters) * fare.rate.fils +
+    Math.floor(fareMetrics.distance / fare.rate.meters) * fare.rate.fils +
     chargeFirstExcess(fareMetrics, fare) +
     chargeSecondExcess(fareMetrics)
   );
@@ -61,11 +61,11 @@ export default function orangeTaxiFare(fareMetrics: FareMetrics): number {
 
 function chargeFirstExcess(fareMetrics: FareMetrics, fare: Fare) {
   const reachedFirstExcess =
-    fareMetrics.meters >= 1000 || fareMetrics.minutes >= 10;
+    fareMetrics.distance >= 1000 || fareMetrics.minutes >= 10;
   return reachedFirstExcess ? fare.firstExcess : 0;
 }
 
 function chargeSecondExcess(fareMetrics: FareMetrics) {
-  const reachedSecondExcess = fareMetrics.meters >= 25000;
+  const reachedSecondExcess = fareMetrics.distance >= 25000;
   return reachedSecondExcess ? fares.excess25km : 0;
 }

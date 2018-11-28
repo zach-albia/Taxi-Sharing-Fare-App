@@ -7,12 +7,14 @@ import State, { PassengerLocation } from "./State";
 export type RootAction = ActionType<typeof actions>;
 
 export const exampleInitialState: State = {
+  calculating: false,
   currentTaxiRide: {
-    booked: false,
-    daytime: true,
+    isBooked: false,
+    isDaytime: true,
     passengerIds: [],
     passengers: {}
-  }
+  },
+  results: []
 };
 
 export default function(state = exampleInitialState, action: RootAction) {
@@ -116,7 +118,7 @@ export default function(state = exampleInitialState, action: RootAction) {
         ...state,
         currentTaxiRide: {
           ...state.currentTaxiRide,
-          booked: !state.currentTaxiRide.booked
+          isBooked: !state.currentTaxiRide.isBooked
         }
       };
     case getType(actions.toggleDaytimeAction):
@@ -124,7 +126,7 @@ export default function(state = exampleInitialState, action: RootAction) {
         ...state,
         currentTaxiRide: {
           ...state.currentTaxiRide,
-          daytime: !state.currentTaxiRide.daytime
+          isDaytime: !state.currentTaxiRide.isDaytime
         }
       };
     default:
