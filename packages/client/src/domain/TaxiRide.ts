@@ -11,6 +11,8 @@ export interface Passenger {
 }
 
 export default interface TaxiRide {
+  booked: boolean;
+  daytime: boolean;
   destination?: google.maps.Place;
   origin?: google.maps.Place;
   passengerIds: string[];

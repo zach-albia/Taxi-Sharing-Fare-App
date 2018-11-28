@@ -1,7 +1,9 @@
 import { Theme } from "@material-ui/core";
 import Button from "@material-ui/core/Button/Button";
+import Checkbox from "@material-ui/core/Checkbox";
 import red from "@material-ui/core/colors/red";
 import { StandardProps } from "@material-ui/core/es";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { StyleRules } from "@material-ui/core/styles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
@@ -13,7 +15,9 @@ import TaxiRide, { Passenger } from "../../../domain/TaxiRide";
 import {
   chooseDestinationAction,
   chooseOriginAction,
-  setDialogLocationAction
+  setDialogLocationAction,
+  toggleBookedAction,
+  toggleDaytimeAction
 } from "../../../redux/actions";
 import State, { PassengerLocation } from "../../../redux/State";
 import TaxiSharingAppBar from "../TaxiSharingAppBar";
@@ -67,6 +71,8 @@ interface ReduxProps {
   setDialogLocation: typeof setDialogLocationAction;
   taxiRide: TaxiRide;
   taxiRideIsValid: boolean;
+  toggleBooked: () => void;
+  toggleDaytime: () => void;
 }
 
 type Props = ReduxProps & {
@@ -100,7 +106,9 @@ class Main extends React.Component<Props, MainState> {
       origins,
       passengers,
       taxiRide,
-      taxiRideIsValid
+      taxiRideIsValid,
+      toggleBooked,
+      toggleDaytime
     } = this.props;
     const { dialogOpen } = this.state;
     return (
@@ -130,6 +138,18 @@ class Main extends React.Component<Props, MainState> {
             places={destinations}
           />
         )}
+        <FormControlLabel
+          control={
+            <Checkbox onChange={toggleBooked} checked={taxiRide.booked} />
+          }
+          label="Booked via call center"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox onChange={toggleDaytime} checked={taxiRide.daytime} />
+          }
+          label="Daytime (06:00-22:00)"
+        />
         <Button
           disabled={!taxiRideIsValid}
           fullWidth={true}
@@ -193,7 +213,9 @@ function mapDispatchToProps(dispatch: Dispatch) {
     chooseOrigin: (origin: google.maps.Place) =>
       dispatch(chooseOriginAction(origin)),
     setDialogLocation: (dialogLocation: PassengerLocation) =>
-      dispatch(setDialogLocationAction(dialogLocation))
+      dispatch(setDialogLocationAction(dialogLocation)),
+    toggleBooked: () => dispatch(toggleBookedAction()),
+    toggleDaytime: () => dispatch(toggleDaytimeAction())
   };
 }
 

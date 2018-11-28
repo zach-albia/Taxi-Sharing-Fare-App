@@ -43,3 +43,7 @@ export const setPassengerLocationAction = createAction(
   resolve => (passengerLocation: PassengerLocation) =>
     resolve(passengerLocation)
 );
+
+export const toggleBookedAction = createAction(actionTypes.TOGGLE_BOOKED);
+
+export const toggleDaytimeAction = createAction(actionTypes.TOGGLE_DAYTIME);

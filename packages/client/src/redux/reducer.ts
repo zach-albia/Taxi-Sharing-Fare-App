@@ -8,6 +8,8 @@ export type RootAction = ActionType<typeof actions>;
 
 export const exampleInitialState: State = {
   currentTaxiRide: {
+    booked: false,
+    daytime: true,
     passengerIds: [],
     passengers: {}
   }
@@ -107,6 +109,22 @@ export default function(state = exampleInitialState, action: RootAction) {
           [passengerLocation.type === LocationType.DropOff
             ? "destination"
             : "origin"]: passengerLocation.place
+        }
+      };
+    case getType(actions.toggleBookedAction):
+      return {
+        ...state,
+        currentTaxiRide: {
+          ...state.currentTaxiRide,
+          booked: !state.currentTaxiRide.booked
+        }
+      };
+    case getType(actions.toggleDaytimeAction):
+      return {
+        ...state,
+        currentTaxiRide: {
+          ...state.currentTaxiRide,
+          daytime: !state.currentTaxiRide.daytime
         }
       };
     default:
