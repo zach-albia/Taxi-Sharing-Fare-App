@@ -68,10 +68,8 @@ class Ride extends React.Component<Props> {
       duration >= tenMinutes
         ? result.result.tenMinPlayers
         : result.result.zeroMinPlayers;
-    const distance = result.directionsResult.routes[0].legs.reduce(
-      (s, l) => s + l.distance.value,
-      0
-    );
+    const { legs } = result.directionsResult.routes[0];
+    const distance = legs.reduce((s, l) => s + l.distance.value, 0);
     const minutes = Math.floor(duration / 60);
     const seconds = Math.floor(duration % 60);
     const paddedSeconds = seconds < 10 ? `0${seconds}` : seconds;

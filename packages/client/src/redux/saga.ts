@@ -5,7 +5,6 @@ import { Set } from "immutable";
 import "isomorphic-unfetch";
 import differenceWith from "lodash/differenceWith";
 import findIndex from "lodash/findIndex";
-import isEqual from "lodash/isEqual";
 import isEqualWith from "lodash/isEqualWith";
 import uniqWith from "lodash/uniqWith";
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
@@ -138,7 +137,7 @@ function* splitFare() {
     taxiRide,
     passengers
   }: { taxiRide: TaxiRide; passengers: Passenger[] } = yield select(selector);
-  const waypoints: google.maps.DirectionsWaypoint[] = passengers
+  const points: google.maps.DirectionsWaypoint[] = passengers
     .map(p => [p.dropOffLocation, p.pickUpLocation])
     .reduce((a, b) => a.concat(b))
     .map(p => ({
@@ -149,10 +148,16 @@ function* splitFare() {
     { location: taxiRide.origin.location, stopover: true },
     { location: taxiRide.destination.location, stopover: true }
   ];
+  const justWaypoints = differenceWith(points, originAndDest, (a, b) =>
+    locationEqual(
+      a.location as google.maps.LatLngLiteral,
+      b.location as google.maps.LatLngLiteral
+    )
+  );
   const distinctWaypoints = uniqWith(
-    differenceWith(waypoints, originAndDest, isEqual),
+    justWaypoints,
     (a: google.maps.DirectionsWaypoint, b: google.maps.DirectionsWaypoint) =>
-      isEqual(a.location, b.location)
+      isEqualWith(a.location, b.location, locationEqual)
   );
   const request: google.maps.DirectionsRequest = {
     destination: taxiRide.destination.location,
