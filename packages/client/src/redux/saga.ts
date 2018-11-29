@@ -6,8 +6,9 @@ import "isomorphic-unfetch";
 import differenceWith from "lodash/differenceWith";
 import findIndex from "lodash/findIndex";
 import isEqual from "lodash/isEqual";
+import isEqualWith from "lodash/isEqualWith";
 import uniqWith from "lodash/uniqWith";
-import { all, call, put, select } from "redux-saga/effects";
+import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { createSelector } from "reselect";
 import uuid from "uuid/v1";
 import { passengersSelector } from "../components/pages/main/Main";
@@ -15,7 +16,8 @@ import orangeTaxiFare from "../domain/orange-taxi-fare";
 import { Game } from "../domain/shapley";
 import TaxiRide, { Passenger, Player } from "../domain/TaxiRide";
 import { addResultAction } from "./actions";
-import State from "./State";
+import actionTypes from "./actionTypes";
+import State, { Result } from "./State";
 
 es6promise.polyfill();
 
@@ -52,17 +54,44 @@ function initPlayers(passengers: Passenger[]): Player[] {
   }));
 }
 
+const epsilon = 0.001;
+
+/**
+ * Compares equality of locations up to up to ε * 111 km where ε is the epsilon
+ *
+ * @param a First location
+ * @param b Second location
+ *
+ * @return boolean Whether locations are within ε * 111 km of each other
+ */
+function locationEqual(
+  a: google.maps.LatLngLiteral,
+  b: google.maps.LatLngLiteral
+): boolean {
+  return (
+    Math.abs(a.lat - b.lat) <= epsilon && Math.abs(a.lng - b.lng) <= epsilon
+  );
+}
+
 function assignPlayerLegs(
   players: Player[],
   legs: google.maps.DirectionsLeg[]
 ): Player[] {
   return players.map(player => {
-    const firstLegIndex = findIndex(legs, leg =>
-      isEqual(leg.start_location.toJSON(), player.pickUpLocation.location)
-    );
-    const lastLegIndex = findIndex(legs, leg =>
-      isEqual(leg.end_location.toJSON(), player.dropOffLocation.location)
-    );
+    const firstLegIndex = findIndex(legs, leg => {
+      return isEqualWith(
+        leg.start_location.toJSON(),
+        player.pickUpLocation.location,
+        locationEqual
+      );
+    });
+    const lastLegIndex = findIndex(legs, leg => {
+      return isEqualWith(
+        leg.end_location.toJSON(),
+        player.dropOffLocation.location,
+        locationEqual
+      );
+    });
     return {
       ...player,
       legs: legs.slice(firstLegIndex, lastLegIndex + 1)
@@ -103,7 +132,7 @@ function withMinutes(minutes: number, isBooked: boolean, isDaytime: boolean) {
   };
 }
 
-function* splitFareSaga() {
+function* splitFare() {
   const {
     taxiRide,
     passengers
@@ -125,9 +154,9 @@ function* splitFareSaga() {
       isEqual(a.location, b.location)
   );
   const request: google.maps.DirectionsRequest = {
-    destination: taxiRide.destination,
+    destination: taxiRide.destination.location,
     optimizeWaypoints: true,
-    origin: taxiRide.origin,
+    origin: taxiRide.origin.location,
     travelMode: google.maps.TravelMode.DRIVING,
     waypoints: distinctWaypoints
   };
@@ -155,21 +184,20 @@ function* splitFareSaga() {
     ...p,
     fare: Number(zeroMinGame.shapley(p).toString())
   }));
-  yield put(
-    addResultAction({
-      directionsResult,
-      id: uuid(),
-      result: {
-        tenMinPlayers,
-        zeroMinPlayers
-      },
-      taxiRide
-    })
-  );
+  const result: Result = {
+    directionsResult,
+    id: uuid(),
+    result: {
+      tenMinPlayers,
+      zeroMinPlayers
+    },
+    taxiRide
+  };
+  yield put(addResultAction(result));
 }
 
 function* rootSaga() {
-  yield all([splitFareSaga]);
+  yield all([takeLatest(actionTypes.SPLIT_FARE, splitFare)]);
 }
 
 export default rootSaga;
