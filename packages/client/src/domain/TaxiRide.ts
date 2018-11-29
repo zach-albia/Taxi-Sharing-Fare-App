@@ -22,5 +22,5 @@ export default interface TaxiRide {
   isDaytime: boolean;
   origin?: google.maps.Place;
   passengerIds: string[];
-  passengers: object;
+  passengers: Record<string, Passenger>;
 }

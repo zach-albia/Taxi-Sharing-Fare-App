@@ -19,6 +19,7 @@ app
     const server: Application = express();
 
     server.use(compression());
+    server.use(handler);
 
     server.get("*", (req, res) => {
       const parsedUrl = parse(req.url, true);

@@ -22,5 +22,5 @@ export default interface State {
   currentTaxiRide: TaxiRide;
   dialogLocation?: PassengerLocation;
   google?: typeof google;
-  results: Result[];
+  results: Record<string, Result>;
 }

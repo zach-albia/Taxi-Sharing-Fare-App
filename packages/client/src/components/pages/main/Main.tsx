@@ -154,6 +154,8 @@ class Main extends React.Component<Props, MainState> {
           label="Daytime (06:00-22:00)"
         />
         <Button
+          className={classes.button}
+          color="primary"
           disabled={!taxiRideIsValid}
           fullWidth={true}
           onClick={splitFare}

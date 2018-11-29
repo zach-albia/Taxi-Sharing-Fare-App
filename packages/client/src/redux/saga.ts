@@ -11,6 +11,7 @@ import uniqWith from "lodash/uniqWith";
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { createSelector } from "reselect";
 import uuid from "uuid/v1";
+import routes from "../../routes";
 import { passengersSelector } from "../components/pages/main/Main";
 import orangeTaxiFare from "../domain/orange-taxi-fare";
 import { Game } from "../domain/shapley";
@@ -194,6 +195,8 @@ function* splitFare() {
     taxiRide
   };
   yield put(addResultAction(result));
+  const { Router } = routes;
+  yield Router.pushRoute("ride", { id: result.id });
 }
 
 function* rootSaga() {
