@@ -20,7 +20,6 @@ import {
   toggleDaytimeAction
 } from "../../../redux/actions";
 import State, { PassengerLocation } from "../../../redux/State";
-import TaxiSharingAppBar from "../TaxiSharingAppBar";
 import ChooseLocationDialog from "./ChooseLocationDialog";
 import { MainClassKey } from "./Main";
 import Passengers from "./Passengers";
@@ -116,7 +115,6 @@ class Main extends React.Component<Props, MainState> {
     const { dialogOpen } = this.state;
     return (
       <>
-        <TaxiSharingAppBar />
         <Typography variant="subheading" gutterBottom={true}>
           Ride Details
         </Typography>
@@ -237,7 +235,9 @@ function mapDispatchToProps(dispatch: Dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(Main));
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Main)
+);

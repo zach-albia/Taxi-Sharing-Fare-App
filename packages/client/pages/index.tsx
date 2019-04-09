@@ -1,8 +1,10 @@
 import Head from "next/head";
+import { withRouter } from "next/router";
 import AppContent from "pangwarta-shared/dist/lib/layout/AppContent";
-import withMUI from "pangwarta-shared/dist/lib/layout/withMUI";
+import withRoot from "pangwarta-shared/dist/lib/layout/withRoot";
 import * as React from "react";
 import Main from "../src/components/pages/main/Main";
+import pages from "../src/pages";
 
 const Index = () => (
   <>
@@ -16,4 +18,4 @@ const Index = () => (
   </>
 );
 
-export default withMUI()(Index);
+export default withRoot(pages, withRouter)(Index);

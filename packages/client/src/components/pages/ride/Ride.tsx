@@ -10,7 +10,6 @@ import * as React from "react";
 import { connect } from "react-redux";
 import GoogleMapsApi from "../../../@types/GoogleMapsApi";
 import State, { Result } from "../../../redux/State";
-import TaxiSharingAppBar from "../TaxiSharingAppBar";
 
 export interface RideProps {
   id: string;
@@ -75,7 +74,6 @@ class Ride extends React.Component<Props> {
     const paddedSeconds = seconds < 10 ? `0${seconds}` : seconds;
     return (
       <>
-        <TaxiSharingAppBar />
         <div
           style={{
             height: "calc(100vh - 104px)",

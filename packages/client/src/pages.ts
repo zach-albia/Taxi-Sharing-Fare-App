@@ -1,17 +1,17 @@
-import FlashCircle from "mdi-material-ui/FlashCircle";
-import GraphqlIcon from "mdi-material-ui/Graphql";
+import HistoryIcon from "@material-ui/icons/History";
+import TaxiIcon from "@material-ui/icons/LocalTaxi";
 import Page from "pangwarta-shared/@types/page";
 
 const pages: Page[] = [
   {
-    icon: GraphqlIcon,
+    icon: TaxiIcon,
     pathname: "/",
-    title: "Todos (GraphQL)"
+    title: "Taxi Sharing"
   },
   {
-    icon: FlashCircle,
-    pathname: "/local",
-    title: "Todos (Local Storage)"
+    icon: HistoryIcon,
+    pathname: "/history",
+    title: "Ride History"
   }
 ];
 
