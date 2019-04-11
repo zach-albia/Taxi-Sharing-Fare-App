@@ -1,6 +1,7 @@
 import { applyMiddleware, createStore, Middleware, Store } from "redux";
 import createSagaMiddleware, { Task } from "redux-saga";
-
+import { defaultFareMatrix } from "../defaults";
+import localKeys from "../localStorageKeys";
 import rootReducer from "./reducer";
 import rootSaga from "./saga";
 
@@ -27,11 +28,24 @@ function configureStore(initialState: {}) {
   );
 
   store.runSagaTask = () => {
+    initLocalStorage();
     store.sagaTask = sagaMiddleware.run(rootSaga);
   };
 
   store.runSagaTask();
   return store;
+}
+
+function initLocalStorage() {
+  if (
+    typeof localStorage !== "undefined" &&
+    !localStorage.getItem(localKeys.fareMatrix)
+  ) {
+    localStorage.setItem(
+      localKeys.fareMatrix,
+      JSON.stringify(defaultFareMatrix)
+    );
+  }
 }
 
 export default configureStore;
