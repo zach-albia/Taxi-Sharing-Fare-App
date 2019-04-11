@@ -1,32 +1,5 @@
-interface Fare {
-  firstExcess: number;
-  rate: { fils: number; meters: number };
-  starting: number;
-}
-
-/**
- * Taxi fares in Bahraini fils
- */
-const fares = {
-  day: {
-    booked: {
-      firstExcess: 2000,
-      rate: { fils: 100, meters: 250 },
-      starting: 1000
-    },
-    hailed: {
-      firstExcess: 2000,
-      rate: { fils: 500, meters: 500 },
-      starting: 1000
-    }
-  },
-  excess25km: 2000,
-  night: {
-    firstExcess: 2500,
-    rate: { fils: 500, meters: 500 },
-    starting: 1250
-  }
-};
+import { defaultFareMatrix } from "../defaults";
+import { Fares } from "../types";
 
 /**
  * Details of a taxi ride used for the calculation in orangeTaxiFare.
@@ -41,31 +14,36 @@ export interface FareMetrics {
 /**
  * Calculates the fare for a Bahrain Orange Taxi Group taxi fare
  *
- * @param fareMetrics The details of the taxi fare
+ * @param fareComponents The aspects of the ride that make up the taxi fare
+ *
+ * @param fareMatrix The rates to use for the fare metrics
  *
  * @return The fare in Bahraini fils.
  */
-export default function orangeTaxiFare(fareMetrics: FareMetrics): number {
-  const fare: Fare = fareMetrics.isDaytime
-    ? fareMetrics.isBooked
-      ? fares.day.booked
-      : fares.day.hailed
-    : fares.night;
+export default function orangeTaxiFare(
+  fareComponents: FareMetrics,
+  fareMatrix = defaultFareMatrix
+): number {
+  const fare: Fares = fareComponents.isDaytime
+    ? fareComponents.isBooked
+      ? fareMatrix.day.booked
+      : fareMatrix.day.hailed
+    : fareMatrix.night;
   return (
     fare.starting +
-    Math.floor(fareMetrics.distance / fare.rate.meters) * fare.rate.fils +
-    chargeFirstExcess(fareMetrics, fare) +
-    chargeSecondExcess(fareMetrics)
+    Math.floor(fareComponents.distance / fare.rate.meters) * fare.rate.fils +
+    chargeFirstExcess(fareComponents, fare) +
+    chargeSecondExcess(fareComponents, fareMatrix)
   );
 }
 
-function chargeFirstExcess(fareMetrics: FareMetrics, fare: Fare) {
+function chargeFirstExcess(fareMetrics: FareMetrics, fare: Fares) {
   const reachedFirstExcess =
     fareMetrics.distance >= 1000 || fareMetrics.minutes >= 10;
   return reachedFirstExcess ? fare.firstExcess : 0;
 }
 
-function chargeSecondExcess(fareMetrics: FareMetrics) {
+function chargeSecondExcess(fareMetrics: FareMetrics, fareMatrix) {
   const reachedSecondExcess = fareMetrics.distance >= 25000;
-  return reachedSecondExcess ? fares.excess25km : 0;
+  return reachedSecondExcess ? fareMatrix.excess25km : 0;
 }
