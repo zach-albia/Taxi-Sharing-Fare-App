@@ -1,7 +1,9 @@
+import { withRouter } from "next-server/router";
 import Head from "next/head";
-import withMUI from "pangwarta-shared/dist/lib/layout/withMUI";
+import withRoot from "pangwarta-shared/dist/lib/layout/withRoot";
 import * as React from "react";
 import Ride from "../src/components/pages/ride/Ride";
+import pages from "../src/pages";
 
 class RidePage extends React.Component {
   render() {
@@ -28,4 +30,4 @@ class RidePage extends React.Component {
   }
 }
 
-export default withMUI()(RidePage);
+export default withRoot(pages, withRouter)(RidePage);

@@ -1,8 +1,10 @@
 import Head from "next/head";
+import { withRouter } from "next/router";
 import AppContent from "pangwarta-shared/dist/lib/layout/AppContent";
-import withMUI from "pangwarta-shared/dist/lib/layout/withMUI";
+import withRoot from "pangwarta-shared/dist/lib/layout/withRoot";
 import * as React from "react";
 import RideHistory from "../src/components/pages/history/RideHistory";
+import pages from "../src/pages";
 
 const History = () => (
   <>
@@ -16,4 +18,4 @@ const History = () => (
   </>
 );
 
-export default withMUI()(History);
+export default withRoot(pages, withRouter)(History);
