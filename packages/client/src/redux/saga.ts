@@ -15,6 +15,8 @@ import { passengersSelector } from "../components/pages/main/Main";
 import orangeTaxiFare from "../domain/orange-taxi-fare";
 import { Game } from "../domain/shapley";
 import TaxiRide, { Passenger, Player } from "../domain/TaxiRide";
+import localStorageKeys from "../localStorageKeys";
+import { FareMatrix } from "../types";
 import { addResultAction } from "./actions";
 import actionTypes from "./actionTypes";
 import State, { Result } from "./State";
@@ -123,12 +125,18 @@ function withMinutes(minutes: number, isBooked: boolean, isDaytime: boolean) {
       .flatten()
       .toSet();
     const distance = legs.reduce((total, leg) => total + leg.distance.value, 0);
-    return orangeTaxiFare({
-      distance,
-      isBooked,
-      isDaytime,
-      minutes
-    });
+    const fareMatrix = JSON.parse(
+      localStorage.getItem(localStorageKeys.fareMatrix)
+    ) as FareMatrix;
+    return orangeTaxiFare(
+      {
+        distance,
+        isBooked,
+        isDaytime,
+        minutes
+      },
+      fareMatrix
+    );
   };
 }
 

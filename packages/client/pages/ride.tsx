@@ -1,5 +1,6 @@
-import { withRouter } from "next-server/router";
 import Head from "next/head";
+import { withRouter } from "next/router";
+import AppContent from "pangwarta-shared/dist/lib/layout/AppContent";
 import withRoot from "pangwarta-shared/dist/lib/layout/withRoot";
 import * as React from "react";
 import Ride from "../src/components/pages/ride/Ride";
@@ -15,16 +16,9 @@ class RidePage extends React.Component {
           <title>Taxi Sharing | Ride </title>
           <meta name="description" content="Taxi Sharing history" />
         </Head>
-        <div
-          style={{
-            paddingBottom: 64,
-            paddingLeft: 0,
-            paddingRight: 0,
-            paddingTop: 56
-          }}
-        >
+        <AppContent>
           <Ride id={id} />
-        </div>
+        </AppContent>
       </>
     );
   }
