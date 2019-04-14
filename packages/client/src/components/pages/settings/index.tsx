@@ -1,5 +1,4 @@
 import { Theme, withStyles } from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
 import { StyleRules } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -13,7 +12,7 @@ type SettingsPageClassKey = "paper" | "sectionStart" | "setting";
 function styles(theme: Theme): StyleRules<SettingsPageClassKey> {
   return {
     paper: {
-      padding: theme.spacing.unit * 2
+      marginBottom: theme.spacing.unit * 2
     },
     sectionStart: {
       marginTop: theme.spacing.unit * 2
@@ -36,7 +35,7 @@ function SettingsPage({ classes }: Props) {
     : defaultFareMatrix;
   return (
     <>
-      <Paper className={classes.paper}>
+      <div className={classes.paper}>
         <Typography variant="h6" gutterBottom={true}>
           Daytime Rates
         </Typography>
@@ -156,7 +155,7 @@ function SettingsPage({ classes }: Props) {
             defaultValue={fareMatrix.night.rate.meters}
           />
         </>
-      </Paper>
+      </div>
     </>
   );
 }
