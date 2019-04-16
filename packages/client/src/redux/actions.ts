@@ -1,16 +1,11 @@
 import { createAction } from "typesafe-actions";
 import GoogleMapsApi from "../@types/GoogleMapsApi";
 import actionTypes from "./actionTypes";
-import { PassengerLocation, Result } from "./State";
+import { PassengerLocation } from "./State";
 
 export const addPassengerAction = createAction(
   actionTypes.ADD_PASSENGER,
   resolve => (name: string) => resolve(name)
-);
-
-export const addResultAction = createAction(
-  actionTypes.ADD_RESULT,
-  resolve => (result: Result) => resolve(result)
 );
 
 export const chooseDestinationAction = createAction(

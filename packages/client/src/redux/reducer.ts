@@ -13,8 +13,7 @@ export const exampleInitialState: State = {
     isDaytime: true,
     passengerIds: [],
     passengers: {}
-  },
-  results: {}
+  }
 };
 
 export default function(state = exampleInitialState, action: RootAction) {
@@ -37,12 +36,6 @@ export default function(state = exampleInitialState, action: RootAction) {
             [newPassenger.id]: newPassenger
           }
         }
-      };
-    case getType(actions.addResultAction):
-      const result = action.payload;
-      return {
-        ...state,
-        results: { ...state.results, [result.id]: result }
       };
     case getType(actions.chooseDestinationAction):
       return {

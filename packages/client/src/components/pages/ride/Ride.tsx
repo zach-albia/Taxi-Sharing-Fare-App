@@ -7,19 +7,14 @@ import Typography from "@material-ui/core/Typography";
 import GoogleMap from "google-map-react";
 import getConfig from "next/config";
 import * as React from "react";
-import { connect } from "react-redux";
 import GoogleMapsApi from "../../../@types/GoogleMapsApi";
-import State, { Result } from "../../../redux/State";
+import { Result } from "../../../redux/State";
 
 export interface RideProps {
   id: string;
 }
 
-interface ReduxProps {
-  results: Record<string, Result>;
-}
-
-type Props = RideProps & ReduxProps;
+type Props = RideProps;
 
 const {
   publicRuntimeConfig: {
@@ -60,9 +55,9 @@ class Ride extends React.Component<Props> {
   };
 
   render() {
-    const { id, results } = this.props;
+    const { id } = this.props;
+    const result = JSON.parse(localStorage.getItem(`ride-${id}`)) as Result;
     const { duration, finished, timerRunning } = this.state;
-    const result = results[id];
     const players =
       duration >= tenMinutes
         ? result.result.tenMinPlayers
@@ -151,8 +146,4 @@ class Ride extends React.Component<Props> {
   }
 }
 
-function mapStateToProps({ results }: State) {
-  return { results };
-}
-
-export default connect(mapStateToProps)(Ride);
+export default Ride;

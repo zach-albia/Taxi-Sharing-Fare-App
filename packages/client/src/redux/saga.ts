@@ -7,7 +7,7 @@ import differenceWith from "lodash/differenceWith";
 import findIndex from "lodash/findIndex";
 import isEqualWith from "lodash/isEqualWith";
 import uniqWith from "lodash/uniqWith";
-import { all, call, put, select, takeLatest } from "redux-saga/effects";
+import { all, call, select, takeLatest } from "redux-saga/effects";
 import { createSelector } from "reselect";
 import uuid from "uuid/v1";
 import routes from "../../routes";
@@ -17,11 +17,12 @@ import { Game } from "../domain/shapley";
 import TaxiRide, { Passenger, Player } from "../domain/TaxiRide";
 import localStorageKeys from "../localStorageKeys";
 import { FareMatrix } from "../types";
-import { addResultAction } from "./actions";
 import actionTypes from "./actionTypes";
 import State, { Result } from "./State";
 
 es6promise.polyfill();
+
+const { Router } = routes;
 
 function rideSelector(state: State) {
   return state.currentTaxiRide;
@@ -207,8 +208,7 @@ function* splitFare() {
     },
     taxiRide
   };
-  yield put(addResultAction(result));
-  const { Router } = routes;
+  localStorage.setItem(`ride-${result.id}`, JSON.stringify(result));
   yield Router.pushRoute("ride", { id: result.id });
 }
 
