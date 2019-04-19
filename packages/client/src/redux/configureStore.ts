@@ -37,14 +37,16 @@ function configureStore(initialState: {}) {
 }
 
 function initLocalStorage() {
-  if (
-    typeof localStorage !== "undefined" &&
-    !localStorage.getItem(localKeys.fareMatrix)
-  ) {
-    localStorage.setItem(
-      localKeys.fareMatrix,
-      JSON.stringify(defaultFareMatrix)
-    );
+  if (typeof localStorage !== "undefined") {
+    if (!localStorage.getItem(localKeys.fareMatrix)) {
+      localStorage.setItem(
+        localKeys.fareMatrix,
+        JSON.stringify(defaultFareMatrix)
+      );
+    }
+    if (!localStorage.getItem(localKeys.rideIds)) {
+      localStorage.setItem(localKeys.rideIds, JSON.stringify([]));
+    }
   }
 }
 

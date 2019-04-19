@@ -207,6 +207,11 @@ function* splitFare() {
     taxiRide
   };
   localStorage.setItem(`ride-${result.id}`, JSON.stringify(result));
+  const rideIds = JSON.parse(
+    localStorage.getItem(localStorageKeys.rideIds)
+  ) as string[];
+  rideIds.push(result.id);
+  localStorage.setItem(localStorageKeys.rideIds, JSON.stringify(rideIds));
   yield Router.push(`/ride?id=${result.id}`);
 }
 
