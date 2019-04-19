@@ -1,25 +1,20 @@
-// tslint:disable:no-var-requires
 const compression = require("compression");
 const express = require("express");
 const next = require("next");
-import { Application } from "express";
-import { Server } from "next";
-import { join } from "path";
-import { parse } from "url";
-import routes from "./routes";
+const { join } = require("path");
+const { parse } = require("url");
 
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
-const app: Server = next({ dev });
-const handler = routes.getRequestHandler(app);
+const app = next({ dev });
+const handle = app.getRequestHandler();
 
 app
   .prepare()
   .then(() => {
-    const server: Application = express();
+    const server = express();
 
     server.use(compression());
-    server.use(handler);
 
     server.get("*", (req, res) => {
       const parsedUrl = parse(req.url, true);
@@ -29,11 +24,10 @@ app
         const filePath = join(__dirname, ".next", pathname);
         app.serveStatic(req, res, filePath);
       } else {
-        handler(req, res);
+        handle(req, res);
       }
     });
 
-    /* tslint:disable:no-console */
     server.listen(port, err => {
       if (err) {
         throw err;

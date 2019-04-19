@@ -7,10 +7,10 @@ import differenceWith from "lodash/differenceWith";
 import findIndex from "lodash/findIndex";
 import isEqualWith from "lodash/isEqualWith";
 import uniqWith from "lodash/uniqWith";
+import Router from "next/router";
 import { all, call, select, takeLatest } from "redux-saga/effects";
 import { createSelector } from "reselect";
 import uuid from "uuid/v1";
-import routes from "../../routes";
 import { passengersSelector } from "../components/pages/main/Main";
 import orangeTaxiFare from "../domain/orange-taxi-fare";
 import { Game } from "../domain/shapley";
@@ -21,8 +21,6 @@ import actionTypes from "./actionTypes";
 import State, { Result } from "./State";
 
 es6promise.polyfill();
-
-const { Router } = routes;
 
 function rideSelector(state: State) {
   return state.currentTaxiRide;
@@ -209,7 +207,7 @@ function* splitFare() {
     taxiRide
   };
   localStorage.setItem(`ride-${result.id}`, JSON.stringify(result));
-  yield Router.pushRoute("ride", { id: result.id });
+  yield Router.push(`/ride?id=${result.id}`);
 }
 
 function* rootSaga() {

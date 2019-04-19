@@ -1,8 +1,4 @@
 import Button from "@material-ui/core/Button";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import GoogleMap from "google-map-react";
 import getConfig from "next/config";
@@ -94,52 +90,45 @@ class Ride extends React.Component<Props> {
             }}
             yesIWantToUseGoogleMapApiInternals={true}
           />
-          <ExpansionPanel
-            style={{ position: "relative", top: -16 }}
-            elevation={0}
-            expanded={true}
-          >
-            <ExpansionPanelSummary>
-              <Typography variant="subheading">Ride Itinerary</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <div>
-                <Typography variant="caption">Origin</Typography>
-                <Typography gutterBottom={true}>
-                  {result.taxiRide.origin.query}
-                </Typography>
-                <Typography variant="caption">Destination</Typography>
-                <Typography gutterBottom={true}>
-                  {result.taxiRide.destination.query}
-                </Typography>
-                <Typography variant="caption">Distance</Typography>
-                <Typography gutterBottom={true}>
-                  {distance / 1000} km
-                </Typography>
-                <Typography variant="caption">Passengers:</Typography>
-                {players.map(p => {
-                  return (
-                    <Typography key={p.id} gutterBottom={true}>
-                      {p.name} - BD {p.fare / 1000} - {p.distance / 1000} km
-                    </Typography>
-                  );
-                })}
-                <Typography variant="caption">Duration</Typography>
-                <Typography>
-                  {minutes}:{paddedSeconds}
-                </Typography>
-              </div>
-            </ExpansionPanelDetails>
-            {!finished && (
-              <ExpansionPanelActions>
-                {timerRunning ? (
-                  <Button onClick={this.stopTimer}>End Ride</Button>
-                ) : (
-                  <Button onClick={this.startTimer}>Start Ride</Button>
-                )}
-              </ExpansionPanelActions>
-            )}
-          </ExpansionPanel>
+          <div>
+            <Typography variant="subheading" gutterBottom={true}>
+              Ride Itinerary
+            </Typography>
+            <div>
+              <Typography variant="caption">Origin</Typography>
+              <Typography gutterBottom={true}>
+                {result.taxiRide.origin.query}
+              </Typography>
+              <Typography variant="caption">Destination</Typography>
+              <Typography gutterBottom={true}>
+                {result.taxiRide.destination.query}
+              </Typography>
+              <Typography variant="caption">Distance</Typography>
+              <Typography gutterBottom={true}>{distance / 1000} km</Typography>
+              <Typography variant="caption">Passengers:</Typography>
+              {players.map(p => {
+                return (
+                  <Typography key={p.id} gutterBottom={true}>
+                    {p.name} - BD {p.fare / 1000} - {p.distance / 1000} km
+                  </Typography>
+                );
+              })}
+              <Typography variant="caption">Duration</Typography>
+              <Typography>
+                {minutes}:{paddedSeconds}
+              </Typography>
+            </div>
+            {!finished &&
+              (timerRunning ? (
+                <Button onClick={this.stopTimer} variant="contained">
+                  End Ride
+                </Button>
+              ) : (
+                <Button onClick={this.startTimer} variant="contained">
+                  Start Ride
+                </Button>
+              ))}
+          </div>
         </div>
       </>
     );
