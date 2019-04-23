@@ -45,149 +45,145 @@ const changeSetting = (...keys: string[]) => (
 };
 
 function SettingsPage({ classes }: Props) {
-  if (process.browser) {
-    const fareMatrix = JSON.parse(
-      localStorage.getItem(localStorageKeys.fareMatrix)
-    ) as FareMatrix;
-    return (
-      <div className={classes.paper}>
-        <Typography variant="h6" gutterBottom={true}>
-          Daytime Rates
-        </Typography>
-        <>
-          <Typography variant="subtitle1">Booked</Typography>
-          <TextField
-            className={classes.setting}
-            label="Starting Fare"
-            type="number"
-            InputProps={{ endAdornment: "Fils" }}
-            defaultValue={fareMatrix.day.booked.starting}
-            onChange={changeSetting("day", "booked", "starting")}
-          />
-          <TextField
-            className={classes.setting}
-            label="First Excess"
-            type="number"
-            InputProps={{ endAdornment: "Fils" }}
-            defaultValue={fareMatrix.day.booked.firstExcess}
-            onChange={changeSetting("day", "booked", "firstExcess")}
-          />
-          <Typography variant="subtitle2" className={classes.sectionStart}>
-            Rate (Fils per meters)
-          </Typography>
-          <TextField
-            className={classes.setting}
-            label="Amount"
-            type="number"
-            InputProps={{ endAdornment: "Fils" }}
-            defaultValue={fareMatrix.day.booked.rate.fils}
-            onChange={changeSetting("day", "booked", "rate", "fils")}
-          />
-          <TextField
-            className={classes.setting}
-            label="Distance"
-            type="number"
-            InputProps={{ endAdornment: "m" }}
-            defaultValue={fareMatrix.day.booked.rate.meters}
-            onChange={changeSetting("day", "booked", "rate", "meters")}
-          />
-        </>
-        <>
-          <Typography variant="subtitle1" className={classes.sectionStart}>
-            Hailed
-          </Typography>
-          <TextField
-            className={classes.setting}
-            label="Starting Fare"
-            type="number"
-            InputProps={{ endAdornment: "Fils" }}
-            defaultValue={fareMatrix.day.hailed.starting}
-            onChange={changeSetting("day", "hailed", "starting")}
-          />
-          <TextField
-            className={classes.setting}
-            label="First Excess"
-            type="number"
-            InputProps={{ endAdornment: "Fils" }}
-            defaultValue={fareMatrix.day.hailed.firstExcess}
-            onChange={changeSetting("day", "hailed", "firstExcess")}
-          />
-          <Typography variant="subtitle2" className={classes.sectionStart}>
-            Rate (Fils per meters)
-          </Typography>
-          <TextField
-            className={classes.setting}
-            label="Amount"
-            type="number"
-            InputProps={{ endAdornment: "Fils" }}
-            defaultValue={fareMatrix.day.hailed.rate.fils}
-            onChange={changeSetting("day", "hailed", "rate", "fils")}
-          />
-          <TextField
-            className={classes.setting}
-            label="Distance"
-            type="number"
-            InputProps={{ endAdornment: "m" }}
-            defaultValue={fareMatrix.day.hailed.rate.meters}
-            onChange={changeSetting("day", "hailed", "rate", "meters")}
-          />
-        </>
-        <Typography variant="h6" className={classes.sectionStart}>
-          Additional Fare at 25km
+  const fareMatrix = JSON.parse(
+    localStorage.getItem(localStorageKeys.fareMatrix)
+  ) as FareMatrix;
+  return (
+    <div className={classes.paper}>
+      <Typography variant="h6" gutterBottom={true}>
+        Daytime Rates
+      </Typography>
+      <>
+        <Typography variant="subtitle1">Booked</Typography>
+        <TextField
+          className={classes.setting}
+          label="Starting Fare"
+          type="number"
+          InputProps={{ endAdornment: "Fils" }}
+          defaultValue={fareMatrix.day.booked.starting}
+          onChange={changeSetting("day", "booked", "starting")}
+        />
+        <TextField
+          className={classes.setting}
+          label="First Excess"
+          type="number"
+          InputProps={{ endAdornment: "Fils" }}
+          defaultValue={fareMatrix.day.booked.firstExcess}
+          onChange={changeSetting("day", "booked", "firstExcess")}
+        />
+        <Typography variant="subtitle2" className={classes.sectionStart}>
+          Rate (Fils per meters)
         </Typography>
         <TextField
           className={classes.setting}
           label="Amount"
           type="number"
           InputProps={{ endAdornment: "Fils" }}
-          defaultValue={fareMatrix.excess25km}
-          onChange={changeSetting("excess25km")}
+          defaultValue={fareMatrix.day.booked.rate.fils}
+          onChange={changeSetting("day", "booked", "rate", "fils")}
         />
-        <>
-          <Typography variant="h6" className={classes.sectionStart}>
-            Night-time Rates
-          </Typography>
-          <TextField
-            className={classes.setting}
-            label="Starting Fare"
-            type="number"
-            InputProps={{ endAdornment: "Fils" }}
-            defaultValue={fareMatrix.night.starting}
-            onChange={changeSetting("night", "starting")}
-          />
-          <TextField
-            className={classes.setting}
-            label="First Excess"
-            type="number"
-            InputProps={{ endAdornment: "Fils" }}
-            defaultValue={fareMatrix.night.firstExcess}
-            onChange={changeSetting("night", "firstExcess")}
-          />
-          <Typography variant="subtitle2" className={classes.sectionStart}>
-            Rate (Fils per meters)
-          </Typography>
-          <TextField
-            className={classes.setting}
-            label="Amount"
-            type="number"
-            InputProps={{ endAdornment: "Fils" }}
-            defaultValue={fareMatrix.night.rate.fils}
-            onChange={changeSetting("night", "rate", "fils")}
-          />
-          <TextField
-            className={classes.setting}
-            label="Distance"
-            type="number"
-            InputProps={{ endAdornment: "m" }}
-            defaultValue={fareMatrix.night.rate.meters}
-            onChange={changeSetting("night", "rate", "meters")}
-          />
-        </>
-      </div>
-    );
-  } else {
-    return <></>;
-  }
+        <TextField
+          className={classes.setting}
+          label="Distance"
+          type="number"
+          InputProps={{ endAdornment: "m" }}
+          defaultValue={fareMatrix.day.booked.rate.meters}
+          onChange={changeSetting("day", "booked", "rate", "meters")}
+        />
+      </>
+      <>
+        <Typography variant="subtitle1" className={classes.sectionStart}>
+          Hailed
+        </Typography>
+        <TextField
+          className={classes.setting}
+          label="Starting Fare"
+          type="number"
+          InputProps={{ endAdornment: "Fils" }}
+          defaultValue={fareMatrix.day.hailed.starting}
+          onChange={changeSetting("day", "hailed", "starting")}
+        />
+        <TextField
+          className={classes.setting}
+          label="First Excess"
+          type="number"
+          InputProps={{ endAdornment: "Fils" }}
+          defaultValue={fareMatrix.day.hailed.firstExcess}
+          onChange={changeSetting("day", "hailed", "firstExcess")}
+        />
+        <Typography variant="subtitle2" className={classes.sectionStart}>
+          Rate (Fils per meters)
+        </Typography>
+        <TextField
+          className={classes.setting}
+          label="Amount"
+          type="number"
+          InputProps={{ endAdornment: "Fils" }}
+          defaultValue={fareMatrix.day.hailed.rate.fils}
+          onChange={changeSetting("day", "hailed", "rate", "fils")}
+        />
+        <TextField
+          className={classes.setting}
+          label="Distance"
+          type="number"
+          InputProps={{ endAdornment: "m" }}
+          defaultValue={fareMatrix.day.hailed.rate.meters}
+          onChange={changeSetting("day", "hailed", "rate", "meters")}
+        />
+      </>
+      <Typography variant="h6" className={classes.sectionStart}>
+        Additional Fare at 25km
+      </Typography>
+      <TextField
+        className={classes.setting}
+        label="Amount"
+        type="number"
+        InputProps={{ endAdornment: "Fils" }}
+        defaultValue={fareMatrix.excess25km}
+        onChange={changeSetting("excess25km")}
+      />
+      <>
+        <Typography variant="h6" className={classes.sectionStart}>
+          Night-time Rates
+        </Typography>
+        <TextField
+          className={classes.setting}
+          label="Starting Fare"
+          type="number"
+          InputProps={{ endAdornment: "Fils" }}
+          defaultValue={fareMatrix.night.starting}
+          onChange={changeSetting("night", "starting")}
+        />
+        <TextField
+          className={classes.setting}
+          label="First Excess"
+          type="number"
+          InputProps={{ endAdornment: "Fils" }}
+          defaultValue={fareMatrix.night.firstExcess}
+          onChange={changeSetting("night", "firstExcess")}
+        />
+        <Typography variant="subtitle2" className={classes.sectionStart}>
+          Rate (Fils per meters)
+        </Typography>
+        <TextField
+          className={classes.setting}
+          label="Amount"
+          type="number"
+          InputProps={{ endAdornment: "Fils" }}
+          defaultValue={fareMatrix.night.rate.fils}
+          onChange={changeSetting("night", "rate", "fils")}
+        />
+        <TextField
+          className={classes.setting}
+          label="Distance"
+          type="number"
+          InputProps={{ endAdornment: "m" }}
+          defaultValue={fareMatrix.night.rate.meters}
+          onChange={changeSetting("night", "rate", "meters")}
+        />
+      </>
+    </div>
+  );
 }
 
 export default withStyles(styles)(SettingsPage);
