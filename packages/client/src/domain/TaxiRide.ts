@@ -23,4 +23,5 @@ export default interface TaxiRide {
   origin?: google.maps.Place;
   passengerIds: string[];
   passengers: Record<string, Passenger>;
+  timestamp?: Date;
 }

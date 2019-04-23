@@ -204,7 +204,7 @@ function* splitFare() {
       tenMinPlayers,
       zeroMinPlayers
     },
-    taxiRide
+    taxiRide: { ...taxiRide, timestamp: new Date() }
   };
   localStorage.setItem(`ride-${result.id}`, JSON.stringify(result));
   const rideIds = JSON.parse(
