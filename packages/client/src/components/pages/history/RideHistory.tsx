@@ -26,7 +26,7 @@ export default function RideHistory() {
         <Paper>
           <List>
             {results.map(result => (
-              <Link href={`/ride?id=${result.id}`}>
+              <Link href={`/ride?id=${result.id}`} key={result.id}>
                 <ListItem button={true}>
                   <Typography>
                     {moment(result.taxiRide.timestamp).format("llll")} (
